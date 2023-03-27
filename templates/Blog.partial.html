@@ -1,0 +1,81 @@
+{layout 'App.layout.html'}
+
+{block content}
+<div class="container mt-3">
+    <h1>{$header}</h1>
+    <p>{$subtitle}</p>
+
+    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+    <h2>Add a Comment</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Title" aria-label="First name">
+        </div>
+        <div class="col-2">
+            <input type="text" class="form-control" placeholder="Your name" aria-label="First name">
+        </div>
+        <div class="col-2">
+            <input type="text" class="form-control" placeholder="Your E-Mail" aria-label="Last name">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <textarea class="form-control" rows="4" placeholder="Your comment here"></textarea>
+        </div>
+    </div>
+
+    <h2>Comments</h2>
+
+    <div class="card text-bg-light mb-3">
+        <div class="card-header d-flex">
+            <div>Olga Nebtrenko wrote at 2023-03-22 09:31 AM</div>
+            <div class="ms-auto">
+                <a href="#">Reply</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Light card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+
+                <div class="card text-bg-light mb-3">
+                    <div class="card-header d-flex">
+                        <div>John Goodman replied at 2023-03-27 01:54 PM</div>
+                        <div class="ms-auto"><a href="#">Reply</a></div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                            content.</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="card text-bg-light mb-3">
+        <div class="card-header d-flex">
+            <div>John Goodman wrote</div>
+            <div class="ms-auto">2023-03-27 01:54 PM</div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Light card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+        </div>
+    </div>
+</div>
+{/block}
