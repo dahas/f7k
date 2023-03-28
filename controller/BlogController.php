@@ -2,9 +2,8 @@
 
 namespace PHPSkeleton\Controller;
 
-use PHPSkeleton\Sources\attributes\Inject;
 use PHPSkeleton\Library\Comments;
-use PHPSkeleton\Sources\attributes\Route;
+use PHPSkeleton\Sources\attributes\{Inject, Route};
 use PHPSkeleton\Sources\{Request, Response};
 
 class BlogController extends AppController {

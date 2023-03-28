@@ -12,9 +12,9 @@ class DatabaseLayer {
     public function __construct()
     {
         $this->con = new Connection(
-            'mysql:host=localhost;dbname=f7k',
-            'root',
-            'password'
+            $_ENV['DB_DSN'],
+            $_ENV['DB_USERNAME'],
+            $_ENV['DB_PASSWORD']
         );
 
         $this->con->options([
