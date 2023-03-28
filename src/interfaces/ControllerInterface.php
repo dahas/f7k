@@ -6,8 +6,6 @@ interface ControllerInterface
 {
     /**
      * Use to inject a service via an Attribute
-     * 
-     * @param string $namespace 
      */
-    public function injectServices(string $namespace): void;
+    public function injectServices(): void;
 }

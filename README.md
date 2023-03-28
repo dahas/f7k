@@ -1,5 +1,5 @@
-# PHP Application Skeleton
-Everything you need to build a Vanilla PHP App from scratch.
+# f7k - a PHP framework
+f7k is the numeronym of the word 'framework'. This framework has everything you need to build a database-driven PHP App from scratch. 
 
 ## Installation
 ````

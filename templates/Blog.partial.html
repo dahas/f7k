@@ -19,62 +19,57 @@
         dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 
-    <h2>Add a Comment</h2>
+    <h2 class="mt-4">Add a Comment</h2>
 
-    <div class="row mb-3">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Title" aria-label="First name">
+    <form method="post" action="/Blog/Comment/create">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" name="title" class="form-control text-bg-light" placeholder="Title" aria-label="Title">
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name" aria-label="Name" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail" aria-label="E-Mail" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <textarea name="comment" class="form-control text-bg-light" rows="4" placeholder="Your comment here ..." required></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
-        <div class="col-2">
-            <input type="text" class="form-control" placeholder="Your name" aria-label="First name">
-        </div>
-        <div class="col-2">
-            <input type="text" class="form-control" placeholder="Your E-Mail" aria-label="Last name">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <textarea class="form-control" rows="4" placeholder="Your comment here"></textarea>
-        </div>
-    </div>
+    </form>
 
-    <h2>Comments</h2>
+    <h2 class="mt-4" n:if="$comments">Comments</h2>
 
-    <div class="card text-bg-light mb-3">
-        <div class="card-header d-flex">
-            <div>Olga Nebtrenko wrote at 2023-03-22 09:31 AM</div>
+    <div class="card text-bg-light mb-3" n:foreach="$comments as $comment">
+        <div class="card-header d-flex" style="font-size: 0.75rem;">
+            <div>{$comment->getName()} wrote at {$comment->getCreated()}</div>
             <div class="ms-auto">
-                <a href="#">Reply</a>
+                <a href="/Blog/Comment/hide?id={$comment->id()}">Hide</a> 
+                <a href="/Blog/Comment/delete?id={$comment->id()}">Delete</a> 
             </div>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Light card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
+            <b class="card-title">{$comment->getTitle()}</b>
+            <p class="card-text">{$comment->getComment()|noescape}</p>
 
-                <div class="card text-bg-light mb-3">
-                    <div class="card-header d-flex">
-                        <div>John Goodman replied at 2023-03-27 01:54 PM</div>
-                        <div class="ms-auto"><a href="#">Reply</a></div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Light card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                            content.</p>
-                    </div>
+            <div class="card mb-3" n:foreach="$comment->getReplies() as $reply">
+                <div class="card-header d-flex" style="font-size: 0.75rem;">
+                    <div>{$reply->getName()} replied at {$reply->getCreated()}</div>
                 </div>
-        </div>
-    </div>
+                <div class="card-body">
+                    <b class="card-title" n:if="$reply->getTitle()">{$reply->getTitle()}</b>
+                    <p class="card-text">{$reply->getReply()}</p>
+                </div>
+            </div>
 
-    <div class="card text-bg-light mb-3">
-        <div class="card-header d-flex">
-            <div>John Goodman wrote</div>
-            <div class="ms-auto">2023-03-27 01:54 PM</div>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Light card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
+            <a href="#">Reply</a>
         </div>
     </div>
 </div>

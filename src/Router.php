@@ -3,8 +3,11 @@
 namespace PHPSkeleton\Sources;
 
 use PHPSkeleton\Sources\attributes\Route;
+use PHPSkeleton\Sources\traits\Utils;
 
 class Router {
+
+    use Utils;
 
     private Request $request;
     private Response $response;
@@ -100,7 +103,14 @@ class Router {
                 $callback = $handler["callback"];
             }
 
-            $this->request->setData(array_merge($qArr, $_GET, $_POST));
+            $dirtyVars = array_merge($qArr, $_GET, $_POST);
+            $cleanVars = $this->sanitizeRequest($dirtyVars);
+
+            $this->request->setData($cleanVars);
+
+            unset($_GET);
+            unset($_POST);
+            unset($_REQUEST);
 
             if ($callback) {
                 $res = call_user_func_array($callback, [$this->request, $this->response]);
