@@ -9,7 +9,7 @@ class ControllerBase implements ControllerInterface {
 
     public function __construct()
     {
-        // $this->injectServices();
+        $this->injectServices();
     }
 
     /**
@@ -25,7 +25,7 @@ class ControllerBase implements ControllerInterface {
             $pName = $property->name;
             foreach ($property->getAttributes() as $attribute) {
                 $service = $attribute->newInstance()->service;
-                $this->$pName = $this->orm->create($service);;
+                $this->$pName = new $service;
             }
         }
     }

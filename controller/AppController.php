@@ -2,25 +2,24 @@
 
 namespace PHPSkeleton\Controller;
 
-use Opis\ORM\EntityManager;
-use PHPSkeleton\Library\{DatabaseLayer as Dbal, JsonAdapter, Navigation, TemplateEngine};
+use PHPSkeleton\Library\{JsonAdapter, Navigation, TemplateEngine};
+use PHPSkeleton\Sources\attributes\Inject;
 use PHPSkeleton\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 
-    protected TemplateEngine $template; // Latte Template Engine
-    protected JsonAdapter $jsonAdapter;
+    #[Inject(TemplateEngine::class)]
+    protected $template;
+
+    #[Inject(JsonAdapter::class)]
+    protected $jsonAdapter;
 
     public function __construct()
     {
-        // Inject Services
-        parent::__construct();
+        parent::__construct(); // Trigger injection of Services
 
-        $this->template = new TemplateEngine();
         $this->template->assign([
             "nav" => Navigation::items()
         ]);
-
-        $this->jsonAdapter = new JsonAdapter();
     }
 }

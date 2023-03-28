@@ -2,18 +2,19 @@
 
 namespace PHPSkeleton\Controller;
 
+use PHPSkeleton\Sources\attributes\Inject;
 use PHPSkeleton\Library\Comments;
 use PHPSkeleton\Sources\attributes\Route;
 use PHPSkeleton\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    private Comments $comments;
+    #[Inject(Comments::class)]
+    protected $comments;
 
     public function __construct()
     {
         parent::__construct();
-        $this->comments = new Comments();
     }
 
     #[Route(path: '/Blog', method: 'get')]

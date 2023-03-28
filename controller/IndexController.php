@@ -13,8 +13,9 @@ class IndexController extends AppController {
     {
         $this->template->assign([
             'title' => 'PHP Skeleton',
-            'header' => 'A PHP Application Skeleton',
-            "subtitle" => "Use this lightweight framework to quickly build rich web applications. If you are unfamiliar or inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar product."
+            'header' => 'Yet another f7k',
+            "subtitle" => "f7k is the numeronym of the word 'framework'. Use this lightweight framework to quickly build feature rich web applications with PHP. If you are unfamiliar or 
+            inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product."
         ]);
         $this->template->parse('Index.partial.html');
         $this->template->render($request, $response);
