@@ -11,11 +11,6 @@ class BlogController extends AppController {
     #[Inject(Comments::class)]
     protected $comments;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     #[Route(path: '/Blog', method: 'get')]
     public function main(Request $request, Response $response): void
     {

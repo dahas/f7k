@@ -7,11 +7,6 @@ use ReflectionClass;
 
 class ControllerBase implements ControllerInterface {
 
-    public function __construct()
-    {
-        $this->injectServices();
-    }
-
     /**
      * Use of a ReflectionClass to inject Services assigned to Attributes.
      * 

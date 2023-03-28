@@ -16,7 +16,7 @@ class AppController extends ControllerBase {
 
     public function __construct()
     {
-        parent::__construct(); // Trigger injection of Services
+        $this->injectServices();
 
         $this->template->assign([
             "nav" => Navigation::items()
