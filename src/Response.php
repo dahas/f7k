@@ -38,11 +38,6 @@ class Response {
         $this->headers[$name] = $value;
     }
 
-    public function isParsable(): bool
-    {
-        return !empty($this->html->getVars());
-    }
-
     public function flush(): void
     {
         header("HTTP/1.1 {$this->status}");
