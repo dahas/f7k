@@ -5,11 +5,9 @@ namespace PHPSkeleton\Controller;
 use PHPSkeleton\Library\Comments;
 use PHPSkeleton\Sources\attributes\Route;
 use PHPSkeleton\Sources\{Request, Response};
-use PHPSkeleton\Entities\CommentEntity;
 
 class BlogController extends AppController {
 
-    private $entity = CommentEntity::class;
     private Comments $comments;
 
     public function __construct()

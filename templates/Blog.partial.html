@@ -19,58 +19,6 @@
         dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 
-    <h2 class="mt-4">Add a Comment</h2>
-
-    <form method="post" action="/Blog/Comment/create">
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" name="title" class="form-control text-bg-light" placeholder="Title" aria-label="Title">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name" aria-label="Name" required>
-                    </div>
-                    <div class="col-2">
-                        <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail" aria-label="E-Mail" required>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <textarea name="comment" class="form-control text-bg-light" rows="4" placeholder="Your comment here ..." required></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
-
-    <h2 class="mt-4" n:if="$comments">Comments</h2>
-
-    <div class="card text-bg-light mb-3" n:foreach="$comments as $comment">
-        <div class="card-header d-flex" style="font-size: 0.75rem;">
-            <div>{$comment->getName()} wrote at {$comment->getCreated()}</div>
-            <div class="ms-auto">
-                <a href="/Blog/Comment/hide?id={$comment->id()}">Hide</a> 
-                <a href="/Blog/Comment/delete?id={$comment->id()}">Delete</a> 
-            </div>
-        </div>
-        <div class="card-body">
-            <b class="card-title">{$comment->getTitle()}</b>
-            <p class="card-text">{$comment->getComment()|noescape}</p>
-
-            <div class="card mb-3" n:foreach="$comment->getReplies() as $reply">
-                <div class="card-header d-flex" style="font-size: 0.75rem;">
-                    <div>{$reply->getName()} replied at {$reply->getCreated()}</div>
-                </div>
-                <div class="card-body">
-                    <b class="card-title" n:if="$reply->getTitle()">{$reply->getTitle()}</b>
-                    <p class="card-text">{$reply->getReply()}</p>
-                </div>
-            </div>
-
-            <a href="#">Reply</a>
-        </div>
-    </div>
+        {include Comments.partial.html}
 </div>
 {/block}
