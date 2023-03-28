@@ -2,6 +2,7 @@
 
 namespace PHPSkeleton\Controller;
 
+use PHPSkeleton\Library\Comments;
 use PHPSkeleton\Sources\attributes\Route;
 use PHPSkeleton\Sources\{Request, Response};
 use PHPSkeleton\Entities\CommentEntity;
@@ -9,20 +10,22 @@ use PHPSkeleton\Entities\CommentEntity;
 class BlogController extends AppController {
 
     private $entity = CommentEntity::class;
+    private Comments $comments;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->comments = new Comments();
+    }
 
     #[Route(path: '/Blog', method: 'get')]
     public function main(Request $request, Response $response): void
     {
-        $comments = ($this->orm)($this->entity)
-            ->where('hidden')->is(0)
-            ->orderBy('created', 'desc')
-            ->all();
-
-        $this->template->assign([
+         $this->template->assign([
             'title' => 'Blog',
             'header' => 'Why you\'ll be amazed',
             "subtitle" => "Read on ...",
-            "comments" => $comments
+            "comments" => $this->comments->readAll()
         ]);
         $this->template->parse('Blog.partial.html');
         $this->template->render($request, $response);
@@ -30,16 +33,10 @@ class BlogController extends AppController {
 
 
     #[Route(path: '/Blog/Comment/create', method: 'post')]
-    public function load(Request $request, Response $response): void
+    public function create(Request $request, Response $response): void
     {
         $data = $request->getData();
-        $comment = $this->orm->create($this->entity);
-        $comment->setName($data['name']);
-        $comment->setEmail($data['email']);
-        $comment->setTitle($data['title']);
-        $comment->setComment(nl2br($data['comment']));
-        $this->orm->save($comment);
-
+        $this->comments->create($data);
         header('location: /Blog');
         exit();
     }
@@ -48,10 +45,7 @@ class BlogController extends AppController {
     public function delete(Request $request, Response $response): void
     {
         $data = $request->getData();
-        ($this->orm)($this->entity)
-            ->where('id')->is($data['id'])
-            ->delete();
-
+        $this->comments->delete((int) $data['id']);
         header('location: /Blog');
         exit();
     }
@@ -60,17 +54,7 @@ class BlogController extends AppController {
     public function hide(Request $request, Response $response): void
     {
         $data = $request->getData();
-        ($this->orm)($this->entity)
-            ->where('id')->is($data['id'])
-            ->update([
-                'hidden' => 1
-            ]);
-
-        $comment = $this->orm->query($this->entity)
-            ->find($data['id'])
-            ->setHidden(1);
-        $this->orm->save($comment);
-
+        $this->comments->hide((int) $data['id']);
         header('location: /Blog');
         exit();
     }

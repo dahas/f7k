@@ -9,7 +9,6 @@ use PHPSkeleton\Sources\ControllerBase;
 class AppController extends ControllerBase {
 
     protected TemplateEngine $template; // Latte Template Engine
-    protected EntityManager $orm; // Opis ORM
     protected JsonAdapter $jsonAdapter;
 
     public function __construct()
@@ -21,9 +20,6 @@ class AppController extends ControllerBase {
         $this->template->assign([
             "nav" => Navigation::items()
         ]);
-
-        $con = (new Dbal())->getCon();
-        $this->orm = new EntityManager($con);
 
         $this->jsonAdapter = new JsonAdapter();
     }
