@@ -1,6 +1,6 @@
 {
-    "name": "dahas/phpskeleton",
-    "description": "A PHP Application Skeleton",
+    "name": "dahas/f7k",
+    "description": "A PHP framework",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -18,7 +18,7 @@
             "PHPSkeleton\\Controller\\": "controller/",
             "PHPSkeleton\\Library\\": "lib/",
             "PHPSkeleton\\Sources\\": "src/",
-            "PHPSkeleton\\Services\\": "services/"
+            "PHPSkeleton\\Entities\\": "entities/"
         }
     },
     "require-dev": {
@@ -26,6 +26,8 @@
     },
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "latte/latte": "^3.0"
+        "latte/latte": "^3.0",
+        "opis/database": "^4.0",
+        "opis/orm": "^1.0"
     }
 }

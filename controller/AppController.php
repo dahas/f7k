@@ -2,23 +2,22 @@
 
 namespace PHPSkeleton\Controller;
 
-use PHPSkeleton\Library\Navigation;
-use PHPSkeleton\Library\TemplateEngine;
+use PHPSkeleton\Library\{JsonAdapter, Navigation, TemplateEngine};
+use PHPSkeleton\Sources\attributes\Inject;
 use PHPSkeleton\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 
-    /**
-     * Latte Template Wngine
-     */
+    #[Inject(TemplateEngine::class)]
     protected $template;
-    
+
+    #[Inject(JsonAdapter::class)]
+    protected $jsonAdapter;
+
     public function __construct()
     {
-        // Inject Services
-        parent::__construct();
-        
-        $this->template = new TemplateEngine();
+        $this->injectServices();
+
         $this->template->assign([
             "nav" => Navigation::items()
         ]);

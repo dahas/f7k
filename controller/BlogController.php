@@ -2,45 +2,53 @@
 
 namespace PHPSkeleton\Controller;
 
-use PHPSkeleton\Library\JsonAdapter;
-use PHPSkeleton\Sources\attributes\Route;
-use PHPSkeleton\Sources\attributes\Inject;
-use PHPSkeleton\Sources\Request;
-use PHPSkeleton\Sources\Response;
+use PHPSkeleton\Library\Comments;
+use PHPSkeleton\Sources\attributes\{Inject, Route};
+use PHPSkeleton\Sources\{Request, Response};
 
+class BlogController extends AppController {
 
-class BlogController extends AppController
-{
-    #[Inject('DataService')]
-    protected $DataService;
-
-    #[Inject('UserService')] 
-    protected $UserService;
+    #[Inject(Comments::class)]
+    protected $comments;
 
     #[Route(path: '/Blog', method: 'get')]
     public function main(Request $request, Response $response): void
     {
-        $this->template->assign([
+         $this->template->assign([
             'title' => 'Blog',
             'header' => 'Why you\'ll be amazed',
-            "subtitle" => "Read on ..."
+            "subtitle" => "Read on ...",
+            "comments" => $this->comments->readAll()
         ]);
         $this->template->parse('Blog.partial.html');
         $this->template->render($request, $response);
     }
 
 
-    #[Route(path: '/Blog/load', method: 'get')]
-    public function load(Request $request, Response $response) : void
+    #[Route(path: '/Blog/Comment/create', method: 'post')]
+    public function create(Request $request, Response $response): void
     {
-        $svcs = [
-            'DataService' => $this->DataService->loadData(),
-            'UserService' => $this->UserService->loadData()
-        ];
+        $data = $request->getData();
+        $this->comments->create($data);
+        header('location: /Blog');
+        exit();
+    }
 
-        $adapter = new JsonAdapter();
-        $adapter->setMessage("Success");
-        $adapter->setData($svcs);
-        $adapter->encode($request, $response);
+    #[Route(path: '/Blog/Comment/delete', method: 'get')]
+    public function delete(Request $request, Response $response): void
+    {
+        $data = $request->getData();
+        $this->comments->delete((int) $data['id']);
+        header('location: /Blog');
+        exit();
+    }
+
+    #[Route(path: '/Blog/Comment/hide', method: 'get')]
+    public function hide(Request $request, Response $response): void
+    {
+        $data = $request->getData();
+        $this->comments->hide((int) $data['id']);
+        header('location: /Blog');
+        exit();
     }
 }
