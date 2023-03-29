@@ -14,12 +14,16 @@ class AppController extends ControllerBase {
     #[Inject(JsonAdapter::class)]
     protected $jsonAdapter;
 
+    #[Inject(Navigation::class)]
+    protected $navigation;
+
     public function __construct()
     {
         $this->injectServices();
 
         $this->template->assign([
-            "nav" => Navigation::items()
+            "nav" => $this->navigation->items(),
+            "currentPath" => "/Blog"
         ]);
     }
 }

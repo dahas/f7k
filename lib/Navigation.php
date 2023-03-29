@@ -4,14 +4,9 @@ namespace PHPSkeleton\Library;
 
 class Navigation {
 
-    private static array $items = [
-        "/" => "Home",
-        "/Blog" => "Blog",
-        "/Error" => "No Controller"
-    ];
-
-    public static function items(): array
+    public function items(): object
     {
-        return self::$items;
+        $json = file_get_contents(ROOT . '/menu.json');
+        return (object) json_decode($json);
     }
 }

@@ -89,7 +89,6 @@ class RepliesEntity extends Entity implements IMappableEntity {
         $mapper->table(self::$tableName);
         $mapper->primaryKey(self::$primaryKey);
         $mapper->sequence(implode("_", [self::$tableName, self::$primaryKey, "seq"]));
-
         $mapper->cast(self::$typeCasting);
     }
 }

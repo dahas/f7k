@@ -1,0 +1,49 @@
+[
+    {
+        "path": "/",
+        "title": "Home",
+        "enabled": true
+    },
+    {
+        "path": "/Blog",
+        "title": "Blog",
+        "enabled": true
+    },
+    {
+        "title": "Dropdown",
+        "enabled": true,
+        "items": [
+            {
+                "path": "/Sub",
+                "title": "First sub item",
+                "enabled": true
+            },
+            {
+                "separator": true
+            },
+            {
+                "header": "Section Header"
+            },
+            {
+                "path": "/Sub",
+                "title": "Second sub item",
+                "enabled": false
+            },
+            {
+                "path": "/Sub",
+                "title": "Third sub item",
+                "enabled": true
+            }
+        ]
+    },
+    {
+        "path": "/Error",
+        "title": "Error 404",
+        "enabled": true
+    },
+    {
+        "path": "/Disabled",
+        "title": "Disabled",
+        "enabled": false
+    }
+]
