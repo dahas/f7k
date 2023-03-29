@@ -1,6 +1,6 @@
-<h2 class="mt-4">Add a Comment</h2>
+<h2 id="add" class="mt-4">{$comments_header}</h2>
 
-<form method="post" action="/Blog/Comment/create">
+<form method="post" action="{$action}">
     <div class="card mb-3">
         <div class="card-body">
             <div class="row mb-3">
@@ -30,9 +30,9 @@
 
 <h2 class="mt-4" n:if="$comments">Comments</h2>
 
-<div class="card text-bg-light mb-3" n:foreach="$comments as $comment">
+<div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment">
     <div class="card-header d-flex" style="font-size: 0.75rem;">
-        <div>{$comment->getName()} wrote at {$comment->getCreated()}</div>
+        <div>#{$comment->id()} - {$comment->getName()} wrote at {$comment->getCreated()}</div>
         <div class="ms-auto">
             <a href="/Blog/Comment/hide?id={$comment->id()}">Hide</a>
             <a href="/Blog/Comment/delete?id={$comment->id()}">Delete</a>
@@ -42,9 +42,9 @@
         <b class="card-title">{$comment->getTitle()}</b>
         <p class="card-text">{$comment->getComment()|noescape}</p>
 
-        <div class="card mb-3" n:foreach="$comment->getReplies() as $reply">
+        <div id="R{$comment->id()}.{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply">
             <div class="card-header d-flex" style="font-size: 0.75rem;">
-                <div>{$reply->getName()} replied at {$reply->getCreated()}</div>
+                <div>#{$comment->id()}.{$reply->id()} - {$reply->getName()} replied at {$reply->getCreated()}</div>
             </div>
             <div class="card-body">
                 <b class="card-title" n:if="$reply->getTitle()">{$reply->getTitle()}</b>
@@ -52,6 +52,6 @@
             </div>
         </div>
 
-        <a href="#">Reply</a>
+        <a href="/Blog/Reply?id={$comment->id()}#add">Reply</a>
     </div>
 </div>

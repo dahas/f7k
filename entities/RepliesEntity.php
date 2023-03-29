@@ -9,7 +9,8 @@ class RepliesEntity extends Entity implements IMappableEntity {
     private static string $tableName = "blog_comment_replies";
     private static string $primaryKey = "id";
     private static array $typeCasting = [
-        "id" => "integer"
+        "id" => "integer",
+        "comment_id" => "integer"
     ];
 
     public function id(): int
@@ -58,6 +59,17 @@ class RepliesEntity extends Entity implements IMappableEntity {
     public function setEmail(string $email): self
     {
         $this->orm()->setColumn('email', $email);
+        return $this;
+    }
+
+    public function getCommentID(): int
+    {
+        return $this->orm()->getColumn('comment_id');
+    }
+
+    public function setCommentID(int $comment_id): self
+    {
+        $this->orm()->setColumn('comment_id', $comment_id);
         return $this;
     }
 

@@ -4,6 +4,7 @@ namespace PHPSkeleton\Library;
 
 use Opis\ORM\EntityManager;
 use PHPSkeleton\Entities\CommentEntity;
+use PHPSkeleton\Entities\RepliesEntity;
 use PHPSkeleton\Library\DatabaseLayer as Dbal;
 
 class Comments {
@@ -25,7 +26,13 @@ class Comments {
             ->all();
     }
 
-    public function create(array $data): void
+    public function read(int $id): CommentEntity
+    {
+        return $this->orm->query($this->entity)
+            ->find($id);
+    }
+
+    public function create(array $data): int
     {
         $comment = $this->orm->create($this->entity)
             ->setName($data['name'])
@@ -33,6 +40,7 @@ class Comments {
             ->setTitle($data['title'])
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
+        return $comment->id();
     }
 
     public function update(array $data): void
@@ -60,5 +68,17 @@ class Comments {
             ->find($id)
             ->setHidden(1);
         $this->orm->save($comment);
+    }
+
+    public function reply(array $data): int
+    {
+        $reply = $this->orm->create(RepliesEntity::class)
+            ->setName($data['name'])
+            ->setEmail($data['email'])
+            ->setTitle($data['title'])
+            ->setCommentID((int) $data['id'])
+            ->setReply(nl2br($data['comment']));
+        $this->orm->save($reply);
+        return $reply->id();
     }
 }
