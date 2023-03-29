@@ -1,0 +1,9 @@
+
+/* Hack to fix horizontally jumping content when scrollbar appears. */
+html {
+  margin-right: calc(-100vw + 100%);
+  overflow-x: hidden;
+}
+body {
+  overflow-x: auto;
+}
