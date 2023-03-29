@@ -55,19 +55,19 @@ class Comments {
         $this->orm->save($comment);
     }
 
-    public function delete(int $id): void
-    {
-        $this->orm->query($this->entity)
-            ->where('id')->is($id)
-            ->delete();
-    }
-
     public function hide(int $id): void
     {
         $comment = $this->orm->query($this->entity)
             ->find($id)
             ->setHidden(1);
         $this->orm->save($comment);
+    }
+
+    public function delete(int $id): void
+    {
+        $this->orm->query($this->entity)
+            ->where('id')->is($id)
+            ->delete();
     }
 
     public function reply(array $data): int
@@ -80,5 +80,20 @@ class Comments {
             ->setReply(nl2br($data['comment']));
         $this->orm->save($reply);
         return $reply->id();
+    }
+
+    public function hideReply(int $id): void
+    {
+        $reply = $this->orm->query(RepliesEntity::class)
+            ->find($id)
+            ->setHidden(1);
+        $this->orm->save($reply);
+    }
+
+    public function deleteReply(int $id): void
+    {
+        $this->orm->query(RepliesEntity::class)
+            ->where('id')->is($id)
+            ->delete();
     }
 }

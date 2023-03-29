@@ -73,6 +73,17 @@ class RepliesEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
+    public function getHidden(): int
+    {
+        return $this->orm()->getColumn('hidden');
+    }
+
+    public function setHidden(int $hidden): self
+    {
+        $this->orm()->setColumn('hidden', $hidden);
+        return $this;
+    }
+
     public function getCreated(): string
     {
         return $this->orm()->getColumn('created');

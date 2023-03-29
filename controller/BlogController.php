@@ -29,16 +29,7 @@ class BlogController extends AppController {
     {
         $data = $request->getData();
         $this->comments->create($data);
-        header('location: /Blog');
-        exit();
-    }
-
-    #[Route(path: '/Blog/Comment/delete', method: 'get')]
-    public function delete(Request $request, Response $response): void
-    {
-        $data = $request->getData();
-        $this->comments->delete((int) $data['id']);
-        header('location: /Blog');
+        header('location: /Blog#comments');
         exit();
     }
 
@@ -47,7 +38,16 @@ class BlogController extends AppController {
     {
         $data = $request->getData();
         $this->comments->hide((int) $data['id']);
-        header('location: /Blog');
+        header('location: /Blog#comments');
+        exit();
+    }
+
+    #[Route(path: '/Blog/Comment/delete', method: 'get')]
+    public function delete(Request $request, Response $response): void
+    {
+        $data = $request->getData();
+        $this->comments->delete((int) $data['id']);
+        header('location: /Blog#comments');
         exit();
     }
 
@@ -57,6 +57,7 @@ class BlogController extends AppController {
         $data = $request->getData();
         $this->template->assign([
             'title' => 'Blog',
+            'reply' => true,
             'comments_header' => 'Reply to #' . $data['id'],
             "action" => "/Blog/Reply/create?id=" . $data['id'],
             "comments" => [$this->comments->read((int) $data['id'])]
@@ -70,7 +71,25 @@ class BlogController extends AppController {
     {
         $data = $request->getData();
         $rID = $this->comments->reply($data);
-        header('location: /Blog#R' . $data['id'] . "." . $rID);
+        header('location: /Blog#R' . $rID);
+        exit();
+    }
+
+    #[Route(path: '/Blog/Reply/hide', method: 'get')]
+    public function hideReply(Request $request, Response $response): void
+    {
+        $data = $request->getData();
+        $this->comments->hideReply((int) $data['id']);
+        header('location: /Blog#comments');
+        exit();
+    }
+
+    #[Route(path: '/Blog/Reply/delete', method: 'get')]
+    public function deleteReply(Request $request, Response $response): void
+    {
+        $data = $request->getData();
+        $this->comments->deleteReply((int) $data['id']);
+        header('location: /Blog#comments');
         exit();
     }
 }
