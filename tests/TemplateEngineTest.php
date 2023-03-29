@@ -10,13 +10,13 @@ use PHPSkeleton\Sources\Request;
 $dotenv = Dotenv\Dotenv::createImmutable(ROOT);
 $dotenv->safeLoad();
 
-class LatteTest extends TestCase
-{
-    private Request $request; 
-    private Response $response; 
-    private TemplateEngine $template; 
- 
-    protected function setUp() : void
+class TemplateEngineTest extends TestCase {
+    
+    private Request $request;
+    private Response $response;
+    private TemplateEngine $template;
+
+    protected function setUp(): void
     {
         $_ENV['LAYOUT_TEMPLATE_NAME'] = "Layout.html";
 
@@ -24,14 +24,14 @@ class LatteTest extends TestCase
         $this->response = new Response();
         $this->template = new TemplateEngine(__DIR__ . '/files', __DIR__ . '/cache');
     }
- 
-    protected function tearDown() : void
+
+    protected function tearDown(): void
     {
         unset($this->request);
         unset($this->response);
         unset($this->template);
     }
-    
+
     public function testParse()
     {
         $this->template->assign([

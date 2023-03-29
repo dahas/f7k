@@ -33,7 +33,7 @@
 
 <div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment">
     <div class="card-header d-flex" style="font-size: 0.75rem;">
-        <div>#{$comment->id()} - {$comment->getName()} wrote at {$comment->getCreated()}</div>
+        <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
         <div class="ms-auto">
             <a href="/Blog/Comment/hide?id={$comment->id()}">Hide</a>
             <a href="/Blog/Comment/delete?id={$comment->id()}">Delete</a>
@@ -45,7 +45,7 @@
 
         <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply" n:if="!$reply->getHidden()">
             <div class="card-header d-flex" style="font-size: 0.75rem;">
-                <div>#{$reply->id()} - {$reply->getName()} replied at {$reply->getCreated()}</div>
+                <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                 <div class="ms-auto">
                     <a href="/Blog/Reply/hide?id={$reply->id()}">Hide</a>
                     <a href="/Blog/Reply/delete?id={$reply->id()}">Delete</a>

@@ -14,7 +14,7 @@
         "enabled": true,
         "items": [
             {
-                "path": "/Sub",
+                "path": "/First",
                 "title": "First sub item",
                 "enabled": true
             },
@@ -25,12 +25,12 @@
                 "header": "Section Header"
             },
             {
-                "path": "/Sub",
+                "path": "/Second",
                 "title": "Second sub item",
                 "enabled": false
             },
             {
-                "path": "/Sub",
+                "path": "/Third",
                 "title": "Third sub item",
                 "enabled": true
             }

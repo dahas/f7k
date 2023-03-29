@@ -23,7 +23,7 @@ class AppController extends ControllerBase {
 
         $this->template->assign([
             "nav" => $this->navigation->items(),
-            "currentPath" => "/Blog"
+            "currentPath" => $_SERVER['REQUEST_URI']
         ]);
     }
 }
