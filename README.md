@@ -1,4 +1,7 @@
 # Yet another f7k
+
+<img src="https://img.shields.io/badge/PHP-8.1.2-orange" /> <img src="https://img.shields.io/badge/Latte-3.x-green" /> <img src="https://img.shields.io/badge/Opis ORM-1.x-yellow" /> <img src="https://img.shields.io/badge/PHPUnit-10.x-blue" />
+
 f7k is the numeronym of the word 'framework'.
 
 ## Minimum Requirements
@@ -13,12 +16,6 @@ $ cd your_project
 $ git clone https://github.com/dahas/f7k.git .
 $ composer install
 ````
-
-## Template Engine
-f7k uses the Latte engine. Learn more about it here: https://latte.nette.org/en/guide
-
-## ORM
-f7k uses the ORM (Object Relational Mapper) from Opis. Check it out here: https://opis.io/orm/1.x/quick-start.html
 
 ## Environment variables
 Rename example.env to `.env`. Put all your sensitive informations into this file and use the global Environment variables of PHP to access them. E. g.: `$_ENV['API_KEY']`.
@@ -35,6 +32,8 @@ This App Skeleton uses PHPUnit to run unit tests.
 ````
 $ composer test
 ````
+
+# How to
 
 ## Extend f7k with Controllers
 With Controllers you bring your Application to life.
@@ -208,3 +207,34 @@ class YourService extends ServiceBase {
     ...
 }
 ````
+
+# Available Services 
+There are some Services already available which you can use and/or modify to your needs.
+
+## CommentsService
+### *Dependencies*: 
+* Services: `DatabaseLayer`
+* Entities: `CommentsEntity`, `RepliesEntity`
+* Templates: `Comments.partial.html`
+### *Description*:  
+Add a commentary feature to a page. Users can add comments and reply to them.
+  
+## DatabaseLayer
+### *Description*:  
+A database abstraction layer. f7k uses the DBAL and ORM from Opis. Check it out here: https://opis.io/orm/1.x/quick-start.html
+
+## JsonAdapter
+### *Description*:  
+Respond with a standardized JSON object.
+
+## Navigation
+### *Dependencies*:
+* Templates: `Nav.partial.html`
+### *Description*:  
+Creates and renders the navigation bar according the specification in `menu.json`.
+
+## TemplateEngine
+### *Description*:  
+Parses HTML templates. The Template Engine is build upon the Latte library. Learn more about Latte here: https://latte.nette.org/en/guide
+
+
