@@ -7,6 +7,7 @@ use f7k\Sources\{Request, Response};
 class JsonAdapter {
 
     private string $message = "";
+    private array $fields = [];
     private array $data = [];
 
     public function __construct(private array|null $options = [])
@@ -16,6 +17,11 @@ class JsonAdapter {
     public function setMessage(string $message)
     {
         $this->message = $message;
+    }
+
+    public function addField(string $name, mixed $value): void
+    {
+        $this->fields[$name] = $value;
     }
 
     public function setData(array $data): void
@@ -30,11 +36,12 @@ class JsonAdapter {
 
     public function encode(Request $request, Response $response): void
     {
-        $json = json_encode([
+        $jsonData = [
             "message" => $this->message,
             "data" => $this->data,
             "count" => count($this->data)
-        ]);
+        ];
+        $json = json_encode(array_merge($this->fields, $jsonData));
 
         $response->addHeader("Content-Type", "application/json");
         $response->write($json);
