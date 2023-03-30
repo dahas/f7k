@@ -2,7 +2,6 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\TemplateEngine;
 use f7k\Sources\Request;
 use f7k\Sources\Response;
 
