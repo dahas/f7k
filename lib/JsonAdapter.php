@@ -2,8 +2,7 @@
 
 namespace PHPSkeleton\Library;
 
-use PHPSkeleton\Sources\Request;
-use PHPSkeleton\Sources\Response;
+use PHPSkeleton\Sources\{Request, Response};
 
 class JsonAdapter {
 
