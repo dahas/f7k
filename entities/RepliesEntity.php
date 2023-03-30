@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPSkeleton\Entities;
+namespace f7k\Entities;
 
 use Opis\ORM\{Entity, IEntityMapper, IMappableEntity};
 

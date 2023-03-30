@@ -1,12 +1,12 @@
 <?php
 
-namespace PHPSkeleton\Library;
+namespace f7k\Library;
 
 use Opis\ORM\EntityManager;
-use PHPSkeleton\Entities\CommentEntity;
-use PHPSkeleton\Entities\RepliesEntity;
-use PHPSkeleton\Sources\attributes\Inject;
-use PHPSkeleton\Sources\ServiceBase;
+use f7k\Entities\CommentEntity;
+use f7k\Entities\RepliesEntity;
+use f7k\Sources\attributes\Inject;
+use f7k\Sources\ServiceBase;
 
 class CommentsService extends ServiceBase {
 

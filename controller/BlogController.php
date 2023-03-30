@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Library\CommentsService;
-use PHPSkeleton\Sources\attributes\{Inject, Route};
-use PHPSkeleton\Sources\{Request, Response};
+use f7k\Library\CommentsService;
+use f7k\Sources\attributes\{Inject, Route};
+use f7k\Sources\{Request, Response};
 
 class BlogController extends AppController {
 

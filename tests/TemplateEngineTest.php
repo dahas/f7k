@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use PHPSkeleton\Library\TemplateEngine;
-use PHPSkeleton\Sources\Response;
-use PHPSkeleton\Sources\Request;
+use f7k\Library\TemplateEngine;
+use f7k\Sources\Response;
+use f7k\Sources\Request;
 
 !defined('ROOT') && define('ROOT', dirname(__DIR__, 1));
 

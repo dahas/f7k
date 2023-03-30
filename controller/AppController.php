@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Library\{JsonAdapter, Navigation, TemplateEngine};
-use PHPSkeleton\Sources\attributes\Inject;
-use PHPSkeleton\Sources\ControllerBase;
+use f7k\Library\{JsonAdapter, Navigation, TemplateEngine};
+use f7k\Sources\attributes\Inject;
+use f7k\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Sources\attributes;
+namespace f7k\Sources\attributes;
 
 use Attribute;
 

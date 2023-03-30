@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Library;
+namespace f7k\Library;
 
 use Latte\Engine;
-use PHPSkeleton\Sources\Request;
-use PHPSkeleton\Sources\Response;
+use f7k\Sources\Request;
+use f7k\Sources\Response;
 
 class TemplateEngine {
 

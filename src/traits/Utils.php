@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPSkeleton\Sources\traits;
+namespace f7k\Sources\traits;
 
 trait Utils {
 

@@ -44,11 +44,11 @@ With Controllers you bring your Application to life.
 
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Sources\ControllerBase;
-use PHPSkeleton\Sources\attributes\{Route};
-use PHPSkeleton\Sources\{Request, Response};
+use f7k\Sources\ControllerBase;
+use f7k\Sources\attributes\{Route};
+use f7k\Sources\{Request, Response};
 
 class YourController extends ControllerBase {
 
@@ -95,12 +95,12 @@ Now you probably want to return a beautiful HTML template. Therefor you need a T
 
     <?php declare(strict_types=1);
 
-    namespace PHPSkeleton\Controller;
+    namespace f7k\Controller;
 
-    use PHPSkeleton\Library\TemplateEngine;
-    use PHPSkeleton\Sources\ControllerBase;
-    use PHPSkeleton\Sources\attributes\{Inject, Route};
-    use PHPSkeleton\Sources\{Request, Response};
+    use f7k\Library\TemplateEngine;
+    use f7k\Sources\ControllerBase;
+    use f7k\Sources\attributes\{Inject, Route};
+    use f7k\Sources\{Request, Response};
 
     class YourController extends ControllerBase {
 
@@ -141,7 +141,7 @@ Below is a template of a Service class. The constructor with an array of options
 
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Library;
+namespace f7k\Library;
 
 class YourService {
 
@@ -158,11 +158,11 @@ Here is how you inject the Service in another Class:
 
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Sources\ControllerBase;
-use PHPSkeleton\Library\YourService;
-use PHPSkeleton\Library\AnotherService;
+use f7k\Sources\ControllerBase;
+use f7k\Library\YourService;
+use f7k\Library\AnotherService;
 
 class AnyController extends ControllerBase {
 
@@ -189,9 +189,9 @@ It is also possible to use Services in a Service. Therefore the Service must inh
 
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Library;
+namespace f7k\Library;
 
-use PHPSkeleton\Sources\ServiceBase;
+use f7k\Sources\ServiceBase;
 
 class YourService extends ServiceBase {
 

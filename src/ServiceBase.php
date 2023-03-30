@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Sources;
+namespace f7k\Sources;
 
-use PHPSkeleton\Sources\interfaces\ServiceInterface;
+use f7k\Sources\interfaces\ServiceInterface;
 use ReflectionClass;
 
 class ServiceBase implements ServiceInterface {

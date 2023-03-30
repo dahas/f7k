@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Sources;
+namespace f7k\Sources;
 
 class ControllerBase extends ServiceBase {
 

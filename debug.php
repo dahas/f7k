@@ -1,6 +1,6 @@
 <?php
 
-use PHPSkeleton\Sources\Application;
+use f7k\Sources\Application;
 
 !defined('ROOT') && define('ROOT', __DIR__);
 

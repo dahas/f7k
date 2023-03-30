@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPSkeleton\Library;
+namespace f7k\Library;
 
 use Opis\Database\Connection;
 use PDO;

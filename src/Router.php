@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Sources;
+namespace f7k\Sources;
 
-use PHPSkeleton\Sources\attributes\Route;
-use PHPSkeleton\Sources\traits\Utils;
+use f7k\Sources\attributes\Route;
+use f7k\Sources\traits\Utils;
 
 class Router {
 
@@ -33,7 +33,7 @@ class Router {
             $files = array_diff(scandir(ROOT . "/controller"), array('.', '..'));
 
             foreach ($files as $file) {
-                $controller = "PHPSkeleton\\Controller\\" . explode(".", $file)[0];
+                $controller = "f7k\\Controller\\" . explode(".", $file)[0];
                 $reflectionController = new \ReflectionClass($controller);
 
                 foreach ($reflectionController->getMethods() as $method) {

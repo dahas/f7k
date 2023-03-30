@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPSkeleton\Sources;
+namespace f7k\Sources;
 
 class Response {
 

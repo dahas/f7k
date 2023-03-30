@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPSkeleton\Sources\interfaces;
+namespace f7k\Sources\interfaces;
 
 interface ServiceInterface
 {

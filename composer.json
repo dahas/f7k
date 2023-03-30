@@ -14,11 +14,11 @@
     },
     "autoload": {
         "psr-4": {
-            "PHPSkeleton\\App\\": "app/",
-            "PHPSkeleton\\Controller\\": "controller/",
-            "PHPSkeleton\\Library\\": "lib/",
-            "PHPSkeleton\\Sources\\": "src/",
-            "PHPSkeleton\\Entities\\": "entities/"
+            "f7k\\App\\": "app/",
+            "f7k\\Controller\\": "controller/",
+            "f7k\\Library\\": "lib/",
+            "f7k\\Sources\\": "src/",
+            "f7k\\Entities\\": "entities/"
         }
     },
     "require-dev": {

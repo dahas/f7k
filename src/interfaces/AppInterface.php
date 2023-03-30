@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Sources\interfaces;
+namespace f7k\Sources\interfaces;
 
 interface AppInterface {
 

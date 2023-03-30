@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Library\TemplateEngine;
-use PHPSkeleton\Sources\Request;
-use PHPSkeleton\Sources\Response;
+use f7k\Library\TemplateEngine;
+use f7k\Sources\Request;
+use f7k\Sources\Response;
 
 class NotFoundController extends AppController {
     

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace PHPSkeleton\Controller;
+namespace f7k\Controller;
 
-use PHPSkeleton\Sources\attributes\Route;
-use PHPSkeleton\Sources\Request;
-use PHPSkeleton\Sources\Response;
+use f7k\Sources\attributes\Route;
+use f7k\Sources\Request;
+use f7k\Sources\Response;
 
 class IndexController extends AppController {
 
