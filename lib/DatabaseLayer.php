@@ -3,6 +3,7 @@
 namespace f7k\Library;
 
 use Opis\Database\Connection;
+use Opis\ORM\EntityManager;
 use PDO;
 
 class DatabaseLayer {
@@ -25,8 +26,13 @@ class DatabaseLayer {
         $this->con->initCommand('SET NAMES UTF8');
     }
 
-    public function getCon(): Connection
+    public function getConnection(): Connection
     {
-        return $this->con;
+        return $this->con; 
+    }
+
+    public function getORM(): EntityManager
+    {
+        return new EntityManager($this->con); 
     }
 }
