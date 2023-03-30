@@ -9,7 +9,7 @@ class DatabaseLayer {
 
     private Connection $con;
 
-    public function __construct()
+    public function __construct(private array|null $options = [])
     {
         $this->con = new Connection(
             $_ENV['DB_DSN'],

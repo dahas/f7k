@@ -2,13 +2,13 @@
 
 namespace PHPSkeleton\Controller;
 
-use PHPSkeleton\Library\Comments;
+use PHPSkeleton\Library\CommentsService;
 use PHPSkeleton\Sources\attributes\{Inject, Route};
 use PHPSkeleton\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    #[Inject(Comments::class)]
+    #[Inject(service: CommentsService::class, options: ['page' => 'Blog'])]
     protected $comments;
 
     #[Route(path: '/Blog', method: 'get')]

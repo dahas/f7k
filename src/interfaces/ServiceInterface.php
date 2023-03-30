@@ -2,7 +2,7 @@
 
 namespace PHPSkeleton\Sources\interfaces;
 
-interface ControllerInterface
+interface ServiceInterface
 {
     /**
      * Use to inject a service via an Attribute

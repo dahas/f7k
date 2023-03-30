@@ -5,17 +5,26 @@ namespace PHPSkeleton\Library;
 use Opis\ORM\EntityManager;
 use PHPSkeleton\Entities\CommentEntity;
 use PHPSkeleton\Entities\RepliesEntity;
-use PHPSkeleton\Library\DatabaseLayer as Dbal;
+use PHPSkeleton\Sources\attributes\Inject;
+use PHPSkeleton\Sources\ServiceBase;
 
-class Comments {
+class CommentsService extends ServiceBase {
+
+    #[Inject(DatabaseLayer::class)]
+    protected $dbal;
 
     private EntityManager $orm;
-    private $entity = CommentEntity::class;
+    private string $entity = CommentEntity::class;
+    private string $page = "";
 
-    public function __construct()
+    public function __construct(private array|null $options = [])
     {
-        $con = (new Dbal())->getCon();
+        $this->injectServices();
+
+        $con = $this->dbal->getCon();
         $this->orm = new EntityManager($con);
+
+        $this->page = $this->options['page'];
     }
 
     public function readAll(): array

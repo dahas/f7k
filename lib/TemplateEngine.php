@@ -14,7 +14,8 @@ class TemplateEngine {
 
     public function __construct(
         private string $templateDir = ROOT . '/templates',
-        private string $cacheDir = ROOT . '/.latte/cache'
+        private string $cacheDir = ROOT . '/.latte/cache',
+        private array|null $options = []
     ) {
         $this->latte = new Engine();
         $this->latte->setTempDirectory($this->cacheDir);

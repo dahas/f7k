@@ -9,6 +9,10 @@ class JsonAdapter {
     private string $message = "";
     private array $data = [];
 
+    public function __construct(private array|null $options = [])
+    {
+    }
+
     public function setMessage(string $message)
     {
         $this->message = $message;

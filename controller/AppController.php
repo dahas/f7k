@@ -8,13 +8,10 @@ use PHPSkeleton\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 
-    #[Inject(TemplateEngine::class)]
+    #[Inject(service: TemplateEngine::class)]
     protected $template;
 
-    #[Inject(JsonAdapter::class)]
-    protected $jsonAdapter;
-
-    #[Inject(Navigation::class)]
+    #[Inject(service: Navigation::class)]
     protected $navigation;
 
     public function __construct()
