@@ -10,12 +10,12 @@
         "enabled": true
     },
     {
-        "title": "Dropdown",
+        "title": "Examples",
         "enabled": true,
         "items": [
             {
-                "path": "/First",
-                "title": "First sub item",
+                "path": "/ExampleJson",
+                "title": "Json Response",
                 "enabled": true
             },
             {
@@ -26,24 +26,14 @@
             },
             {
                 "path": "/Second",
-                "title": "Second sub item",
+                "title": "Disabled Item",
                 "enabled": false
             },
             {
-                "path": "/Third",
-                "title": "Third sub item",
+                "path": "/Error",
+                "title": "Error 404",
                 "enabled": true
             }
         ]
-    },
-    {
-        "path": "/Error",
-        "title": "Error 404",
-        "enabled": true
-    },
-    {
-        "path": "/Disabled",
-        "title": "Disabled",
-        "enabled": false
     }
 ]
