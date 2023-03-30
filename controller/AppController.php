@@ -2,16 +2,16 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\{JsonAdapter, Navigation, TemplateEngine};
+use f7k\Library\{Navigation, TemplateEngine};
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 
-    #[Inject(service: TemplateEngine::class)]
+    #[Inject(TemplateEngine::class)]
     protected $template;
 
-    #[Inject(service: Navigation::class)]
+    #[Inject(Navigation::class)]
     protected $navigation;
 
     public function __construct()
