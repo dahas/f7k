@@ -7,7 +7,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" n:inner-foreach="$nav as $item">
-                {if !$item->items}
+                {if !isset($item->items)}
                 <li class="nav-item">
                     <a href="{$item->path ?? ''}" class="nav-link {$item->path == $currentPath ? 'active' : ''} {$item->enabled ? '' : 'disabled'}">{$item->title}</a>
                 </li>
@@ -18,9 +18,9 @@
                         {$item->title}
                     </a>
                     <ul class="dropdown-menu" n:inner-foreach="$item->items as $sub">
-                        {if $sub->header}
+                        {if isset($sub->header)}
                         <li><h6 class="dropdown-header">{$sub->header}</h6></li>
-                        {elseif $sub->title}
+                        {elseif isset($sub->title)}
                         <li><a class="dropdown-item {$sub->path == $currentPath ? 'active' : ''} {$sub->enabled ? '' : 'disabled'}" href="{$sub->path ?? ''}">{$sub->title}</a></li>
                         {else}
                         <li><hr class="dropdown-divider"></li>
