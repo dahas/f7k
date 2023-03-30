@@ -15,24 +15,26 @@ class CommentsService extends ServiceBase {
 
     private EntityManager $orm;
     private string $entity = CommentEntity::class;
-    private string $page = "";
+    private string|null $page;
 
     public function __construct(private array|null $options = [])
     {
         $this->injectServices();
 
-        $con = $this->dbal->getCon();
-        $this->orm = new EntityManager($con);
+        $this->orm = $this->dbal->getORM();
 
         $this->page = $this->options['page'];
     }
 
     public function readAll(): array
     {
-        return $this->orm->query($this->entity)
-            ->where('hidden')->is(0)
-            ->orderBy('created', 'desc')
-            ->all();
+        $query = $this->orm->query($this->entity);
+        $query->where('hidden')->is(0);
+        if ($this->page) {
+            $query->andWhere('page')->is($this->page);
+        }
+        $query->orderBy('created', 'desc');
+        return $query->all();
     }
 
     public function read(int $id): CommentEntity
@@ -47,6 +49,7 @@ class CommentsService extends ServiceBase {
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
+            ->setPage($this->page)
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
         return $comment->id();
@@ -60,6 +63,7 @@ class CommentsService extends ServiceBase {
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
+            ->setPage($this->page)
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
     }

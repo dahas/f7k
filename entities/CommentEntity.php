@@ -62,6 +62,17 @@ class CommentEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
+    public function getPage(): string
+    {
+        return $this->orm()->getColumn('page');
+    }
+
+    public function setPage(string $page): self
+    {
+        $this->orm()->setColumn('page', $page);
+        return $this;
+    }
+
     public function getCreated(): string
     {
         return $this->orm()->getColumn('created');
