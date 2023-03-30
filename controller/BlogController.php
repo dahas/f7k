@@ -8,7 +8,7 @@ use f7k\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    #[Inject(service: CommentsService::class, options: ['page' => 'Blog'])]
+    #[Inject(CommentsService::class, options: ['page' => 'Blog'])]
     protected $comments;
 
     #[Route(path: '/Blog', method: 'get')]
