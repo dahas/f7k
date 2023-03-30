@@ -6,7 +6,7 @@ use Opis\ORM\{Entity, IEntityMapper, IMappableEntity};
 
 class RepliesEntity extends Entity implements IMappableEntity {
 
-    private static string $tableName = "blog_comment_replies";
+    private static string $tableName = "replies";
     private static string $primaryKey = "id";
     private static array $typeCasting = [
         "id" => "integer",
