@@ -36,6 +36,101 @@ This App Skeleton uses PHPUnit to run unit tests.
 $ composer test
 ````
 
+## Extend f7k with Controllers
+With Controllers you bring your Application to life.
+
+````php
+// controllers/YourController.php
+
+<?php declare(strict_types=1);
+
+namespace PHPSkeleton\Controller;
+
+use PHPSkeleton\Sources\ControllerBase;
+use PHPSkeleton\Sources\attributes\{Route};
+use PHPSkeleton\Sources\{Request, Response};
+
+class YourController extends ControllerBase {
+
+    #[Route(path: '/YourController', method: 'get')]
+    public function main(Request $request, Response $response): void
+    {
+        $data = $data = $request->getData();
+        $response->write("Hello " . $data['name']);
+    }
+    
+    //...
+}
+````
+Check it out in the web browser (provide your name):  
+http://localhost:2400/YourController?name=\<YourName\>
+
+Now you probably want to return a beautiful HTML template. Therefor you need a Template Engine. The Latte Engine is already available as a Service. 
+
+### Here is how you use it:
+
+1. Create an HTML file named `Your.layout.html` with the following content in the `templates` folder:  
+
+    ````html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{$title}</title>
+    </head>
+    <body style="font-family: 'Courier New', Courier, monospace; margin: 60px auto; text-align: center">
+        <div style="background-color: rgb(196, 250, 255); padding: 20px 0;">
+            <h1>{$header}</h1>
+            <p>{$message}</p>
+        </div>
+    </body>
+    </html>
+    ````
+1. Inject the Template Engine as shown below:  
+
+    ````php
+    // controllers/YourController.php
+
+    <?php declare(strict_types=1);
+
+    namespace PHPSkeleton\Controller;
+
+    use PHPSkeleton\Library\TemplateEngine;
+    use PHPSkeleton\Sources\ControllerBase;
+    use PHPSkeleton\Sources\attributes\{Inject, Route};
+    use PHPSkeleton\Sources\{Request, Response};
+
+    class YourController extends ControllerBase {
+
+        #[Inject(TemplateEngine::class)]
+        protected $template;
+
+        #[Route(path: '/YourController', method: 'get')]
+        public function main(Request $request, Response $response): void
+        {
+            $this->injectServices();
+
+            $data = $request->getData();
+
+            $this->template->assign([
+                'title' => 'Your Controller',
+                'header' => 'f7k is cool!',
+                'message' => 'But ' . $data['name'] . ' is even cooler :p'
+            ]);
+            $this->template->parse('Your.layout.html');
+            $this->template->render($request, $response);
+        }
+        
+        //...
+    }
+    ````
+1. Check it out again:  
+    http://localhost:2400/YourController?name=\<YourName\>
+
+Learn more about Services next.
+
 ## Extend f7k with Services
 In addition to installing libraries with Composer, you can create your own Services. To do this, you simply create a Class in the `lib` directory and inject it via Attributes in the Classes where you need the Service. 
 
@@ -54,7 +149,6 @@ class YourService {
     {
 
     }
-
     ...
 }
 ````
@@ -66,6 +160,7 @@ Here is how you inject the Service in another Class:
 
 namespace PHPSkeleton\Controller;
 
+use PHPSkeleton\Sources\ControllerBase;
 use PHPSkeleton\Library\YourService;
 use PHPSkeleton\Library\AnotherService;
 
@@ -85,7 +180,6 @@ class AnyController extends ControllerBase {
         "opt2" => "Option 2"
     ])]
     protected $anotherService;
-
     ...
 }
 ````
@@ -111,7 +205,6 @@ class YourService extends ServiceBase {
     {
         $this->injectServices();
     }
-
     ...
 }
 ````
