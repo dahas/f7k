@@ -63,7 +63,7 @@ class YourController extends ControllerBase {
 }
 ````
 Check it out in the web browser (provide your name):  
-http://localhost:2400/YourController?name=\<YourName\>
+http://localhost:2400/YourController?name=<YourName\>
 
 Now you probably want to return a beautiful HTML template. Therefor you need a Template Engine. The Latte Engine is already available as a Service. 
 
@@ -127,7 +127,7 @@ Now you probably want to return a beautiful HTML template. Therefor you need a T
     }
     ````
 1. Check it out again:  
-    http://localhost:2400/YourController?name=\<YourName\>
+    http://localhost:2400/YourController?name=<YourName\>
 
 Learn more about Services next.
 
