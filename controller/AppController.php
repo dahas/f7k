@@ -16,8 +16,8 @@ class AppController extends ControllerBase {
 
     public function __construct()
     {
-        $this->injectServices();
-
+        parent::__construct();
+        
         $this->template->assign([
             "nav" => $this->navigation->items(),
             "currentPath" => $_SERVER['REQUEST_URI']

@@ -4,4 +4,8 @@ namespace f7k\Sources;
 
 class ControllerBase extends ServiceBase {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
 }

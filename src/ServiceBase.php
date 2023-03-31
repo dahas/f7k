@@ -2,18 +2,15 @@
 
 namespace f7k\Sources;
 
-use f7k\Sources\interfaces\ServiceInterface;
 use ReflectionClass;
 
-class ServiceBase implements ServiceInterface {
+class ServiceBase {
 
-    /**
-     * Use of a ReflectionClass to inject Services assigned to Attributes.
-     * 
-     * @param string $namespace 
-     */
-    public function injectServices(): void
+    public function __construct()
     {
+        /**
+         * Use of a ReflectionClass to inject Services assigned to Attributes.
+         */
         $rc = new ReflectionClass(get_class($this));
         $properties = $rc->getProperties();
         foreach ($properties as $property) {
