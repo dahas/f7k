@@ -12,8 +12,8 @@ class IndexController extends AppController {
     public function main(Request $request, Response $response): void
     {
         $this->template->assign([
-            'title' => 'PHP Skeleton',
-            'header' => 'Yet another f7k',
+            'title' => 'f7k - The framework',
+            'header' => 'f7k - Yet another framework',
             "subtitle" => "f7k is the numeronym of the word 'framework'. Use this lightweight framework to quickly build feature rich web applications with PHP. If you are unfamiliar or 
             inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product."
         ]);
