@@ -1,33 +1,40 @@
-<h2 id="add" class="mt-4">{$comments_header}</h2>
-
-<form method="post" action="{$action}">
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col">
-                    <input type="text" name="title" class="form-control text-bg-light" placeholder="Title"
-                        aria-label="Title">
+<p id="add">
+    <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{isset($reply) ? 'true' : 'false'}"
+        aria-controls="collapseExample">
+        Leave a comment
+    </a>
+</p>
+<div class="collapse {isset($reply) ? 'show' : ''}" id="collapseExample">
+    <form method="post" action="{$action}">
+        <input type="hidden" name="comment_id" value="{$comment_id}">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" name="title" class="form-control text-bg-light" placeholder="Title"
+                            aria-label="Title">
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
+                            aria-label="Name" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
+                            aria-label="E-Mail" required>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                        aria-label="Name" required>
+                <div class="row mb-3">
+                    <div class="col">
+                        <textarea name="comment" class="form-control text-bg-light" rows="4"
+                            placeholder="Your comment here ..." required></textarea>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                        aria-label="E-Mail" required>
-                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a n:if="isset($reply)" href="{$href_cancel}" type="button" class="btn btn-secondary">Cancel</a>
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <textarea name="comment" class="form-control text-bg-light" rows="4"
-                        placeholder="Your comment here ..." required></textarea>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button> 
-            <a n:if="isset($reply)" href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a> 
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 <h2 id="comments" class="mt-4" n:if="$comments">Comments</h2>
 
@@ -35,20 +42,21 @@
     <div class="card-header d-flex" style="font-size: 0.75rem;">
         <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
         <div class="ms-auto">
-            <a href="/Blog/Comment/hide?id={$comment->id()}">Hide</a>
-            <a href="/Blog/Comment/delete?id={$comment->id()}">Delete</a>
+            <a href="{$href_hide_comment}{$comment->id()}">Hide</a>
+            <a href="{$href_del_comment}{$comment->id()}">Delete</a>
         </div>
     </div>
     <div class="card-body">
         <b class="card-title">{$comment->getTitle()}</b>
         <p class="card-text">{$comment->getComment()|noescape}</p>
 
-        <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply" n:if="!$reply->getHidden()">
+        <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply"
+            n:if="!$reply->getHidden()">
             <div class="card-header d-flex" style="font-size: 0.75rem;">
                 <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                 <div class="ms-auto">
-                    <a href="/Blog/Reply/hide?id={$reply->id()}">Hide</a>
-                    <a href="/Blog/Reply/delete?id={$reply->id()}">Delete</a>
+                    <a href="{$href_hide_reply}{$reply->id()}">Hide</a>
+                    <a href="{$href_del_reply}{$reply->id()}">Delete</a>
                 </div>
             </div>
             <div class="card-body">
@@ -57,6 +65,6 @@
             </div>
         </div>
 
-        <a href="/Blog/Reply?id={$comment->id()}#add">Reply</a>
+        <a href="{$href_reply}{$comment->id()}#add">Reply</a>
     </div>
 </div>

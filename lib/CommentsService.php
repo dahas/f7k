@@ -88,7 +88,7 @@ class CommentsService extends ServiceBase {
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
-            ->setCommentID((int) $data['id'])
+            ->setCommentID((int) $data['comment_id'])
             ->setReply(nl2br($data['comment']));
         $this->orm->save($reply);
         return $reply->id();

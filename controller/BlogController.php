@@ -11,16 +11,28 @@ class BlogController extends AppController {
     #[Inject(CommentsService::class, options: ['page' => 'Blog'])]
     protected $comments;
 
-    #[Route(path: '/Blog', method: 'get')]
-    public function main(Request $request, Response $response): void
+    public function __construct()
     {
+        parent::__construct();
+        
         $this->template->assign([
             'title' => 'Blog',
             'comments_header' => 'Add a Comment',
             "action" => "/Blog/Comment/create",
+            "href_cancel" => "/Blog#comments",
+            "href_hide_comment" => "/Blog/Comment/hide?id=",
+            "href_del_comment" => "/Blog/Comment/delete?id=",
+            "href_hide_reply" => "/Blog/Reply/hide?id=",
+            "href_del_reply" => "/Blog/Reply/delete?id=",
+            "href_reply" => "/Blog/Reply?id=",
             "comments" => $this->comments->readAll()
         ]);
         $this->template->parse('Blog.partial.html');
+    }
+
+    #[Route(path: '/Blog', method: 'get')]
+    public function main(Request $request, Response $response): void
+    {
         $this->template->render($request, $response);
     }
 
@@ -56,10 +68,10 @@ class BlogController extends AppController {
     {
         $data = $request->getData();
         $this->template->assign([
-            'title' => 'Blog',
             'reply' => true,
+            "action" => "/Blog/Reply/create",
             'comments_header' => 'Reply to #' . $data['id'],
-            "action" => "/Blog/Reply/create?id=" . $data['id'],
+            'comment_id' => $data['id'],
             "comments" => [$this->comments->read((int) $data['id'])]
         ]);
         $this->template->parse('Blog.partial.html');
