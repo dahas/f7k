@@ -31,7 +31,7 @@ class DatabaseLayer {
         return $this->con; 
     }
 
-    public function getORM(): EntityManager
+    public function getEntityManager(): EntityManager
     {
         return new EntityManager($this->con); 
     }
