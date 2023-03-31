@@ -2,7 +2,6 @@
 
 namespace f7k\Library;
 
-use Opis\ORM\EntityManager;
 use f7k\Entities\CommentEntity;
 use f7k\Entities\RepliesEntity;
 use f7k\Sources\attributes\Inject;
@@ -13,22 +12,22 @@ class CommentsService extends ServiceBase {
     #[Inject(DatabaseLayer::class)]
     protected $dbal;
 
-    private EntityManager $orm;
-    private string $entity = CommentEntity::class;
+    private $orm;
+
     private string|null $page;
 
     public function __construct(private array|null $options = [])
     {
-        $this->injectServices();
+        parent::__construct();
 
-        $this->orm = $this->dbal->getORM();
+        $this->orm = $this->dbal->getEntityManager();
 
         $this->page = $this->options['page'];
     }
 
     public function readAll(): array
     {
-        $query = $this->orm->query($this->entity);
+        $query = $this->orm->query(CommentEntity::class);
         $query->where('hidden')->is(0);
         if ($this->page) {
             $query->andWhere('page')->is($this->page);
@@ -39,13 +38,13 @@ class CommentsService extends ServiceBase {
 
     public function read(int $id): CommentEntity
     {
-        return $this->orm->query($this->entity)
+        return $this->orm->query(CommentEntity::class)
             ->find($id);
     }
 
     public function create(array $data): int
     {
-        $comment = $this->orm->create($this->entity)
+        $comment = $this->orm->create(CommentEntity::class)
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
@@ -57,7 +56,7 @@ class CommentsService extends ServiceBase {
 
     public function update(array $data): void
     {
-        $comment = $this->orm->query($this->entity)
+        $comment = $this->orm->query(CommentEntity::class)
             ->find($data['id'])
             ->setHidden(1)
             ->setName($data['name'])
@@ -70,7 +69,7 @@ class CommentsService extends ServiceBase {
 
     public function hide(int $id): void
     {
-        $comment = $this->orm->query($this->entity)
+        $comment = $this->orm->query(CommentEntity::class)
             ->find($id)
             ->setHidden(1);
         $this->orm->save($comment);
@@ -78,12 +77,12 @@ class CommentsService extends ServiceBase {
 
     public function delete(int $id): void
     {
-        $this->orm->query($this->entity)
+        $this->orm->query(CommentEntity::class)
             ->where('id')->is($id)
             ->delete();
     }
 
-    public function reply(array $data): int
+    public function createReply(array $data): int
     {
         $reply = $this->orm->create(RepliesEntity::class)
             ->setName($data['name'])
