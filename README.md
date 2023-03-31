@@ -46,7 +46,7 @@ Create a file `YourController.php` in the `controllers` directory:
 namespace f7k\Controller;
 
 use f7k\Sources\ControllerBase;
-use f7k\Sources\attributes\{Route};
+use f7k\Sources\attributes\Route;
 use f7k\Sources\{Request, Response};
 
 class YourController extends ControllerBase {
@@ -153,7 +153,7 @@ class YourService {
     ...
 }
 ````
-Here is how you inject the Service in another Class:
+Here is how you inject Services in another Class. Note how the constructor triggers the parent constructor:
 ````php
 // controllers/AnyController.php
 
@@ -181,10 +181,16 @@ class AnyController extends ControllerBase {
         "opt2" => "Option 2"
     ])]
     protected $anotherService;
-    ...
+    
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    // ...
 }
 ````
-It is also possible to use Services in a Service. Therefore the Service must inherit from the ServiceBase and the constructor must trigger the injection. Like so:
+It is also possible to use Services in a Service. Therefore the Service must inherit from the ServiceBase. Like so:
 ````php
 // lib/YourService.php
 
@@ -204,9 +210,10 @@ class YourService extends ServiceBase {
 
     public function __construct(private array|null $options = [])
     {
-        $this->injectServices();
+        parent::__construct();
     }
-    ...
+    
+    // ...
 }
 ````
 
