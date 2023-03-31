@@ -70,7 +70,7 @@ class BlogController extends AppController {
     public function createReply(Request $request, Response $response): void
     {
         $data = $request->getData();
-        $rID = $this->comments->reply($data);
+        $rID = $this->comments->createReply($data);
         header('location: /Blog#R' . $rID);
         exit();
     }
