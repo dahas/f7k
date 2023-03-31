@@ -3,11 +3,8 @@
 namespace f7k\Sources;
 
 use f7k\Sources\attributes\Route;
-use f7k\Sources\traits\Utils;
 
 class Router {
-
-    use Utils;
 
     private Request $request;
     private Response $response;
@@ -83,17 +80,11 @@ class Router {
 
     public function run(): void
     {
-        $uri = parse_url($_SERVER['REQUEST_URI']);
-        $path = $uri['path'];
-        $query = $uri['query'] ?? "";
-        $qArr = [];
-        if ($query) {
-            parse_str($query, $qArr);
-        }
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
+        $route = $this->request->getRoute();
+        $method = $this->request->getMethod();
 
-        if (isset($this->handlers[$method . $path])) {
-            $handler = $this->handlers[$method . $path];
+        if (isset($this->handlers[$method . $route])) {
+            $handler = $this->handlers[$method . $route];
 
             if (is_array($handler["callback"]) && count($handler["callback"]) == 2) {
                 $callback = [new $handler["callback"][0], $handler["callback"][1]];
@@ -102,15 +93,6 @@ class Router {
             } else {
                 $callback = $handler["callback"];
             }
-
-            $dirtyVars = array_merge($qArr, $_GET, $_POST);
-            $cleanVars = $this->sanitizeRequest($dirtyVars);
-
-            $this->request->setData($cleanVars);
-
-            unset($_GET);
-            unset($_POST);
-            unset($_REQUEST);
 
             if ($callback) {
                 $res = call_user_func_array($callback, [$this->request, $this->response]);

@@ -2,14 +2,32 @@
 
 namespace f7k\Sources;
 
+use f7k\Sources\traits\Utils;
+
 final class Request {
 
+    use Utils;
+
     private string $method;
+    private string $route;
     private array $data = [];
+
+    public function __construct()
+    {
+        $uri = $_SERVER['REQUEST_URI'] ?? "";
+        $method = $_SERVER['REQUEST_METHOD'] ?? "get";
+        $this->method = strtolower($method);
+        $this->parseUri($uri);
+    }
 
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    public function getRoute(): string
+    {
+        return $this->route;
     }
 
     public function getData(): array
@@ -17,13 +35,24 @@ final class Request {
         return $this->data;
     }
 
-    public function setMethod(string $method): void
+    private function parseUri(string $uri = ""): void
     {
-        $this->method = $method;
-    }
+        $arrUri = parse_url($uri);
+        $this->route = $arrUri['path'];
+        $query = $arrUri['query'] ?? "";
 
-    public function setData(array $data): void
-    {
-        $this->data = $data;
+        $qArr = [];
+        if ($query) {
+            parse_str($query, $qArr);
+        }
+
+        $dirtyVars = array_merge($qArr, $_GET, $_POST);
+        $cleanVars = $this->sanitizeRequest($dirtyVars);
+
+        $this->data = $cleanVars;
+
+        unset($_GET);
+        unset($_POST);
+        unset($_REQUEST);
     }
 }
