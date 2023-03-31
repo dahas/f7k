@@ -36,7 +36,7 @@ $ composer test
 # How to
 
 ## Extend f7k with Controllers
-With Controllers you bring your Application to life.
+Create a file `YourController.php` in the `controllers` directory:
 
 ````php
 // controllers/YourController.php
@@ -64,69 +64,71 @@ class YourController extends ControllerBase {
 Check it out in the web browser (provide your name):  
 http://localhost:2400/YourController?name=<YourName\>
 
+### Render HTML
+
 Now you probably want to return a beautiful HTML template. Therefor you need a Template Engine. The Latte Engine is already available as a Service. 
 
-### Here is how you use it:
+Here is how you use it:
 
-1. Create an HTML file named `Your.layout.html` with the following content in the `templates` folder:  
+Create an HTML file named `Your.layout.html` with the following content in the `templates` folder:  
 
-    ````html
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{$title}</title>
-    </head>
-    <body style="font-family: 'Courier New', Courier, monospace; margin: 60px auto; text-align: center">
-        <div style="background-color: rgb(196, 250, 255); padding: 20px 0;">
-            <h1>{$header}</h1>
-            <p>{$message}</p>
-        </div>
-    </body>
-    </html>
-    ````
-1. Inject the Template Engine as shown below:  
+````html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$title}</title>
+</head>
+<body style="font-family: 'Courier New', Courier, monospace; margin: 60px auto; text-align: center">
+    <div style="background-color: rgb(196, 250, 255); padding: 20px 0;">
+        <h1>{$header}</h1>
+        <p>{$message}</p>
+    </div>
+</body>
+</html>
+````
+Inject the Template Engine as shown below:  
 
-    ````php
-    // controllers/YourController.php
+````php
+// controllers/YourController.php
 
-    <?php declare(strict_types=1);
+<?php declare(strict_types=1);
 
-    namespace f7k\Controller;
+namespace f7k\Controller;
 
-    use f7k\Library\TemplateEngine;
-    use f7k\Sources\ControllerBase;
-    use f7k\Sources\attributes\{Inject, Route};
-    use f7k\Sources\{Request, Response};
+use f7k\Library\TemplateEngine;
+use f7k\Sources\ControllerBase;
+use f7k\Sources\attributes\{Inject, Route};
+use f7k\Sources\{Request, Response};
 
-    class YourController extends ControllerBase {
+class YourController extends ControllerBase {
 
-        #[Inject(TemplateEngine::class)]
-        protected $template;
+    #[Inject(TemplateEngine::class)]
+    protected $template;
 
-        #[Route(path: '/YourController', method: 'get')]
-        public function main(Request $request, Response $response): void
-        {
-            $this->injectServices();
+    #[Route(path: '/YourController', method: 'get')]
+    public function main(Request $request, Response $response): void
+    {
+        $this->injectServices();
 
-            $data = $request->getData();
+        $data = $request->getData();
 
-            $this->template->assign([
-                'title' => 'Your Controller',
-                'header' => 'f7k is cool!',
-                'message' => 'But ' . $data['name'] . ' is even cooler :p'
-            ]);
-            $this->template->parse('Your.layout.html');
-            $this->template->render($request, $response);
-        }
-        
-        //...
+        $this->template->assign([
+            'title' => 'Your Controller',
+            'header' => 'f7k is cool!',
+            'message' => 'But ' . $data['name'] . ' is even cooler :p'
+        ]);
+        $this->template->parse('Your.layout.html');
+        $this->template->render($request, $response);
     }
-    ````
-1. Check it out again:  
-    http://localhost:2400/YourController?name=<YourName\>
+    
+    //...
+}
+````
+Check it out again:  
+http://localhost:2400/YourController?name=<YourName\>
 
 Learn more about Services next.
 
@@ -222,10 +224,6 @@ Add a commentary feature to a page. Users can add comments and reply to them.
 ## DatabaseLayer
 ### *Description*:  
 A database abstraction layer. f7k uses the DBAL and ORM from Opis. Check it out here: https://opis.io/orm/1.x/quick-start.html
-
-## JsonAdapter
-### *Description*:  
-Respond with a standardized JSON object.
 
 ## Navigation
 ### *Dependencies*:
