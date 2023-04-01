@@ -14,23 +14,19 @@ class CommentsService extends ServiceBase {
 
     private $orm;
 
-    private string|null $page;
-
     public function __construct(private array|null $options = [])
     {
         parent::__construct();
 
         $this->orm = $this->dbal->getEntityManager();
-
-        $this->page = $this->options['page'];
     }
 
-    public function readAll(): array
+    public function readAll(string $controller = ""): array
     {
         $query = $this->orm->query(CommentEntity::class);
         $query->where('hidden')->is(0);
-        if ($this->page) {
-            $query->andWhere('page')->is($this->page);
+        if ($controller) {
+            $query->andWhere('controller')->is($controller);
         }
         $query->orderBy('created', 'desc');
         return $query->all();
@@ -48,7 +44,7 @@ class CommentsService extends ServiceBase {
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
-            ->setPage($this->page)
+            ->setController($data['controller'])
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
         return $comment->id();
@@ -62,7 +58,7 @@ class CommentsService extends ServiceBase {
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setTitle($data['title'])
-            ->setPage($this->page)
+            ->setController($data['controller'])
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
     }

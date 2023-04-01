@@ -223,6 +223,7 @@ There are some Services already available which you can use and/or modify to you
 ## CommentsService
 ### *Dependencies*: 
 * Services: `DatabaseLayer`
+* Controllers: `CommentsController`
 * Entities: `CommentsEntity`, `RepliesEntity`
 * Templates: `Comments.partial.html`
 ### *Description*:  
