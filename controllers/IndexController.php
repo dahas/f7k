@@ -21,13 +21,13 @@ class IndexController extends AppController {
             "subtitle" => "f7k is the numeronym of the word 'framework'. Use this lightweight framework to quickly build feature rich web applications with PHP. If you are unfamiliar or 
             inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product.",
             'comments_header' => 'Add a Comment',
-            "action" => "/Index/Comment/create",
+            "action" => "/Index/createComment",
             "href_cancel" => "/#comments",
-            "href_hide_comment" => "/Index/Comment/hide?id=",
-            "href_del_comment" => "/Index/Comment/delete?id=",
-            "href_hide_reply" => "/Index/Reply/hide?id=",
-            "href_del_reply" => "/Index/Reply/delete?id=",
-            "href_reply" => "/Index/Reply?id=",
+            "href_hide_comment" => "/Index/hideComment?id=",
+            "href_del_comment" => "/Index/deleteComment?id=",
+            "href_hide_reply" => "/Index/hideReply?id=",
+            "href_del_reply" => "/Index/deleteReply?id=",
+            "href_reply" => "/Index/reply?id=",
             "comments" => $this->comments->readAll()
         ]);
         $this->template->parse('Index.partial.html');
@@ -39,8 +39,8 @@ class IndexController extends AppController {
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Index/Comment/create', method: 'post')]
-    public function create(Request $request, Response $response): void
+    #[Route(path: '/Index/createComment', method: 'post')]
+    public function createComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->create($data);
@@ -48,8 +48,8 @@ class IndexController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Index/Comment/hide', method: 'get')]
-    public function hide(Request $request, Response $response): void
+    #[Route(path: '/Index/hideComment', method: 'get')]
+    public function hideComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->hide((int) $data['id']);
@@ -57,8 +57,8 @@ class IndexController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Index/Comment/delete', method: 'get')]
-    public function delete(Request $request, Response $response): void
+    #[Route(path: '/Index/deleteComment', method: 'get')]
+    public function deleteComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->delete((int) $data['id']);
@@ -66,13 +66,13 @@ class IndexController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Index/Reply', method: 'get')]
+    #[Route(path: '/Index/reply', method: 'get')]
     public function reply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->template->assign([
             'reply' => true,
-            "action" => "/Index/Reply/create",
+            "action" => "/Index/createReply",
             'comments_header' => 'Reply to #' . $data['id'],
             'comment_id' => $data['id'],
             "comments" => [$this->comments->read((int) $data['id'])]
@@ -81,7 +81,7 @@ class IndexController extends AppController {
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Index/Reply/create', method: 'post')]
+    #[Route(path: '/Index/createReply', method: 'post')]
     public function createReply(Request $request, Response $response): void
     {
         $data = $request->getData();
@@ -90,7 +90,7 @@ class IndexController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Index/Reply/hide', method: 'get')]
+    #[Route(path: '/Index/hideReply', method: 'get')]
     public function hideReply(Request $request, Response $response): void
     {
         $data = $request->getData();
@@ -99,7 +99,7 @@ class IndexController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Index/Reply/delete', method: 'get')]
+    #[Route(path: '/Index/deleteReply', method: 'get')]
     public function deleteReply(Request $request, Response $response): void
     {
         $data = $request->getData();
