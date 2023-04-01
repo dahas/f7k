@@ -10,6 +10,8 @@ final class Request {
 
     private string $method;
     private string $route;
+    private string $controller;
+    private string $action;
     private array $data = [];
 
     public function __construct()
@@ -30,6 +32,16 @@ final class Request {
         return $this->route;
     }
 
+    public function getController(): string
+    {
+        return $this->controller;
+    }
+
+    public function getAction(): string
+    {
+        return $this->action;
+    }
+
     public function getData(): array
     {
         return $this->data;
@@ -38,8 +50,19 @@ final class Request {
     private function parseUri(string $uri = ""): void
     {
         $arrUri = parse_url($uri);
-        $this->route = $arrUri['path'];
+        $path = $arrUri['path'];
         $query = $arrUri['query'] ?? "";
+
+        $this->route = $path;
+        
+        $segments = explode("/", substr($path, 1));
+
+        if (isset($segments[0])) {
+            $this->controller = $segments[0];
+        }
+        if (isset($segments[1])) {
+            $this->action = $segments[1];
+        }
 
         $qArr = [];
         if ($query) {
