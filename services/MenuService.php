@@ -1,6 +1,6 @@
 <?php
 
-namespace f7k\Library;
+namespace f7k\Service;
 
 class MenuService {
 

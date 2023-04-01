@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace f7k\Library;
+namespace f7k\Service;
 
 use Latte\Engine;
 use f7k\Sources\Request;

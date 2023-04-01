@@ -2,7 +2,7 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\{MenuService, TemplateService};
+use f7k\Service\{MenuService, TemplateService};
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ControllerBase;
 

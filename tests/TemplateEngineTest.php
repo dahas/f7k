@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use f7k\Library\TemplateService;
+use f7k\Service\TemplateService;
 use f7k\Sources\Response;
 use f7k\Sources\Request;
 

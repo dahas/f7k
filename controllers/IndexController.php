@@ -2,13 +2,13 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\CommentsService;
+use f7k\Service\CommentsService;
 use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{Request, Response};
+use f7k\Sources\{Request,Response};
 
-class BlogController extends AppController {
+class IndexController extends AppController {
 
-    #[Inject(CommentsService::class, options: ['page' => 'Blog'])]
+    #[Inject(CommentsService::class, options: ['page' => 'Index'])]
     protected $comments;
 
     public function __construct()
@@ -16,92 +16,95 @@ class BlogController extends AppController {
         parent::__construct();
         
         $this->template->assign([
-            'title' => 'Blog',
+            'title' => 'f7k - The framework',
+            'header' => 'f7k - Yet another framework',
+            "subtitle" => "f7k is the numeronym of the word 'framework'. Use this lightweight framework to quickly build feature rich web applications with PHP. If you are unfamiliar or 
+            inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product.",
             'comments_header' => 'Add a Comment',
-            "action" => "/Blog/Comment/create",
-            "href_cancel" => "/Blog#comments",
-            "href_hide_comment" => "/Blog/Comment/hide?id=",
-            "href_del_comment" => "/Blog/Comment/delete?id=",
-            "href_hide_reply" => "/Blog/Reply/hide?id=",
-            "href_del_reply" => "/Blog/Reply/delete?id=",
-            "href_reply" => "/Blog/Reply?id=",
+            "action" => "/Index/Comment/create",
+            "href_cancel" => "/#comments",
+            "href_hide_comment" => "/Index/Comment/hide?id=",
+            "href_del_comment" => "/Index/Comment/delete?id=",
+            "href_hide_reply" => "/Index/Reply/hide?id=",
+            "href_del_reply" => "/Index/Reply/delete?id=",
+            "href_reply" => "/Index/Reply?id=",
             "comments" => $this->comments->readAll()
         ]);
-        $this->template->parse('Blog.partial.html');
+        $this->template->parse('Index.partial.html');
     }
 
-    #[Route(path: '/Blog', method: 'get')]
+    #[Route(path: '/', method: 'get')]
     public function main(Request $request, Response $response): void
     {
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Blog/Comment/create', method: 'post')]
+    #[Route(path: '/Index/Comment/create', method: 'post')]
     public function create(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->create($data);
-        header('location: /Blog#comments');
+        header('location: /#comments');
         exit();
     }
 
-    #[Route(path: '/Blog/Comment/hide', method: 'get')]
+    #[Route(path: '/Index/Comment/hide', method: 'get')]
     public function hide(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->hide((int) $data['id']);
-        header('location: /Blog#comments');
+        header('location: /#comments');
         exit();
     }
 
-    #[Route(path: '/Blog/Comment/delete', method: 'get')]
+    #[Route(path: '/Index/Comment/delete', method: 'get')]
     public function delete(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->delete((int) $data['id']);
-        header('location: /Blog#comments');
+        header('location: /#comments');
         exit();
     }
 
-    #[Route(path: '/Blog/Reply', method: 'get')]
+    #[Route(path: '/Index/Reply', method: 'get')]
     public function reply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->template->assign([
             'reply' => true,
-            "action" => "/Blog/Reply/create",
+            "action" => "/Index/Reply/create",
             'comments_header' => 'Reply to #' . $data['id'],
             'comment_id' => $data['id'],
             "comments" => [$this->comments->read((int) $data['id'])]
         ]);
-        $this->template->parse('Blog.partial.html');
+        $this->template->parse('Index.partial.html');
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Blog/Reply/create', method: 'post')]
+    #[Route(path: '/Index/Reply/create', method: 'post')]
     public function createReply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $rID = $this->comments->createReply($data);
-        header('location: /Blog#R' . $rID);
+        header('location: /#R' . $rID);
         exit();
     }
 
-    #[Route(path: '/Blog/Reply/hide', method: 'get')]
+    #[Route(path: '/Index/Reply/hide', method: 'get')]
     public function hideReply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->hideReply((int) $data['id']);
-        header('location: /Blog#comments');
+        header('location: /#comments');
         exit();
     }
 
-    #[Route(path: '/Blog/Reply/delete', method: 'get')]
+    #[Route(path: '/Index/Reply/delete', method: 'get')]
     public function deleteReply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->deleteReply((int) $data['id']);
-        header('location: /Blog#comments');
+        header('location: /#comments');
         exit();
     }
 }

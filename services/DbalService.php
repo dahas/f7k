@@ -1,6 +1,6 @@
 <?php
 
-namespace f7k\Library;
+namespace f7k\Service;
 
 use Opis\Database\Connection;
 use Opis\ORM\EntityManager;

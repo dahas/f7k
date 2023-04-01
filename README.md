@@ -98,7 +98,7 @@ Inject the Template Engine as shown below:
 
 namespace f7k\Controller;
 
-use f7k\Library\TemplateEngine;
+use f7k\Service\TemplateEngine;
 use f7k\Sources\ControllerBase;
 use f7k\Sources\attributes\{Inject, Route};
 use f7k\Sources\{Request, Response};
@@ -142,7 +142,7 @@ Below is a template of a Service class. The constructor with an array of options
 
 <?php declare(strict_types=1);
 
-namespace f7k\Library;
+namespace f7k\Service;
 
 class YourService {
 
@@ -162,8 +162,8 @@ Here is how you inject Services in another Class. Note how the constructor trigg
 namespace f7k\Controller;
 
 use f7k\Sources\ControllerBase;
-use f7k\Library\YourService;
-use f7k\Library\AnotherService;
+use f7k\Service\YourService;
+use f7k\Service\AnotherService;
 
 class AnyController extends ControllerBase {
 
@@ -196,7 +196,7 @@ It is also possible to use Services in a Service. Therefore the Service must inh
 
 <?php declare(strict_types=1);
 
-namespace f7k\Library;
+namespace f7k\Service;
 
 use f7k\Sources\ServiceBase;
 

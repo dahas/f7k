@@ -15,8 +15,8 @@
     "autoload": {
         "psr-4": {
             "f7k\\App\\": "app/",
-            "f7k\\Controller\\": "controller/",
-            "f7k\\Library\\": "lib/",
+            "f7k\\Controller\\": "controllers/",
+            "f7k\\Service\\": "services/",
             "f7k\\Sources\\": "src/",
             "f7k\\Entities\\": "entities/"
         }

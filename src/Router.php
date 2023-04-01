@@ -27,7 +27,7 @@ class Router {
         } else {
             $handle = fopen($routesCacheFile, "w");
 
-            $files = array_diff(scandir(ROOT . "/controller"), array('.', '..'));
+            $files = array_diff(scandir(ROOT . "/controllers"), array('.', '..'));
 
             foreach ($files as $file) {
                 $controller = "f7k\\Controller\\" . explode(".", $file)[0];
