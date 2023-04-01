@@ -5,6 +5,7 @@
     </a>
 </p>
 <div class="collapse {isset($reply) ? 'show' : ''}" id="collapseExample">
+    <h2 id="comments" class="mt-4" n:if="isset($reply)">{$comments_header}</h2>
     <form method="post" action="{$action}">
         <input type="hidden" name="comment_id" value="{$comment_id}">
         <div class="card mb-3">
