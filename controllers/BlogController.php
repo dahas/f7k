@@ -8,7 +8,7 @@ use f7k\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    #[Inject(CommentsService::class)]
+    #[Inject(CommentsService::class, options: ['page' => 'Blog'])]
     protected $comments;
 
     public function __construct()
