@@ -2,7 +2,7 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\{Navigation, TemplateEngine};
+use f7k\Library\{MenuService, TemplateEngine};
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ControllerBase;
 
@@ -11,15 +11,15 @@ class AppController extends ControllerBase {
     #[Inject(TemplateEngine::class)]
     protected $template;
 
-    #[Inject(Navigation::class)]
-    protected $navigation;
+    #[Inject(MenuService::class)]
+    protected $menu;
 
     public function __construct()
     {
         parent::__construct();
         
         $this->template->assign([
-            "nav" => $this->navigation->items(),
+            "nav" => $this->menu->getItems(),
             "currentPath" => $_SERVER['REQUEST_URI']
         ]);
     }

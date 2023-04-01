@@ -2,14 +2,14 @@
 
 namespace f7k\Library;
 
-class Navigation {
+class MenuService {
 
     public function __construct(private array|null $options = [])
     {
 
     }
 
-    public function items(): object
+    public function getItems(): object
     {
         $json = file_get_contents(ROOT . '/menu.json');
         return (object) json_decode($json);

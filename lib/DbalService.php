@@ -6,7 +6,7 @@ use Opis\Database\Connection;
 use Opis\ORM\EntityManager;
 use PDO;
 
-class DatabaseLayer {
+class DbalService {
 
     private Connection $con;
 

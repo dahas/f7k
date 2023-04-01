@@ -9,7 +9,7 @@ use f7k\Sources\ServiceBase;
 
 class CommentsService extends ServiceBase {
 
-    #[Inject(DatabaseLayer::class)]
+    #[Inject(DbalService::class)]
     protected $dbal;
 
     private $orm;
