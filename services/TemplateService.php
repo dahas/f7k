@@ -39,6 +39,11 @@ class TemplateService {
         $this->html = $this->latte->renderToString($this->templateDir . '/' . $file, $this->templateVars, $block);
     }
     
+    public function getHtml(): string
+    {
+        return $this->html;
+    }
+    
     public function render(Request $request, Response $response): void
     {
         $response->addHeader("Content-Type", "text/html");
