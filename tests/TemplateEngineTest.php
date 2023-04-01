@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use f7k\Library\TemplateEngine;
+use f7k\Library\TemplateService;
 use f7k\Sources\Response;
 use f7k\Sources\Request;
 
@@ -14,7 +14,7 @@ class TemplateEngineTest extends TestCase {
     
     private Request $request;
     private Response $response;
-    private TemplateEngine $template;
+    private TemplateService $template;
 
     protected function setUp(): void
     {
@@ -22,7 +22,7 @@ class TemplateEngineTest extends TestCase {
 
         $this->request = new Request();
         $this->response = new Response();
-        $this->template = new TemplateEngine(__DIR__ . '/files', __DIR__ . '/cache');
+        $this->template = new TemplateService(__DIR__ . '/files', __DIR__ . '/cache');
     }
 
     protected function tearDown(): void

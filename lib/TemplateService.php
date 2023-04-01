@@ -6,7 +6,7 @@ use Latte\Engine;
 use f7k\Sources\Request;
 use f7k\Sources\Response;
 
-class TemplateEngine {
+class TemplateService {
 
     private Engine $latte;
     private array $templateVars = [];

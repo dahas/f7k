@@ -2,13 +2,13 @@
 
 namespace f7k\Controller;
 
-use f7k\Library\{MenuService, TemplateEngine};
+use f7k\Library\{MenuService, TemplateService};
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ControllerBase;
 
 class AppController extends ControllerBase {
 
-    #[Inject(TemplateEngine::class)]
+    #[Inject(TemplateService::class)]
     protected $template;
 
     #[Inject(MenuService::class)]
