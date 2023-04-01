@@ -1,7 +1,7 @@
 <p id="add">
     <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{isset($reply) ? 'true' : 'false'}"
         aria-controls="collapseExample">
-        Leave a comment
+        <i class="bi bi-chat-left-text"></i> Leave a comment
     </a>
 </p>
 <div class="collapse {isset($reply) ? 'show' : ''}" id="collapseExample">
@@ -66,6 +66,6 @@
             </div>
         </div>
 
-        <a href="{$href_reply}{$comment->id()}#add">Reply</a>
+        <a href="{$href_reply}{$comment->id()}#add"><i class="bi bi-chat-left-text"></i> Reply</a>
     </div>
 </div>
