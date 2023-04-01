@@ -8,7 +8,7 @@ use f7k\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    #[Inject(CommentsService::class, options: ['page' => 'Blog'])]
+    #[Inject(CommentsService::class)]
     protected $comments;
 
     public function __construct()
@@ -18,13 +18,13 @@ class BlogController extends AppController {
         $this->template->assign([
             'title' => 'Blog',
             'comments_header' => 'Add a Comment',
-            "action" => "/Blog/Comment/create",
+            "action" => "/Blog/createComment",
             "href_cancel" => "/Blog#comments",
-            "href_hide_comment" => "/Blog/Comment/hide?id=",
-            "href_del_comment" => "/Blog/Comment/delete?id=",
-            "href_hide_reply" => "/Blog/Reply/hide?id=",
-            "href_del_reply" => "/Blog/Reply/delete?id=",
-            "href_reply" => "/Blog/Reply?id=",
+            "href_hide_comment" => "/Blog/hideComment?id=",
+            "href_del_comment" => "/Blog/deleteComment?id=",
+            "href_hide_reply" => "/Blog/hideReply?id=",
+            "href_del_reply" => "/Blog/deleteReply?id=",
+            "href_reply" => "/Blog/reply?id=",
             "comments" => $this->comments->readAll()
         ]);
         $this->template->parse('Blog.partial.html');
@@ -36,8 +36,8 @@ class BlogController extends AppController {
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Blog/Comment/create', method: 'post')]
-    public function create(Request $request, Response $response): void
+    #[Route(path: '/Blog/createComment', method: 'post')]
+    public function createComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->create($data);
@@ -45,8 +45,8 @@ class BlogController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Blog/Comment/hide', method: 'get')]
-    public function hide(Request $request, Response $response): void
+    #[Route(path: '/Blog/hideComment', method: 'get')]
+    public function hideComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->hide((int) $data['id']);
@@ -54,8 +54,8 @@ class BlogController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Blog/Comment/delete', method: 'get')]
-    public function delete(Request $request, Response $response): void
+    #[Route(path: '/Blog/deleteComment', method: 'get')]
+    public function deleteComment(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->comments->delete((int) $data['id']);
@@ -63,13 +63,13 @@ class BlogController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Blog/Reply', method: 'get')]
+    #[Route(path: '/Blog/reply', method: 'get')]
     public function reply(Request $request, Response $response): void
     {
         $data = $request->getData();
         $this->template->assign([
             'reply' => true,
-            "action" => "/Blog/Reply/create",
+            "action" => "/Blog/createReply",
             'comments_header' => 'Reply to #' . $data['id'],
             'comment_id' => $data['id'],
             "comments" => [$this->comments->read((int) $data['id'])]
@@ -78,7 +78,7 @@ class BlogController extends AppController {
         $this->template->render($request, $response);
     }
 
-    #[Route(path: '/Blog/Reply/create', method: 'post')]
+    #[Route(path: '/Blog/createReply', method: 'post')]
     public function createReply(Request $request, Response $response): void
     {
         $data = $request->getData();
@@ -87,7 +87,7 @@ class BlogController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Blog/Reply/hide', method: 'get')]
+    #[Route(path: '/Blog/hideReply', method: 'get')]
     public function hideReply(Request $request, Response $response): void
     {
         $data = $request->getData();
@@ -96,7 +96,7 @@ class BlogController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Blog/Reply/delete', method: 'get')]
+    #[Route(path: '/Blog/deleteReply', method: 'get')]
     public function deleteReply(Request $request, Response $response): void
     {
         $data = $request->getData();
