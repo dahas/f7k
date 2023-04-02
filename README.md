@@ -45,17 +45,24 @@ Create a file `YourController.php` in the `controllers` directory:
 
 namespace f7k\Controller;
 
-use f7k\Sources\ControllerBase;
 use f7k\Sources\attributes\Route;
-use f7k\Sources\{Request, Response};
+use f7k\Sources\{ControllerBase, Request, Response};
 
 class YourController extends ControllerBase {
 
-    #[Route(path: '/YourController', method: 'get')]
-    public function main(Request $request, Response $response): void
+    private array $data;
+
+    public function __construct(
+        protected Request $request, 
+        protected Response $response)
     {
-        $data = $data = $request->getData();
-        $response->write("Hello " . $data['name']);
+        $this->data = $this->request->getData();
+    }
+
+    #[Route(path: '/YourController', method: 'get')]
+    public function main(): void
+    {
+        $response->write("Hello " . $this->data['name']);
     }
     
     //...
@@ -99,29 +106,35 @@ Inject the Template Engine as shown below:
 namespace f7k\Controller;
 
 use f7k\Service\TemplateEngine;
-use f7k\Sources\ControllerBase;
 use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{Request, Response};
+use f7k\Sources\{ControllerBase, Request, Response};
 
 class YourController extends ControllerBase {
 
     #[Inject(TemplateEngine::class)]
     protected $template;
 
-    #[Route(path: '/YourController', method: 'get')]
-    public function main(Request $request, Response $response): void
+    protected array $data;
+
+    public function __construct(
+        protected Request $request, 
+        protected Response $response)
+    {
+        $this->data = $this->request->getData();
+    }
+
+    #[Route(path: '/YourRoute', method: 'get')]
+    public function yourMethod(): void
     {
         $this->injectServices();
-
-        $data = $request->getData();
 
         $this->template->assign([
             'title' => 'Your Controller',
             'header' => 'f7k is cool!',
-            'message' => 'But ' . $data['name'] . ' is even cooler :p'
+            'message' => 'But ' . $this->data['name'] . ' is even cooler :p'
         ]);
         $this->template->parse('Your.layout.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
     
     //...
