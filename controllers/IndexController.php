@@ -17,8 +17,7 @@ class IndexController extends AppController {
             "subtitle" => "f7k is the numeronym of the word 'framework'. Use this lightweight framework to quickly build feature rich web applications with PHP. If you are unfamiliar or 
             inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product.",
             "href_reply" => "/Index/reply?id=",
-            'controller' => 'Index',
-            'redirect' => '/'
+            'route' => '/'
         ]);
     }
 
@@ -26,7 +25,7 @@ class IndexController extends AppController {
     public function main(Request $request, Response $response): void
     {
         $this->template->assign([
-            "comments" => $this->comments->readAll("Index")
+            "comments" => $this->comments->readAll("/")
         ]);
         $this->template->parse('Index.partial.html');
         $this->template->render($request, $response);

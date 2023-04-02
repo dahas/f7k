@@ -14,8 +14,7 @@ class BlogController extends AppController {
         $this->template->assign([
             'title' => 'Blog',
             "href_reply" => "/Blog/reply?id=",
-            'controller' => 'Blog',
-            'redirect' => '/Blog'
+            'route' => '/Blog'
         ]);
     }
 
@@ -23,7 +22,7 @@ class BlogController extends AppController {
     public function main(Request $request, Response $response): void
     {
         $this->template->assign([
-            "comments" => $this->comments->readAll("Blog")
+            "comments" => $this->comments->readAll("/Blog")
         ]);
         $this->template->parse('Blog.partial.html');
         $this->template->render($request, $response);

@@ -9,8 +9,8 @@
         <h2 id="comments" class="mt-4" n:if="isset($reply)">{$comments_header}</h2>
         <form method="post" action="{isset($reply) ? '/Reply/create' : '/Comments/create'}">
             <input type="hidden" name="comment_id" value="{$comment_id}">
-            <input type="hidden" name="controller" value="{$controller}">
-            <input type="hidden" name="redirect" value="{$redirect}">
+            <input type="hidden" name="controller" value="{$route}">
+            <input type="hidden" name="redirect" value="{$route}">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
@@ -46,8 +46,8 @@
         <div class="card-header d-flex" style="font-size: 0.75rem;">
             <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
             <div class="ms-auto">
-                <a href="/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$redirect}">Hide</a>
-                <a href="/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$redirect}">Delete</a>
+                <a href="/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$route}">Hide</a>
+                <a href="/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$route}">Delete</a>
             </div>
         </div>
         <div class="card-body">
@@ -59,8 +59,8 @@
                 <div class="card-header d-flex" style="font-size: 0.75rem;">
                     <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                     <div class="ms-auto">
-                        <a href="/Reply/hide?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$redirect}">Hide</a>
-                        <a href="/Reply/delete?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$redirect}">Delete</a>
+                        <a href="/Reply/hide?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$route}">Hide</a>
+                        <a href="/Reply/delete?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$route}">Delete</a>
                     </div>
                 </div>
                 <div class="card-body">
