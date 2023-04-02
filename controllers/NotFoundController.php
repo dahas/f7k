@@ -2,11 +2,13 @@
 
 namespace f7k\Controller;
 
+use f7k\Sources\attributes\Route;
 use f7k\Sources\Request;
 use f7k\Sources\Response;
 
 class NotFoundController extends AppController {
     
+    #[Route(path: '/PageNotFound', method: 'get')]
     public function main(Request $request, Response $response): void
     {
         $this->template->assign([

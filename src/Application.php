@@ -20,7 +20,10 @@ class Application implements AppInterface {
         $this->response = new Response();
         
         $this->router = new Router($this->request, $this->response);
-        $this->router->notFound([new NotFoundController, "main"]);
+        $this->router->notFound(function() {
+            header("location: /PageNotFound");
+            exit();
+        });
         $this->router->run();
 
         $this->response->flush();
