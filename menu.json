@@ -30,7 +30,7 @@
                 "enabled": false
             },
             {
-                "path": "/Error",
+                "path": "/Qwert",
                 "title": "Error 404",
                 "enabled": true
             }
