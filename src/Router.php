@@ -87,7 +87,7 @@ class Router {
             $handler = $this->handlers[$method . $route];
 
             if (is_array($handler["callback"]) && count($handler["callback"]) == 2) {
-                $callback = [new $handler["callback"][0], $handler["callback"][1]];
+                $callback = [new $handler["callback"][0]($this->request, $this->response), $handler["callback"][1]];
             } else if (is_array($handler["callback"]) && count($handler["callback"]) != 2) {
                 $callback = null;
             } else {
@@ -95,14 +95,14 @@ class Router {
             }
 
             if ($callback) {
-                $res = call_user_func_array($callback, [$this->request, $this->response]);
+                $res = call_user_func_array($callback, []);
                 if ($res === false) {
                     $this->response->setStatus(500);
                 }
             }
         } else {
             if ($this->notFoundHandler) {
-                $res = call_user_func_array($this->notFoundHandler, [$this->request, $this->response]);
+                $res = call_user_func_array($this->notFoundHandler, []);
                 if ($res === false) {
                     $this->response->setStatus(500);
                 }

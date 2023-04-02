@@ -7,14 +7,19 @@ use f7k\Sources\Request;
 use f7k\Sources\Response;
 
 class NotFoundController extends AppController {
+
+    public function __construct(protected Request $request, protected Response $response)
+    {
+        parent::__construct($request, $response);
+    }
     
     #[Route(path: '/PageNotFound', method: 'get')]
-    public function main(Request $request, Response $response): void
+    public function main(): void
     {
         $this->template->assign([
             'title' => 'Error 404 - Page Not Found'
         ]);
         $this->template->parse('404.partial.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
 }

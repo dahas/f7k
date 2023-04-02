@@ -7,9 +7,9 @@ use f7k\Sources\{Request, Response};
 
 class BlogController extends AppController {
 
-    public function __construct()
+    public function __construct(protected Request $request, protected Response $response)
     {
-        parent::__construct();
+        parent::__construct($request, $response);
 
         $this->template->assign([
             'title' => 'Blog',
@@ -19,19 +19,19 @@ class BlogController extends AppController {
     }
 
     #[Route(path: '/Blog', method: 'get')]
-    public function main(Request $request, Response $response): void
+    public function main(): void
     {
         $this->template->assign([
             "comments" => $this->comments->readAll("/Blog")
         ]);
         $this->template->parse('Blog.partial.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
 
     #[Route(path: '/Blog/reply', method: 'get')]
-    public function reply(Request $request, Response $response): void
+    public function reply(): void
     {
-        $data = $request->getData();
+        $data = $this->request->getData();
         $this->template->assign([
             'reply' => true,
             'comments_header' => 'Reply to #' . $data['id'],
@@ -40,6 +40,6 @@ class BlogController extends AppController {
             "comments" => [$this->comments->read((int) $data['id'])]
         ]);
         $this->template->parse('Blog.partial.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
 }

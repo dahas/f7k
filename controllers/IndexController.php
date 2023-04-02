@@ -7,9 +7,9 @@ use f7k\Sources\{Request, Response};
 
 class IndexController extends AppController {
 
-    public function __construct()
+    public function __construct(protected Request $request, protected Response $response)
     {
-        parent::__construct();
+        parent::__construct($request, $response);
 
         $this->template->assign([
             'title' => 'f7k - The framework',
@@ -22,19 +22,19 @@ class IndexController extends AppController {
     }
 
     #[Route(path: '/', method: 'get')]
-    public function main(Request $request, Response $response): void
+    public function main(): void
     {
         $this->template->assign([
             "comments" => $this->comments->readAll("/")
         ]);
         $this->template->parse('Index.partial.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
 
     #[Route(path: '/Index/reply', method: 'get')]
-    public function reply(Request $request, Response $response): void
+    public function reply(): void
     {
-        $data = $request->getData();
+        $data = $this->request->getData();
         $this->template->assign([
             'reply' => true,
             'comments_header' => 'Reply to #' . $data['id'],
@@ -43,6 +43,6 @@ class IndexController extends AppController {
             "comments" => [$this->comments->read((int) $data['id'])]
         ]);
         $this->template->parse('Index.partial.html');
-        $this->template->render($request, $response);
+        $this->template->render($this->request, $this->response);
     }
 }

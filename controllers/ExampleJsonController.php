@@ -7,8 +7,13 @@ use f7k\Sources\{Request, Response};
 
 class ExampleJsonController extends AppController {
 
+    public function __construct(protected Request $request, protected Response $response)
+    {
+        parent::__construct($request, $response);
+    }
+
     #[Route(path: '/ExampleJson', method: 'get')]
-    public function main(Request $request, Response $response): void
+    public function main(): void
     {
         $data = [
             ["id" => 1, "manufacturer" => "Ferrari", "year" => 1958],
@@ -23,7 +28,7 @@ class ExampleJsonController extends AppController {
             "count" => count($data),
         ]);
 
-        $response->addHeader("Content-Type", "application/json");
-        $response->write($json);
+        $this->response->addHeader("Content-Type", "application/json");
+        $this->response->write($json);
     }
 }
