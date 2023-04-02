@@ -18,9 +18,13 @@ class AppController extends ControllerBase {
     #[Inject(CommentsService::class)]
     protected $comments;
 
+    protected array $data;
+
     public function __construct(protected Request $request, protected Response $response)
     {
         parent::__construct();
+
+        $this->data = $this->request->getData();
         
         $this->template->assign([
             "nav" => $this->menu->getItems(),
@@ -31,54 +35,49 @@ class AppController extends ControllerBase {
     #[Route(path: '/Comments/create', method: 'post')]
     public function createComment(): void
     {
-        $data = $this->request->getData();
-        $this->comments->create($data);
-        header("location: {$data['redirect']}#comments");
+        
+        $this->comments->create($this->data);
+        header("location: {$this->data['redirect']}#comments");
         exit();
     }
 
     #[Route(path: '/Comments/hide', method: 'get')]
     public function hideComment(): void
     {
-        $data = $this->request->getData();
-        $this->comments->hide((int) $data['id']);
-        header("location: {$data['redirect']}#comments");
+        $this->comments->hide((int) $this->data['id']);
+        header("location: {$this->data['redirect']}#comments");
         exit();
     }
 
     #[Route(path: '/Comments/delete', method: 'get')]
     public function deleteComment(): void
     {
-        $data = $this->request->getData();
-        $this->comments->delete((int) $data['id']);
-        header("location: {$data['redirect']}#comments");
+        $this->comments->delete((int) $this->data['id']);
+        header("location: {$this->data['redirect']}#comments");
         exit();
     }
 
     #[Route(path: '/Reply/create', method: 'post')]
     public function createReply(): void
     {
-        $data = $this->request->getData();
-        $rID = $this->comments->createReply($data);
-        header("location: {$data['redirect']}#R$rID");
+        $rID = $this->comments->createReply($this->data);
+        header("location: {$this->data['redirect']}#R$rID");
         exit();
     }
 
     #[Route(path: '/Reply/hide', method: 'get')]
     public function hideReply(): void
     {
-        $data = $this->request->getData();
-        $this->comments->hideReply((int) $data['id']);
-        header("location: {$data['redirect']}#comments");
+        $this->comments->hideReply((int) $this->data['id']);
+        header("location: {$this->data['redirect']}#comments");
         exit();
     }
 
     #[Route(path: '/Reply/delete', method: 'get')]
     public function deleteReply(): void
     {
-        $data = $this->request->getData();
-        $this->comments->deleteReply((int) $data['id']);
-        header("location: {$data['redirect']}#comments");
+        $this->comments->deleteReply((int) $this->data['id']);
+        header("location: {$this->data['redirect']}#comments");
         exit();
     }
 }

@@ -31,13 +31,12 @@ class BlogController extends AppController {
     #[Route(path: '/Blog/reply', method: 'get')]
     public function reply(): void
     {
-        $data = $this->request->getData();
         $this->template->assign([
             'reply' => true,
-            'comments_header' => 'Reply to #' . $data['id'],
-            'comment_id' => $data['id'],
+            'comments_header' => 'Reply to #' . $this->data['id'],
+            'comment_id' => $this->data['id'],
             "href_cancel" => "/Blog#comments",
-            "comments" => [$this->comments->read((int) $data['id'])]
+            "comments" => [$this->comments->read((int) $this->data['id'])]
         ]);
         $this->template->parse('Blog.partial.html');
         $this->template->render($this->request, $this->response);
