@@ -18,8 +18,7 @@ class BlogController extends AppController {
             'title' => 'Blog'
         ]);
 
-        $this->comments = new CommentsComponent($this->request, $this->response);
-        $this->comments->setRoute("/Blog");
+        $this->comments = new CommentsComponent('/Blog', $this->request, $this->response);
     }
 
     #[Route(path: '/Blog', method: 'get')]

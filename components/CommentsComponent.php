@@ -18,20 +18,15 @@ class CommentsComponent extends ControllerBase {
 
     private string $tmplFile = 'Comments.partial.html';
     private $orm;
-    private string $route;
 
     public function __construct(
+        private string $route,
         protected Request $request,
         protected Response $response
     ) {
         parent::__construct();
 
         $this->orm = $this->dbal->getEntityManager();
-    }
-
-    public function setRoute(string $route): void 
-    {
-        $this->route = $route;
     }
 
     public function fetchAll(): string

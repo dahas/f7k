@@ -12,7 +12,7 @@ $dotenv->safeLoad();
 
 # Set Request Params:
 # -----------------------------------------
-$_SERVER['REQUEST_URI'] = "/Index";
+$_SERVER['REQUEST_URI'] = "/";
 $_SERVER['REQUEST_METHOD'] = "get";
 
 $_POST['title'] = "This is the Title";

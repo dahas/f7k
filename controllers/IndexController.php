@@ -21,8 +21,7 @@ class IndexController extends AppController {
             inexperienced with developing secure and high-performance web applications, I strongly recommend using Symfony, Laravel, or a similar well tested product."
         ]);
 
-        $this->comments = new CommentsComponent($this->request, $this->response);
-        $this->comments->setRoute("/Index");
+        $this->comments = new CommentsComponent('/Index', $this->request, $this->response);
     }
 
     #[Route(path: ['/', '/Index'], method: 'get')]
