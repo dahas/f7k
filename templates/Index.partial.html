@@ -12,5 +12,5 @@
     <h1>{$header}</h1>
     <p>{$subtitle}</p>
 </div>
-{include Comments.partial.html}
+{$comments|noescape}
 {/block}

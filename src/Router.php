@@ -40,11 +40,21 @@ class Router {
                         $route = $attribute->newInstance();
 
                         $rqMethod = strtolower($route->method);
-                        $this->handlers[$rqMethod . $route->path] = [
-                            "method" => $rqMethod,
-                            "path" => $route->path,
-                            "callback" => [$controller, $method->getName()]
-                        ];
+                        if (is_array($route->path)) {
+                            foreach($route->path as $rt) {
+                                $this->handlers[$rqMethod . $rt] = [
+                                    "method" => $rqMethod,
+                                    "path" => $rt,
+                                    "callback" => [$controller, $method->getName()]
+                                ];
+                            }
+                        } else {
+                            $this->handlers[$rqMethod . $route->path] = [
+                                "method" => $rqMethod,
+                                "path" => $route->path,
+                                "callback" => [$controller, $method->getName()]
+                            ];
+                        }
                     }
                 }
             }
@@ -53,25 +63,25 @@ class Router {
         }
     }
 
-    public function get(string $path, callable |array $callback): void
-    {
-        $this->addHandlers(self::GET, $path, $callback);
-    }
+    // public function get(string $path, callable |array $callback): void
+    // {
+    //     $this->addHandlers(self::GET, $path, $callback);
+    // }
 
-    public function post(string $path, callable |array $callback): void
-    {
-        $this->addHandlers(self::POST, $path, $callback);
-    }
+    // public function post(string $path, callable |array $callback): void
+    // {
+    //     $this->addHandlers(self::POST, $path, $callback);
+    // }
 
-    private function addHandlers(string $method, string $path, callable |array $callback): void
-    {
-        $method = strtolower($method);
-        $this->handlers[$method . $path] = [
-            "method" => $method,
-            "path" => $path,
-            "callback" => $callback
-        ];
-    }
+    // private function addHandlers(string $method, string $path, callable |array $callback): void
+    // {
+    //     $method = strtolower($method);
+    //     $this->handlers[$method . $path] = [
+    //         "method" => $method,
+    //         "path" => $path,
+    //         "callback" => $callback
+    //     ];
+    // }
 
     public function notFound(callable|array $callback): void
     {

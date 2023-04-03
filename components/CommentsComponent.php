@@ -1,24 +1,63 @@
 <?php
 
-namespace f7k\Service;
+namespace f7k\Component;
 
 use f7k\Entities\CommentEntity;
 use f7k\Entities\RepliesEntity;
+use f7k\Service\{TemplateService, DbalService};
 use f7k\Sources\attributes\Inject;
-use f7k\Sources\ServiceBase;
+use f7k\Sources\{ControllerBase, Request, Response};
 
-class CommentsService extends ServiceBase {
+class CommentsComponent extends ControllerBase {
+
+    #[Inject(TemplateService::class)]
+    protected $template;
 
     #[Inject(DbalService::class)]
     protected $dbal;
 
+    private string $tmplFile = 'Comments.partial.html';
     private $orm;
+    private string $route;
 
-    public function __construct(private array|null $options = [])
-    {
+    public function __construct(
+        protected Request $request,
+        protected Response $response
+    ) {
         parent::__construct();
 
         $this->orm = $this->dbal->getEntityManager();
+    }
+
+    public function setRoute(string $route): void 
+    {
+        $this->route = $route;
+    }
+
+    public function fetchAll(): string
+    {
+        $this->template->assign([
+            "href_reply" => "{$this->route}/reply?id=",
+            'route' => $this->route,
+            "comments" => $this->readAll($this->route)
+        ]);
+        $this->template->parse($this->tmplFile);
+        return $this->template->getHtml();
+    }
+
+    public function fetchItem(int $id): string
+    {
+        $this->template->assign([
+            "href_reply" => "{$this->route}/reply?id=",
+            'route' => $this->route,
+            'isReply' => true,
+            'comments_header' => 'Reply to #' . $id,
+            'comment_id' => $id,
+            "href_cancel" => $this->route . "#comments",
+            "comments" => [$this->read((int) $id)]
+        ]);
+        $this->template->parse($this->tmplFile);
+        return $this->template->getHtml();
     }
 
     public function readAll(string $controller = ""): array
@@ -38,7 +77,7 @@ class CommentsService extends ServiceBase {
             ->find($id);
     }
 
-    public function create(array $data): int
+    public function create(array $data): void
     {
         $comment = $this->orm->create(CommentEntity::class)
             ->setName($data['name'])
@@ -47,7 +86,8 @@ class CommentsService extends ServiceBase {
             ->setController($data['controller'])
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
-        return $comment->id();
+        header("location: {$this->route}#comments");
+        exit();
     }
 
     public function update(array $data): void
@@ -61,6 +101,8 @@ class CommentsService extends ServiceBase {
             ->setController($data['controller'])
             ->setComment(nl2br($data['comment']));
         $this->orm->save($comment);
+        header("location: {$this->route}#comments");
+        exit();
     }
 
     public function hide(int $id): void
@@ -69,6 +111,8 @@ class CommentsService extends ServiceBase {
             ->find($id)
             ->setHidden(1);
         $this->orm->save($comment);
+        header("location: {$this->route}#comments");
+        exit();
     }
 
     public function delete(int $id): void
@@ -76,9 +120,11 @@ class CommentsService extends ServiceBase {
         $this->orm->query(CommentEntity::class)
             ->where('id')->is($id)
             ->delete();
+        header("location: {$this->route}#comments");
+        exit();
     }
 
-    public function createReply(array $data): int
+    public function createReply(array $data): void
     {
         $reply = $this->orm->create(RepliesEntity::class)
             ->setName($data['name'])
@@ -87,7 +133,8 @@ class CommentsService extends ServiceBase {
             ->setCommentID((int) $data['comment_id'])
             ->setReply(nl2br($data['comment']));
         $this->orm->save($reply);
-        return $reply->id();
+        header("location: {$this->route}#R" . $reply->id());
+        exit();
     }
 
     public function hideReply(int $id): void
@@ -96,6 +143,8 @@ class CommentsService extends ServiceBase {
             ->find($id)
             ->setHidden(1);
         $this->orm->save($reply);
+        header("location: {$this->route}#comments");
+        exit();
     }
 
     public function deleteReply(int $id): void
@@ -103,5 +152,7 @@ class CommentsService extends ServiceBase {
         $this->orm->query(RepliesEntity::class)
             ->where('id')->is($id)
             ->delete();
+        header("location: {$this->route}#comments");
+        exit();
     }
 }

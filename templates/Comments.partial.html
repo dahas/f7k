@@ -1,13 +1,13 @@
 <div class="container-sm mt-3">
     <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{isset($reply) ? 'true' : 'false'}"
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{isset($isReply) ? 'true' : 'false'}"
             aria-controls="collapseExample">
             <i class="bi bi-chat-left-text"></i> Leave a comment
         </a>
     </p>
-    <div class="collapse {isset($reply) ? 'show' : ''}" id="collapseExample">
-        <h2 id="comments" class="mt-4" n:if="isset($reply)">{$comments_header}</h2>
-        <form method="post" action="{isset($reply) ? '/Reply/create' : '/Comments/create'}">
+    <div class="collapse {isset($isReply) ? 'show' : ''}" id="collapseExample">
+        <h2 id="comments" class="mt-4" n:if="isset($isReply)">{$comments_header}</h2>
+        <form method="post" action="{$route}{isset($isReply) ? '/Reply/create' : '/Comments/create'}">
             <input type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a n:if="isset($reply)" href="{$href_cancel}" type="button" class="btn btn-secondary">Cancel</a>
+                    <a n:if="isset($isReply)" href="{$href_cancel}" type="button" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>
@@ -46,8 +46,8 @@
         <div class="card-header d-flex" style="font-size: 0.75rem;">
             <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
             <div class="ms-auto">
-                <a href="/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$route}">Hide</a>
-                <a href="/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}&amp;redirect={$route}">Delete</a>
+                <a href="{$route}/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}">Hide</a>
+                <a href="{$route}/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}">Delete</a>
             </div>
         </div>
         <div class="card-body">
@@ -59,8 +59,8 @@
                 <div class="card-header d-flex" style="font-size: 0.75rem;">
                     <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                     <div class="ms-auto">
-                        <a href="/Reply/hide?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$route}">Hide</a>
-                        <a href="/Reply/delete?controller={$comment->getController()}&amp;id={$reply->id()}&amp;redirect={$route}">Delete</a>
+                        <a href="{$route}/Reply/hide?controller={$comment->getController()}&amp;id={$reply->id()}">Hide</a>
+                        <a href="{$route}/Reply/delete?controller={$comment->getController()}&amp;id={$reply->id()}">Delete</a>
                     </div>
                 </div>
                 <div class="card-body">
