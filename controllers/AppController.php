@@ -2,7 +2,8 @@
 
 namespace f7k\Controller;
 
-use f7k\Service\{MenuService, TemplateService, CommentsService};
+use f7k\Component\MenuComponent;
+use f7k\Service\{TemplateService, CommentsService};
 use f7k\Sources\attributes\{Inject, Route};
 use f7k\Sources\{Request,Response};
 use f7k\Sources\ControllerBase;
@@ -11,9 +12,6 @@ class AppController extends ControllerBase {
 
     #[Inject(TemplateService::class)]
     protected $template;
-
-    #[Inject(MenuService::class)]
-    protected $menu;
 
     #[Inject(CommentsService::class)]
     protected $comments;
@@ -25,10 +23,11 @@ class AppController extends ControllerBase {
         parent::__construct();
 
         $this->data = $this->request->getData();
+
+        $menu = new MenuComponent($this->request, $this->response);
         
         $this->template->assign([
-            "nav" => $this->menu->getItems(),
-            "currentPath" => $_SERVER['REQUEST_URI']
+            "menu" => $menu->render($this->template)
         ]);
     }
 

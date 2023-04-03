@@ -62,7 +62,7 @@ class YourController extends ControllerBase {
     #[Route(path: '/YourController', method: 'get')]
     public function main(): void
     {
-        $response->write("Hello " . $this->data['name']);
+        $this->response->write("Hello " . $this->data['name']);
     }
     
     //...
