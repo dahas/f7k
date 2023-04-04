@@ -1,8 +1,9 @@
-# Yet another f7k
+# f7k - Yet another framework
 
 <img src="https://img.shields.io/badge/PHP-8.1.2-orange" /> <img src="https://img.shields.io/badge/Latte-3.x-green" /> <img src="https://img.shields.io/badge/Opis ORM-1.x-yellow" /> <img src="https://img.shields.io/badge/PHPUnit-10.x-blue" />
 
-f7k is the numeronym of the word 'framework'.
+- f7k is the numeronym of the word 'framework'.
+- f7k follows the PHP Standard Recommendations (PSR).
 
 ## Minimum Requirements
 

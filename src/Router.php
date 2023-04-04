@@ -25,8 +25,6 @@ class Router {
             $routesCache = file($routesCacheFile)[0];
             $this->handlers = unserialize($routesCache);
         } else {
-            $handle = fopen($routesCacheFile, "w");
-
             $files = array_diff(scandir(ROOT . "/controllers"), array('.', '..'));
 
             foreach ($files as $file) {
@@ -59,29 +57,10 @@ class Router {
                 }
             }
 
+            $handle = fopen($routesCacheFile, "w");
             fwrite($handle, serialize($this->handlers));
         }
     }
-
-    // public function get(string $path, callable |array $callback): void
-    // {
-    //     $this->addHandlers(self::GET, $path, $callback);
-    // }
-
-    // public function post(string $path, callable |array $callback): void
-    // {
-    //     $this->addHandlers(self::POST, $path, $callback);
-    // }
-
-    // private function addHandlers(string $method, string $path, callable |array $callback): void
-    // {
-    //     $method = strtolower($method);
-    //     $this->handlers[$method . $path] = [
-    //         "method" => $method,
-    //         "path" => $path,
-    //         "callback" => $callback
-    //     ];
-    // }
 
     public function notFound(callable|array $callback): void
     {
