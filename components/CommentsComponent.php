@@ -6,9 +6,9 @@ use f7k\Entities\CommentEntity;
 use f7k\Entities\RepliesEntity;
 use f7k\Service\{TemplateService, DbalService};
 use f7k\Sources\attributes\Inject;
-use f7k\Sources\{ControllerBase, Request, Response};
+use f7k\Sources\{ServiceBase, Request, Response};
 
-class CommentsComponent extends ControllerBase {
+class CommentsComponent extends ServiceBase {
 
     #[Inject(TemplateService::class)]
     protected $template;
