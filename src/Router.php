@@ -19,11 +19,10 @@ class Router {
         $this->request = $request;
         $this->response = $response;
 
-        $routesCacheFile = ROOT . "/.routes.cache";
+        $cache = new Cache();
 
-        if (file_exists($routesCacheFile) && $_ENV["MODE"] !== "dev") {
-            $routesCache = file($routesCacheFile)[0];
-            $this->handlers = unserialize($routesCache);
+        if ($cache->has("routes") && $_ENV["MODE"] !== "dev") {
+            $this->handlers = $cache->get("routes");
         } else {
             $files = array_diff(scandir(ROOT . "/controllers"), array('.', '..'));
 
@@ -57,8 +56,7 @@ class Router {
                 }
             }
 
-            $handle = fopen($routesCacheFile, "w");
-            fwrite($handle, serialize($this->handlers));
+            $cache->set("routes", $this->handlers);
         }
     }
 
