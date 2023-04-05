@@ -3,6 +3,7 @@
 namespace f7k\Sources;
 
 use f7k\Sources\interfaces\CacheInterface;
+use f7k\Sources\exceptions\InvalidArgumentException;
 
 class Cache implements CacheInterface {
 
@@ -10,12 +11,20 @@ class Cache implements CacheInterface {
 
     public function get($key, $default = null): mixed
     {
+        if (!ctype_alpha($key)) {
+            throw new InvalidArgumentException("\$key string is not a legal value. 
+                It may only consist of letters.");
+        }
         $cache = file($this->cacheDir . "/{$key}.cache")[0];
         return unserialize($cache);
     }
 
     public function set($key, $value, $ttl = null)
     {
+        if (!ctype_alpha($key)) {
+            throw new InvalidArgumentException("\$key string is not a legal value. 
+                It may only consist of letters.");
+        }
         $handle = fopen($this->cacheDir . "/{$key}.cache", "w");
         if ($handle && fwrite($handle, serialize($value))) {
             return true;
@@ -25,6 +34,10 @@ class Cache implements CacheInterface {
 
     public function delete($key)
     {
+        if (!ctype_alpha($key)) {
+            throw new InvalidArgumentException("\$key string is not a legal value. 
+                It may only consist of letters.");
+        }
         return unlink($this->cacheDir . "/{$key}.cache");
     }
 
@@ -66,6 +79,10 @@ class Cache implements CacheInterface {
 
     public function has($key)
     {
+        if (!ctype_alpha($key)) {
+            throw new InvalidArgumentException("\$key string is not a legal value. 
+                It may only consist of letters.");
+        }
         return file_exists($this->cacheDir . "/{$key}.cache");
     }
 }
