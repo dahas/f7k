@@ -10,7 +10,7 @@ use f7k\Sources\Request;
 $dotenv = Dotenv\Dotenv::createImmutable(ROOT);
 $dotenv->safeLoad();
 
-class TemplateEngineTest extends TestCase {
+class TemplateServiceTest extends TestCase {
     
     private Request $request;
     private Response $response;
@@ -22,7 +22,7 @@ class TemplateEngineTest extends TestCase {
 
         $this->request = new Request();
         $this->response = new Response();
-        $this->template = new TemplateService(__DIR__ . '/files', __DIR__ . '/cache');
+        $this->template = new TemplateService(__DIR__ . '/files', __DIR__ . '/cache/templates');
     }
 
     protected function tearDown(): void
@@ -30,6 +30,9 @@ class TemplateEngineTest extends TestCase {
         unset($this->request);
         unset($this->response);
         unset($this->template);
+
+        // Clear cache folder:
+        array_map('unlink', array_filter((array) glob(__DIR__ . "/cache/templates/*")));
     }
 
     public function testParse()
