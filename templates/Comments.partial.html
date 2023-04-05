@@ -8,7 +8,7 @@
     <div class="collapse {isset($isReply) ? 'show' : ''}" id="collapseExample">
         <h2 id="comments" class="mt-4" n:if="isset($isReply)">{$comments_header}</h2>
         <form method="post" action="{$route}{isset($isReply) ? '/Reply/create' : '/Comments/create'}">
-            <input type="hidden" name="comment_id" value="{$comment_id}">
+            <input n:if="isset($isReply)" type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
             <div class="card mb-3">
