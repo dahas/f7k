@@ -1,10 +1,10 @@
 <?php
 
-use f7k\Sources\Application;
-
 !defined('ROOT') && define('ROOT', __DIR__);
 
 require ROOT .'/vendor/autoload.php';
+
+use f7k\Sources\Application;
 
 $dotenv = Dotenv\Dotenv::createImmutable(ROOT);
 $dotenv->safeLoad();
