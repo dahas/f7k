@@ -2,11 +2,17 @@
 
 namespace f7k\Service;
 
+use f7k\Service\MarkdownService;
+use f7k\Sources\attributes\Inject;
+use f7k\Sources\ServiceBase;
 use Latte\Engine;
 use f7k\Sources\Request;
 use f7k\Sources\Response;
 
-class TemplateService {
+class TemplateService extends ServiceBase {
+
+    #[Inject(MarkdownService::class)]
+    protected $markdown;
 
     private Engine $latte;
     private array $templateVars = [];
@@ -17,9 +23,13 @@ class TemplateService {
         private string $cacheDir = ROOT . '/.latte/cache',
         private array|null $options = []
     ) {
+        parent::__construct();
+
         $this->latte = new Engine();
         $this->latte->setTempDirectory($this->cacheDir);
         $this->latte->setAutoRefresh($_ENV['MODE'] === 'dev');
+
+        $this->latte->addFilter('markdown', fn(string $s) => $this->markdown->parse($s));
     }
 
     public function assign(array $_vars): void

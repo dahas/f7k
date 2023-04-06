@@ -1,0 +1,129 @@
+
+.card-body .markdown p, 
+.card-body .markdown .air-p {
+  color: #444;
+  font-size: 12px;
+  margin-bottom: 1rem;
+}
+
+.card-body .markdown h1, .card-body .markdown .air-h1,
+.card-body .markdown h2, .card-body .markdown .air-h2,
+.card-body .markdown h3, .card-body .markdown .air-h3,
+.card-body .markdown h4, .card-body .markdown .air-h4 {
+  margin: 1.414rem 0 .5rem;
+  font-weight: inherit;
+  line-height: 1.42;
+}
+
+.card-body .markdown h1, .card-body .markdown .air-h1 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.card-body .markdown h2, .card-body .markdown .air-h2 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.card-body .markdown h3, .card-body .markdown .air-h3 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.card-body .markdown h4, .card-body .markdown .air-h4 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.card-body .markdown h5, .card-body .markdown .air-h5 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.card-body .markdown h6, .card-body .markdown .air-h6 {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.card-body .markdown small, .card-body .markdown .air-small {
+  font-size: 10px;
+}
+
+/* https://github.com/mrmrs/fluidity */
+
+.card-body .markdown img,
+.card-body .markdown canvas,
+.card-body .markdown iframe,
+.card-body .markdown video,
+.card-body .markdown svg,
+.card-body .markdown select,
+.card-body .markdown textarea {
+  max-width: 100%;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,300);
+
+.card-body .markdown  {
+  color: #444;
+  font-size: 12px;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-weight: 300;
+  text-align: left;
+  line-height: 1.85;
+}
+
+.card-body .markdown img {
+  border-radius: 50%;
+  height: 200px;
+  margin: 0 auto;
+  width: 200px;
+}
+
+.card-body .markdown a, 
+.card-body .markdown a:visited {
+  color: #3498db;
+}
+
+.card-body .markdown a:hover,
+.card-body .markdown a:focus,
+.card-body .markdown a:active {
+  color: #2980b9;
+}
+
+.card-body .markdown pre {
+  background-color: #fafafa;
+  padding: 1rem;
+  text-align: left;
+  border: 1px dotted #ddd;
+}
+
+.card-body .markdown blockquote {
+  margin: 0;
+  margin-bottom: 1rem;
+  border-left: 5px solid #97b8d6;
+  background-color: #edf2f5;
+  font-style: italic;
+  padding: 1rem 1rem 0.1rem 1rem;
+  text-align: left;
+}
+
+.card-body .markdown blockquote p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.card-body .markdown table, 
+.card-body .markdown table th, 
+.card-body .markdown table td {
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  margin-bottom: 1rem;
+}
+
+.card-body .markdown ul, 
+.card-body .markdown ol, 
+.card-body .markdown li {
+  text-align: left;
+}

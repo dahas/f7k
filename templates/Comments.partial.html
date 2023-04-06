@@ -1,74 +1,191 @@
 <div class="container-sm mt-3">
+    {if isset($isReply)}
     <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{isset($isReply) ? 'true' : 'false'}"
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
             aria-controls="collapseExample">
             <i class="bi bi-chat-left-text"></i> Leave a comment
         </a>
     </p>
-    <div class="collapse {isset($isReply) ? 'show' : ''}" id="collapseExample">
-        <h2 id="comments" class="mt-4" n:if="isset($isReply)">{$comments_header}</h2>
-        <form method="post" action="{$route}{isset($isReply) ? '/Reply/create' : '/Comments/create'}">
-            <input n:if="isset($isReply)" type="hidden" name="comment_id" value="{$comment_id}">
+    <div class="collapse show" id="collapseExample">
+        <h2 id="comments" class="mt-4">{$form_header}</h2>
+        <form method="post" action="/Blog/Reply/create">
+            <input type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col">
-                            <input type="text" name="title" class="form-control text-bg-light" placeholder="Title"
-                                aria-label="Title">
-                        </div>
-                        <div class="col-2">
+                        <div class="col-6">
                             <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                                aria-label="Name" required>
+                                aria-label="Name" value="{$name ?? ''}" required>
                         </div>
-                        <div class="col-2">
+                        <div class="col-6">
                             <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                                aria-label="E-Mail" required>
+                                aria-label="E-Mail" value="{$email ?? ''}" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
-                            <textarea name="comment" class="form-control text-bg-light" rows="4"
-                                placeholder="Your comment here ..." required></textarea>
+                            <textarea id="simple-mde-editor" name="comment" class="form-control text-bg-light" rows="4"
+                                placeholder="Your comment here ...">{$text ?? ''}</textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a n:if="isset($isReply)" href="{$href_cancel}" type="button" class="btn btn-secondary">Cancel</a>
+                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>
     </div>
-    
+    {elseif isset($isReplyUpdate)}
+    <p id="add">
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
+            aria-controls="collapseExample">
+            <i class="bi bi-chat-left-text"></i> Leave a comment
+        </a>
+    </p>
+    <div class="collapse show" id="collapseExample">
+        <h2 id="comments" class="mt-4">{$form_header}</h2>
+        <form method="post" action="/Blog/Reply/update">
+            <input type="hidden" name="comment_id" value="{$comment_id}">
+            <input type="hidden" name="id" value="{$id}">
+            <input type="hidden" name="controller" value="{$route}">
+            <input type="hidden" name="redirect" value="{$route}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
+                                aria-label="Name" value="{$name ?? ''}" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
+                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <textarea id="simple-mde-editor" name="comment" class="form-control text-bg-light" rows="4"
+                                placeholder="Your comment here ...">{$text ?? ''}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    {elseif isset($isUpdate)}
+    <p id="add">
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
+            aria-controls="collapseExample">
+            <i class="bi bi-chat-left-text"></i> Leave a comment
+        </a>
+    </p>
+    <div class="collapse show" id="collapseExample">
+        <h2 id="comments" class="mt-4">{$form_header}</h2>
+        <form method="post" action="/Blog/Comments/update">
+            <input type="hidden" name="comment_id" value="{$comment_id}">
+            <input type="hidden" name="controller" value="{$route}">
+            <input type="hidden" name="redirect" value="{$route}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
+                                aria-label="Name" value="{$name ?? ''}" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
+                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <textarea id="simple-mde-editor" name="comment" class="form-control text-bg-light" rows="4"
+                                placeholder="Your comment here ...">{$text ?? ''}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else}
+    <p id="add">
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            <i class="bi bi-chat-left-text"></i> Leave a comment
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <form method="post" action="/Blog/Comments/create">
+            <input type="hidden" name="controller" value="{$route}">
+            <input type="hidden" name="redirect" value="{$route}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
+                                aria-label="Name" value="{$name ?? ''}" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
+                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <textarea id="simple-mde-editor" name="comment" class="form-control text-bg-light" rows="4"
+                                placeholder="Your comment here ...">{$text ?? ''}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+
     <h2 id="comments" class="mt-4" n:if="$comments">Comments</h2>
-    
+
     <div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment">
         <div class="card-header d-flex" style="font-size: 0.75rem;">
             <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
             <div class="ms-auto">
-                <a href="{$route}/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}">Hide</a>
-                <a href="{$route}/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}">Delete</a>
+                <a href="{$route}/Comments/edit?controller={$comment->getController()}&amp;id={$comment->id()}"
+                    style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
+                <a href="{$route}/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}"
+                    style="margin-right: 0.25rem"><i class="bi bi-eye-slash-fill"></i></a>
+                <a href="{$route}/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}"><i
+                        class="bi bi-trash3-fill"></i></a>
             </div>
         </div>
         <div class="card-body">
-            <b class="card-title">{$comment->getTitle()}</b>
-            <p class="card-text">{$comment->getComment()|noescape}</p>
-    
+            <div class="markdown">
+                {$comment->getComment()|noescape|markdown}
+            </div>
+
             <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply"
                 n:if="!$reply->getHidden()">
                 <div class="card-header d-flex" style="font-size: 0.75rem;">
                     <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                     <div class="ms-auto">
-                        <a href="{$route}/Reply/hide?controller={$comment->getController()}&amp;id={$reply->id()}">Hide</a>
-                        <a href="{$route}/Reply/delete?controller={$comment->getController()}&amp;id={$reply->id()}">Delete</a>
+                        <a href="{$route}/Reply/edit?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
+                            style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
+                        <a href="{$route}/Reply/hide?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
+                            style="margin-right: 0.25rem"><i class="bi bi-eye-slash-fill"></i></a>
+                        <a href="{$route}/Reply/delete?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"><i
+                                class="bi bi-trash3-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <b class="card-title" n:if="$reply->getTitle()">{$reply->getTitle()}</b>
-                    <p class="card-text">{$reply->getReply()|noescape}</p>
+                    <div class="markdown">
+                        {$reply->getReply()|noescape|markdown}
+                    </div>
                 </div>
             </div>
-    
+
             <a href="{$href_reply}{$comment->id()}#add"><i class="bi bi-chat-left-text"></i> Reply</a>
         </div>
     </div>
