@@ -24,7 +24,7 @@ class MenuComponent extends ControllerBase {
     {
         $template->assign([
             "nav" => $this->getItems(),
-            "currentPath" => "/" . $this->request->getController()
+            "currentPath" => "/" . $this->request->getSegments()[0]
         ]);
         $template->parse($this->tmplFile);
         return $template->getHtml();
