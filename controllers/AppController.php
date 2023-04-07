@@ -2,7 +2,7 @@
 
 namespace f7k\Controller;
 
-use f7k\Component\MenuComponent;
+use f7k\Service\MenuService;
 use f7k\Service\TemplateService;
 use f7k\Sources\attributes\{Inject, Route};
 use f7k\Sources\{Request,Response};
@@ -13,6 +13,9 @@ class AppController extends ControllerBase {
     #[Inject(TemplateService::class)]
     protected $template;
 
+    #[Inject(MenuService::class)]
+    protected $menu;
+
     protected array $data;
 
     public function __construct(protected Request $request, protected Response $response)
@@ -20,11 +23,11 @@ class AppController extends ControllerBase {
         parent::__construct();
 
         $this->data = $this->request->getData();
-
-        $menu = new MenuComponent($this->request, $this->response);
         
         $this->template->assign([
-            "menu" => $menu->render($this->template)
+            "nav" => $this->menu->getItems(),
+            "currentPath" => "/" . $this->request->getSegments()[0]
         ]);
+        $this->template->parse('Menu.partial.html');
     }
 }
