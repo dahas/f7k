@@ -7,7 +7,7 @@ use Opis\ORM\Core\ForeignKey;
 
 class CommentEntity extends Entity implements IMappableEntity {
 
-    private static string $tableName = "comments";
+    private static string $tableName = "blog_comments";
     private static string $primaryKey = "id";
     private static array $typeCasting = [
         "id" => "integer"
