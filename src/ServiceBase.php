@@ -20,7 +20,11 @@ class ServiceBase {
                 $instance = $attribute->newInstance();
                 $service = $instance->service;
                 $options = $instance->options;
-                $this->$pName = new $service(options: $options);
+                if ($options) {
+                    $this->$pName = new $service(options: $options);
+                } else {
+                    $this->$pName = new $service();
+                }
             }
         }
     }
