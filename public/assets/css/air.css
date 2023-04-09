@@ -127,3 +127,7 @@
 .card-body .markdown li {
   text-align: left;
 }
+
+.card-body .markdown strong {
+  font-weight: 600;
+}
