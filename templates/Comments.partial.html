@@ -111,11 +111,11 @@
             <i class="bi bi-chat-left-text"></i> Login to leave a comment
         </a>
         <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"
-            aria-expanded="false" aria-controls="collapseExample">
+            aria-expanded="{$expanded}" aria-controls="collapseExample">
             <i class="bi bi-chat-left-text"></i> Leave a comment
         </a>
     </p>
-    <div class="collapse" id="collapseExample">
+    <div class="collapse {$expanded ? 'show' : ''}" id="collapseExample">
         <form method="post" action="/Blog/Comments/create">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">

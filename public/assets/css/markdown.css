@@ -1,51 +1,50 @@
 
-.card-body .markdown p, 
-.card-body .markdown .air-p {
+.card-body .markdown p {
   color: #444;
   font-size: 12px;
   margin-bottom: 1rem;
 }
 
-.card-body .markdown h1, .card-body .markdown .air-h1,
-.card-body .markdown h2, .card-body .markdown .air-h2,
-.card-body .markdown h3, .card-body .markdown .air-h3,
-.card-body .markdown h4, .card-body .markdown .air-h4 {
+.card-body .markdown h1,
+.card-body .markdown h2,
+.card-body .markdown h3,
+.card-body .markdown h4 {
   margin: 1.414rem 0 .5rem;
   font-weight: inherit;
   line-height: 1.42;
 }
 
-.card-body .markdown h1, .card-body .markdown .air-h1 {
+.card-body .markdown h1 {
   margin-top: 0;
   font-size: 24px;
 }
 
-.card-body .markdown h2, .card-body .markdown .air-h2 {
+.card-body .markdown h2 {
   margin-top: 0;
   font-size: 22px;
 }
 
-.card-body .markdown h3, .card-body .markdown .air-h3 {
+.card-body .markdown h3 {
   margin-top: 0;
   font-size: 20px;
 }
 
-.card-body .markdown h4, .card-body .markdown .air-h4 {
+.card-body .markdown h4 {
   margin-top: 0;
   font-size: 18px;
 }
 
-.card-body .markdown h5, .card-body .markdown .air-h5 {
+.card-body .markdown h5 {
   margin-top: 0;
   font-size: 16px;
 }
 
-.card-body .markdown h6, .card-body .markdown .air-h6 {
+.card-body .markdown h6 {
   margin-top: 0;
   font-size: 14px;
 }
 
-.card-body .markdown small, .card-body .markdown .air-small {
+.card-body .markdown small {
   font-size: 10px;
 }
 

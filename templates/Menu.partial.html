@@ -1,38 +1,23 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" n:inner-foreach="$nav as $item">
-                {if !isset($item->items)}
-                <li class="nav-item">
-                    <a href="{$item->path ?? ''}" class="nav-link {$item->path == $currentPath ? 'active' : ''} {$item->enabled ? '' : 'disabled'}">{$item->title}</a>
-                </li>
-                {else}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {$item->enabled ? '' : 'disabled'}" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        {$item->title}
-                    </a>
-                    <ul class="dropdown-menu" n:inner-foreach="$item->items as $sub">
-                        {if isset($sub->header)}
-                        <li><h6 class="dropdown-header">{$sub->header}</h6></li>
-                        {elseif isset($sub->title)}
-                        <li><a class="dropdown-item {$sub->path == $currentPath ? 'active' : ''} {$sub->enabled ? '' : 'disabled'}" href="{$sub->path ?? ''}">{$sub->title}</a></li>
-                        {else}
-                        <li><hr class="dropdown-divider"></li>
-                        {/if}
-                    </ul>
-                </li>
-                {/if}
-            </ul>
-            <div>
-                <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login" class="btn btn-outline-primary me-4"><i class="bi bi-google"></i> Login with Google</a>
-                <a n:if="isset($isLoggedIn) && $isLoggedIn" href="/Auth/logout" class="btn btn-secondary me-4"><i class="bi bi-google"></i> Logout {$userName}</a>
-            </div>
-        </div>
-    </div>
-</nav>
+<ul class="navbar-nav me-auto mb-2 mb-lg-0" n:inner-foreach="$nav as $item">
+    {if !isset($item->items)}
+    <li class="nav-item">
+        <a href="{$item->path ?? ''}" class="nav-link {$item->path == $currentPath ? 'active' : ''} {$item->enabled ? '' : 'disabled'}">{$item->title}</a>
+    </li>
+    {else}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle {$item->enabled ? '' : 'disabled'}" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {$item->title}
+        </a>
+        <ul class="dropdown-menu" n:inner-foreach="$item->items as $sub">
+            {if isset($sub->header)}
+            <li><h6 class="dropdown-header">{$sub->header}</h6></li>
+            {elseif isset($sub->title)}
+            <li><a class="dropdown-item {$sub->path == $currentPath ? 'active' : ''} {$sub->enabled ? '' : 'disabled'}" href="{$sub->path ?? ''}">{$sub->title}</a></li>
+            {else}
+            <li><hr class="dropdown-divider"></li>
+            {/if}
+        </ul>
+    </li>
+    {/if}
+</ul>

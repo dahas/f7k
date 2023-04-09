@@ -18,6 +18,7 @@ class BlogController extends AppController {
         $this->template->assign([
             'title' => 'Blog',
             'route' => '/Blog',
+            "expanded" => false,
             "href_reply" => "/Blog/reply?id=",
         ]);
     }
@@ -34,6 +35,7 @@ class BlogController extends AppController {
 
         $this->template->assign([
             "comments" => $this->comments->readAll('/Blog'),
+            "expanded" => !empty($text),
             "text" => $text
         ]);
         $this->template->parse('Blog.partial.html');
@@ -43,10 +45,6 @@ class BlogController extends AppController {
     #[Route(path: '/Blog/reply', method: 'get')]
     public function reply(): void
     {
-        if (!$this->auth->isLoggedIn()) {
-            $this->auth->login();
-        }
-
         $text = '';
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getRoute()];
@@ -69,10 +67,6 @@ class BlogController extends AppController {
     #[Route(path: '/Blog/Comments/edit', method: 'get')]
     public function editComment(): void
     {
-        if (!$this->auth->isLoggedIn()) {
-            $this->auth->login();
-        }
-
         $text = '';
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getRoute()];

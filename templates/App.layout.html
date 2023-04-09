@@ -16,18 +16,28 @@
 </head>
 
 <body>
-    {include 'Menu.partial.html'}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">f7k</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {include 'Menu.partial.html'}
+                <div>
+                    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login" class="btn btn-outline-primary me-4"><i class="bi bi-google"></i> Login with Google</a>
+                    <a n:if="isset($isLoggedIn) && $isLoggedIn" href="/Auth/logout" class="btn btn-secondary me-4"><i class="bi bi-google"></i> Logout {$userName}</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     {block content}{/block}
 
     <div class="container-fluid">
         <footer class="py-3 my-4">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
             </ul>
             <p class="text-center text-muted">&copy; {date('Y')} Company, Inc</p>
         </footer>
