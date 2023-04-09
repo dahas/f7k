@@ -15,13 +15,11 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                                aria-label="Name" value="{$name ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && !$isLoggedIn" class="col-12 ps-3 pt-2">
+                            Please log in to leave a comment.
                         </div>
-                        <div class="col-6">
-                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && $isLoggedIn" class="col-12 ps-4 pt-2">
+                            Signed in as: <b>{$user['name']}</b>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -53,13 +51,11 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                                aria-label="Name" value="{$name ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && !$isLoggedIn" class="col-12 ps-3 pt-2">
+                            Please log in to leave a comment.
                         </div>
-                        <div class="col-6">
-                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && $isLoggedIn" class="col-12 ps-4 pt-2">
+                            Signed in as: <b>{$user['name']}</b>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -90,13 +86,11 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                                aria-label="Name" value="{$name ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && !$isLoggedIn" class="col-12 ps-3 pt-2">
+                            Please log in to leave a comment.
                         </div>
-                        <div class="col-6">
-                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && $isLoggedIn" class="col-12 ps-4 pt-2">
+                            Signed in as: <b>{$user['name']}</b>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -113,8 +107,11 @@
     </div>
     {else}
     <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-            aria-controls="collapseExample">
+        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login">
+            <i class="bi bi-chat-left-text"></i> Login to leave a comment
+        </a>
+        <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"
+            aria-expanded="false" aria-controls="collapseExample">
             <i class="bi bi-chat-left-text"></i> Leave a comment
         </a>
     </p>
@@ -125,13 +122,11 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <input type="text" name="name" class="form-control text-bg-light" placeholder="Your name"
-                                aria-label="Name" value="{$name ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && !$isLoggedIn" class="col-12 ps-3 pt-2">
+                            Please log in to leave a comment.
                         </div>
-                        <div class="col-6">
-                            <input type="text" name="email" class="form-control text-bg-light" placeholder="Your E-Mail"
-                                aria-label="E-Mail" value="{$email ?? ''}" required>
+                        <div n:if="isset($isLoggedIn) && $isLoggedIn" class="col-12 ps-4 pt-2">
+                            Signed in as: <b>{$user['name']}</b>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -149,16 +144,16 @@
 
     <h2 id="comments" class="mt-4" n:if="$comments">Comments</h2>
 
-    <div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment">
+    <div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment"
+        n:if="!$comment->getHidden() || ($isLoggedIn && isset($user['email']) && $user['email']==$comment->getEmail())">
         <div class="card-header d-flex" style="font-size: 0.75rem;">
             <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
-            <div class="ms-auto">
-                <a href="{$route}/Comments/edit?controller={$comment->getController()}&amp;id={$comment->id()}"
-                    style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
-                <a href="{$route}/Comments/hide?controller={$comment->getController()}&amp;id={$comment->id()}"
-                    style="margin-right: 0.25rem"><i class="bi bi-eye-slash-fill"></i></a>
-                <a href="{$route}/Comments/delete?controller={$comment->getController()}&amp;id={$comment->id()}"><i
-                        class="bi bi-trash3-fill"></i></a>
+            <div n:if="isset($user['email']) && $user['email']==$comment->getEmail()" class="ms-auto">
+                <a href="{$route}/Comments/edit?id={$comment->id()}" style="margin-right: 0.25rem"><i
+                        class="bi bi-pencil-fill"></i></a>
+                <a href="{$route}/Comments/hide?id={$comment->id()}" style="margin-right: 0.25rem"><i
+                        class="bi {$comment->getHidden() ? 'text-secondary bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
+                <a href="{$route}/Comments/delete?id={$comment->id()}"><i class="bi bi-trash3-fill"></i></a>
             </div>
         </div>
         <div class="card-body">
@@ -167,15 +162,16 @@
             </div>
 
             <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply"
-                n:if="!$reply->getHidden()">
+                n:if="!$reply->getHidden() || ($isLoggedIn && isset($user['email']) && $user['email']==$reply->getEmail())">
                 <div class="card-header d-flex" style="font-size: 0.75rem;">
                     <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
-                    <div class="ms-auto">
-                        <a href="{$route}/Reply/edit?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
+                    <div n:if="isset($user['email']) && $user['email']==$reply->getEmail()" class="ms-auto">
+                        <a href="{$route}/Reply/edit?comment_id={$comment->id()}&amp;id={$reply->id()}"
                             style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
-                        <a href="{$route}/Reply/hide?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
-                            style="margin-right: 0.25rem"><i class="bi bi-eye-slash-fill"></i></a>
-                        <a href="{$route}/Reply/delete?controller={$comment->getController()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"><i
+                        <a href="{$route}/Reply/hide?comment_id={$comment->id()}&amp;id={$reply->id()}"
+                            style="margin-right: 0.25rem"><i
+                                class="bi {$reply->getHidden() ? 'text-secondary bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
+                        <a href="{$route}/Reply/delete?comment_id={$comment->id()}&amp;id={$reply->id()}"><i
                                 class="bi bi-trash3-fill"></i></a>
                     </div>
                 </div>
@@ -186,7 +182,10 @@
                 </div>
             </div>
 
-            <a href="{$href_reply}{$comment->id()}#add"><i class="bi bi-chat-left-text"></i> Reply</a>
+            <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login">
+                <i class="bi bi-chat-left-text"></i> Login to reply</a>
+            <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$href_reply}{$comment->id()}#add">
+                <i class="bi bi-chat-left-text"></i> Reply</a>
         </div>
     </div>
 </div>

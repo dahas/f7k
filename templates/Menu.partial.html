@@ -29,10 +29,10 @@
                 </li>
                 {/if}
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            <div>
+                <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login" class="btn btn-outline-primary me-4"><i class="bi bi-google"></i> Login with Google</a>
+                <a n:if="isset($isLoggedIn) && $isLoggedIn" href="/Auth/logout" class="btn btn-secondary me-4"><i class="bi bi-google"></i> Logout {$userName}</a>
+            </div>
         </div>
     </div>
 </nav>

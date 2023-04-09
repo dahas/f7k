@@ -25,9 +25,8 @@ class CommentsService extends ServiceBase {
     public function readAll(string $controller = ""): array
     {
         $query = $this->orm->query(CommentEntity::class);
-        $query->where('hidden')->is(0);
         if ($controller) {
-            $query->andWhere('controller')->is($controller);
+            $query->where('controller')->is($controller);
         }
         $query->orderBy('created', 'desc');
         return $query->all();
@@ -42,8 +41,8 @@ class CommentsService extends ServiceBase {
     public function create(array $data): void
     {
         $comment = $this->orm->create(CommentEntity::class)
-            ->setName($data['name'])
-            ->setEmail($data['email'])
+            ->setName($_SESSION['user']['name'])
+            ->setEmail($_SESSION['user']['email'])
             ->setTitle($data['title'] ?? "")
             ->setController($data['controller'])
             ->setComment($data['comment']);
@@ -54,8 +53,8 @@ class CommentsService extends ServiceBase {
     {
         $comment = $this->orm->query(CommentEntity::class)
             ->find($data['comment_id'])
-            ->setName($data['name'])
-            ->setEmail($data['email'])
+            ->setName($_SESSION['user']['name'])
+            ->setEmail($_SESSION['user']['email'])
             ->setComment($data['comment']);
         $this->orm->save($comment);
         return $comment->id();
@@ -64,8 +63,9 @@ class CommentsService extends ServiceBase {
     public function hide(int $id): int
     {
         $comment = $this->orm->query(CommentEntity::class)
-            ->find($id)
-            ->setHidden(1);
+            ->find($id);
+        $hidden = $comment->getHidden() === 1 ? 0 : 1;
+        $comment->setHidden($hidden);
         $this->orm->save($comment);
         return $comment->id();
     }
@@ -86,8 +86,8 @@ class CommentsService extends ServiceBase {
     public function createReply(array $data): int
     {
         $reply = $this->orm->create(RepliesEntity::class)
-            ->setName($data['name'])
-            ->setEmail($data['email'])
+            ->setName($_SESSION['user']['name'])
+            ->setEmail($_SESSION['user']['email'])
             ->setTitle($data['title'] ?? "")
             ->setCommentID((int) $data['comment_id'])
             ->setReply($data['comment']);
@@ -99,20 +99,22 @@ class CommentsService extends ServiceBase {
     {
         $reply = $this->orm->query(RepliesEntity::class)
             ->find($data['id'])
-            ->setName($data['name'])
-            ->setEmail($data['email'])
+            ->setName($_SESSION['user']['name'])
+            ->setEmail($_SESSION['user']['email'])
             ->setTitle($data['title'] ?? "")
             ->setReply($data['comment']);
         $this->orm->save($reply);
         return $reply->id();
     }
 
-    public function hideReply(int $id): void
+    public function hideReply(int $id): int
     {
         $reply = $this->orm->query(RepliesEntity::class)
-            ->find($id)
-            ->setHidden(1);
+            ->find($id);
+        $hidden = $reply->getHidden() === 1 ? 0 : 1;
+        $reply->setHidden($hidden);
         $this->orm->save($reply);
+        return $reply->id();
     }
 
     public function deleteReply(int $id): void
