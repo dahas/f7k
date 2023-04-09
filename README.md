@@ -36,6 +36,30 @@ $ composer test
 
 # How to
 
+## Enable Google User Authentication
+
+1. In the Google Cloud Console go to API credentials:  
+https://console.developers.google.com/apis/credentials?hl=de
+
+1. Create a new Project
+
+1. Click on "Configure Consent Screen", choose "External".
+
+1. Enter a name and provide your email address.
+
+1. Skip "Scopes" and "Test Users" and finish the configuration.
+
+1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
+
+1. Select "Web Application" as application type.
+
+1. Add "http(s)://your.domain.tld/Auth/login" as authorised redirect URI.
+
+1. Save it.
+
+1. Copy and paste the Client ID and Secret from the final screen and the redirect URI into your `.env` file.
+
+
 ## Extend f7k with Controllers
 Create a file `YourController.php` in the `controllers` directory:
 
