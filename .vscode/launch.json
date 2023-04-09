@@ -5,7 +5,7 @@
 
         //// Debug currently open PHP file
         {
-            "name": "PHP File",
+            "name": "File",
             "type": "php",
             "request": "launch",
             "program": "${file}",
@@ -16,35 +16,13 @@
 
         //// Debug PHP App
         {
-            "name": "PHP App",
+            "name": "App",
             "type": "php",
             "request": "launch",
             "program": "${workspaceFolder}/debug.php",
             "args": [],
             "externalConsole": false,
             "port": 9003
-        },
-
-        //// Debug currently open JS file
-        {
-            "name": "JS File",
-            "type": "node",
-            "request": "launch",
-            "program": "${file}",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-
-        //// Debug JS App
-        {
-            "name": "JS App",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceFolder}/index.js",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
         }
 
     ]
