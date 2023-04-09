@@ -8,6 +8,7 @@ final class Request {
 
     use Utils;
 
+    private string $uri;
     private string $method;
     private string $route;
     private array $segments = [];
@@ -15,10 +16,14 @@ final class Request {
 
     public function __construct()
     {
-        $uri = $_SERVER['REQUEST_URI'] ?? "";
-        $method = $_SERVER['REQUEST_METHOD'] ?? "get";
-        $this->method = strtolower($method);
-        $this->parseUri($uri);
+        $this->uri = $_SERVER['REQUEST_URI'] ?? "";
+        $this->method = strtolower($_SERVER['REQUEST_METHOD'] ?? "get");
+        $this->parseUri($this->uri);
+    }
+
+    public function getUri(): string
+    {
+        return $this->uri;
     }
 
     public function getMethod(): string
@@ -34,6 +39,11 @@ final class Request {
     public function getSegments(): array
     {
         return $this->segments;
+    }
+
+    public function setData(array $data): void
+    {
+        $this->data = $this->sanitizeRequest($data);
     }
 
     public function getData(): array
@@ -56,10 +66,7 @@ final class Request {
             parse_str($query, $qArr);
         }
 
-        $dirtyVars = array_merge($qArr, $_GET, $_POST);
-        $cleanVars = $this->sanitizeRequest($dirtyVars);
-
-        $this->data = $cleanVars;
+        $this->setData(array_merge($qArr, $_GET, $_POST));
 
         unset($_GET);
         unset($_POST);
