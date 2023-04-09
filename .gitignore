@@ -1,12 +1,10 @@
 /.idea
 /.phpunit.result.cache
-
 /vendor/
 test.php
 .env
-
 .cache
-
 .latte/cache/*
-
 /tests/cache
+public/logout.php
+public/login.php
