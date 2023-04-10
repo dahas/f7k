@@ -17,11 +17,15 @@ class CommentsController extends AppController  {
     public function __construct(protected Request $request, protected Response $response)
     {
         if (!isset($this->menuItem) || !$this->menuItem) {
-            throw new \InvalidArgumentException("Protected parameter '\$menuItem' missing! Must be set in child class.");
+            throw new \f7k\Sources\exceptions\InvalidConfigException(
+                "Protected parameter '\$menuItem' missing! Must be set in child class to overwrite parent setting."
+            );
         }
 
         if (!isset($this->templateFile) || !$this->templateFile) {
-            throw new \InvalidArgumentException("Protected parameter '\$templateFile' missing! Must be set in child class.");
+            throw new \f7k\Sources\exceptions\InvalidConfigException(
+                "Protected parameter '\$templateFile' missing! Must be set in child class to overwrite parent setting."
+            );
         }
 
         parent::__construct($request, $response);
