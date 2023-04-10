@@ -189,3 +189,25 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("simple-mde-editor"),
+        autofocus: true,
+        forceSync: true,
+        toolbar: ["heading", "|", "bold", "italic", "|", "code", "quote", "table", "link", "image", "horizontal-rule", "|", "unordered-list", "ordered-list", "|", "preview"],
+        insertTexts: {
+            horizontalRule: ["", "\n\n-----\n\n"],
+            image: ["![](http://", ")"],
+            link: ["[", "](http://)"],
+            table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
+        },
+        lineWrapping: false,
+        renderingConfig: {
+            singleLineBreaks: false,
+            codeSyntaxHighlighting: true,
+        },
+        styleSelectedText: false,
+    });
+</script>

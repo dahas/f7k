@@ -3,11 +3,21 @@
 namespace f7k\Controller;
 
 use f7k\Sources\attributes\Route;
+use f7k\Sources\{Request, Response};
 
 class BlogController extends CommentsController {
 
     protected string $menuItem = 'Blog';
     protected string $templateFile = 'Blog.partial.html';
+
+    public function __construct(protected Request $request, protected Response $response)
+    {
+        parent::__construct($request, $response);
+
+        $this->template->assign([
+            'title' => "My Blog"
+        ]);
+    }
 
     #[Route(path: '/Blog', method: 'get')]
     public function main(): void

@@ -11,15 +11,22 @@ class CommentsController extends AppController  {
     #[Inject(CommentsService::class)]
     protected $comments;
 
-    protected string $menuItem = '';
-    protected string $templateFile = '';
+    protected string $menuItem;
+    protected string $templateFile;
 
     public function __construct(protected Request $request, protected Response $response)
     {
+        if (!isset($this->menuItem) || !$this->menuItem) {
+            throw new \InvalidArgumentException("Protected parameter '\$menuItem' missing! Must be set in child class.");
+        }
+
+        if (!isset($this->templateFile) || !$this->templateFile) {
+            throw new \InvalidArgumentException("Protected parameter '\$templateFile' missing! Must be set in child class.");
+        }
+
         parent::__construct($request, $response);
 
         $this->template->assign([
-            'title' => $this->menuItem,
             'route' => '/' . $this->menuItem,
             "expanded" => false,
         ]);

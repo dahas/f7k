@@ -3,11 +3,21 @@
 namespace f7k\Controller;
 
 use f7k\Sources\attributes\Route;
+use f7k\Sources\{Request, Response};
 
 class TestController extends CommentsController {
 
     protected string $menuItem = 'Test';
     protected string $templateFile = 'Test.partial.html';
+
+    public function __construct(protected Request $request, protected Response $response)
+    {
+        parent::__construct($request, $response);
+
+        $this->template->assign([
+            'title' => "My Test Suite"
+        ]);
+    }
 
     #[Route(path: '/Test', method: 'get')]
     public function main(): void
