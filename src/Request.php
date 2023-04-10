@@ -41,6 +41,11 @@ final class Request {
         return $this->segments;
     }
 
+    public function getSegment(int $num): mixed
+    {
+        return $this->segments[$num] ?? null;
+    }
+
     public function setData(array $data): void
     {
         $this->data = $this->sanitizeRequest($data);

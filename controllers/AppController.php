@@ -29,7 +29,7 @@ class AppController extends ControllerBase {
             "nav" => $this->menu->getItems(),
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->auth->isLoggedIn(),
-            "currentPath" => "/" . $this->request->getSegments()[0]
+            "currentPath" => "/" . $this->request->getSegment(0)
         ]);
         $this->template->parse('Menu.partial.html');
     }
@@ -37,9 +37,17 @@ class AppController extends ControllerBase {
     #[Route(path: '/Auth/login', method: 'get')]
     public function login(): void 
     {
+        if(isset($this->data['redirect']) && $this->data['redirect']) {
+            $_SESSION['redirect'] = $this->data['redirect'];
+        }
+        
         $this->auth->login();
 
-        $redirect = "/Blog";
+        $redirect = "/";
+        if(isset($_SESSION['redirect'])) {
+            $redirect = $_SESSION['redirect'];
+            unset($_SESSION['redirect']);
+        }
         if(isset($_SESSION['temp'])) {
             $redirect = key($_SESSION['temp']);
         }
@@ -51,9 +59,19 @@ class AppController extends ControllerBase {
     #[Route(path: '/Auth/logout', method: 'get')]
     public function logout(): void 
     {
+        if(isset($this->data['redirect']) && $this->data['redirect']) {
+            $_SESSION['redirect'] = $this->data['redirect'];
+        }
+
         $this->auth->logout();
 
-        header("location: /Blog");
+        $redirect = "/";
+        if(isset($_SESSION['redirect'])) {
+            $redirect = $_SESSION['redirect'];
+            unset($_SESSION['redirect']);
+        }
+
+        header("location: $redirect");
         exit();
     }
 }
