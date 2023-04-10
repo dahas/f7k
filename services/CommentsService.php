@@ -5,6 +5,7 @@ namespace f7k\Service;
 use f7k\Entities\CommentEntity;
 use f7k\Entities\RepliesEntity;
 use f7k\Service\DbalService;
+use f7k\Service\AuthenticationService;
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ServiceBase;
 
@@ -12,6 +13,9 @@ class CommentsService extends ServiceBase {
 
     #[Inject(DbalService::class)]
     protected $dbal;
+
+    #[Inject(AuthenticationService::class)]
+    protected $auth;
 
     private string $tmplFile = 'Comments.partial.html';
     private $orm;
@@ -27,6 +31,9 @@ class CommentsService extends ServiceBase {
         $query = $this->orm->query(CommentEntity::class);
         if ($controller) {
             $query->where('controller')->is($controller);
+        }
+        if (!$this->auth->isLoggedIn()) {
+            $query->andWhere('hidden')->is(0);
         }
         $query->orderBy('created', 'desc');
         return $query->all();

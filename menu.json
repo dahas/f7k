@@ -10,6 +10,11 @@
         "enabled": true
     },
     {
+        "path": "/Test",
+        "title": "Test",
+        "enabled": true
+    },
+    {
         "title": "Examples",
         "enabled": true,
         "items": [
