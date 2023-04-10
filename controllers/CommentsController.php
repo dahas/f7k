@@ -183,7 +183,7 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/reply" => $this->data
+                "/{$this->menuItem}/Reply" => $this->data
             ];
             $this->auth->login();
         } 
