@@ -8,7 +8,7 @@
     </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
-        <form method="post" action="/Blog/Reply/create">
+        <form method="post" action="{$route}/Reply/create">
             <input type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
+                    <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>
@@ -43,7 +43,7 @@
     </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
-        <form method="post" action="/Blog/Reply/update">
+        <form method="post" action="{$route}/Reply/update">
             <input type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="id" value="{$id}">
             <input type="hidden" name="controller" value="{$route}">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
+                    <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>
@@ -79,7 +79,7 @@
     </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
-        <form method="post" action="/Blog/Comments/update">
+        <form method="post" action="{$route}/Comments/update">
             <input type="hidden" name="comment_id" value="{$comment_id}">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="/Blog#comments" type="button" class="btn btn-secondary">Cancel</a>
+                    <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>
@@ -116,7 +116,7 @@
         </a>
     </p>
     <div class="collapse {$expanded ? 'show' : ''}" id="collapseExample">
-        <form method="post" action="/Blog/Comments/create">
+        <form method="post" action="{$route}/Comments/create">
             <input type="hidden" name="controller" value="{$route}">
             <input type="hidden" name="redirect" value="{$route}">
             <div class="card mb-3">
@@ -184,8 +184,30 @@
 
             <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login">
                 <i class="bi bi-chat-left-text"></i> Login to reply</a>
-            <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$href_reply}{$comment->id()}#add">
+            <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$route}/Reply?id={$comment->id()}#add">
                 <i class="bi bi-chat-left-text"></i> Reply</a>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("simple-mde-editor"),
+        autofocus: true,
+        forceSync: true,
+        toolbar: ["heading", "|", "bold", "italic", "|", "code", "quote", "table", "link", "image", "horizontal-rule", "|", "unordered-list", "ordered-list", "|", "preview"],
+        insertTexts: {
+            horizontalRule: ["", "\n\n-----\n\n"],
+            image: ["![](http://", ")"],
+            link: ["[", "](http://)"],
+            table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
+        },
+        lineWrapping: false,
+        renderingConfig: {
+            singleLineBreaks: false,
+            codeSyntaxHighlighting: true,
+        },
+        styleSelectedText: false,
+    });
+</script>
