@@ -1,11 +1,5 @@
 <div class="container-sm mt-3">
     {if isset($isReply)}
-    <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
-            aria-controls="collapseExample">
-            <i class="bi bi-chat-left-text"></i> Leave a comment
-        </a>
-    </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
         <form method="post" action="{$route}/Reply/create">
@@ -35,12 +29,6 @@
         </form>
     </div>
     {elseif isset($isReplyUpdate)}
-    <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
-            aria-controls="collapseExample">
-            <i class="bi bi-chat-left-text"></i> Leave a comment
-        </a>
-    </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
         <form method="post" action="{$route}/Reply/update">
@@ -71,12 +59,6 @@
         </form>
     </div>
     {elseif isset($isUpdate)}
-    <p id="add">
-        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
-            aria-controls="collapseExample">
-            <i class="bi bi-chat-left-text"></i> Leave a comment
-        </a>
-    </p>
     <div class="collapse show" id="collapseExample">
         <h2 id="comments" class="mt-4">{$form_header}</h2>
         <form method="post" action="{$route}/Comments/update">
@@ -107,7 +89,7 @@
     </div>
     {else}
     <p id="add">
-        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login">
+        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$currentPath}">
             <i class="bi bi-chat-left-text"></i> Login to leave a comment
         </a>
         <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"
@@ -182,7 +164,7 @@
                 </div>
             </div>
 
-            <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login">
+            <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$currentPath}">
                 <i class="bi bi-chat-left-text"></i> Login to reply</a>
             <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$route}/Reply?id={$comment->id()}#add">
                 <i class="bi bi-chat-left-text"></i> Reply</a>
