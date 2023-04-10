@@ -29,7 +29,7 @@ class AppController extends ControllerBase {
             "nav" => $this->menu->getItems(),
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->auth->isLoggedIn(),
-            "currentPath" => "/" . $this->request->getSegments()[0]
+            "currentPath" => "/" . $this->request->getSegment(0)
         ]);
         $this->template->parse('Menu.partial.html');
     }
