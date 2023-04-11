@@ -30,7 +30,8 @@ class AppController extends ControllerBase {
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->auth->isLoggedIn(),
             "isAdmin" => $this->auth->isAdmin(),
-            "currentPath" => "/" . $this->request->getSegment(0)
+            "currentPath" => "/" . $this->request->getSegment(0),
+            "redirect" => "/" . $this->request->getSegment(0) . ($this->data['article'] ? '?article='.$this->data['article'] : '')
         ]);
     }
 

@@ -13,7 +13,6 @@ class BlogController extends CommentsController {
 
     protected string $menuItem = 'Blog';
     protected string $templateFile = 'Blog.partial.html';
-    protected int $articleId = 0;
 
     public function __construct(protected Request $request, protected Response $response)
     {
@@ -35,14 +34,14 @@ class BlogController extends CommentsController {
             'title' => "My Blog",
             'article' => $article->getArticle(),
             'articles' => $articles,
-            'current' => $currentArticle
+            'current' => $currentArticle,
         ]);
     }
 
     #[Route(path: '/Blog', method: 'get')]
     public function main(): void
     {
-        parent::renderAll($this->articleId);
+        parent::renderAll();
     }
 
     #[Route(path: '/Blog/Reply', method: 'get')]

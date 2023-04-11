@@ -26,8 +26,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 {include 'Menu.partial.html'}
                 <div>
-                    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$currentPath}" class="btn btn-outline-primary me-4"><i class="bi bi-google"></i> Login with Google</a>
-                    <a n:if="isset($isLoggedIn) && $isLoggedIn" href="/Auth/logout?redirect={$currentPath}" class="btn btn-secondary me-4"><i class="bi bi-google"></i> Logout</a>
+                    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$redirect}" class="btn btn-outline-primary me-4"><i class="bi bi-google"></i> Login with Google</a>
+                    <a n:if="isset($isLoggedIn) && $isLoggedIn" href="/Auth/logout?redirect={$redirect}" class="btn btn-secondary me-4"><i class="bi bi-google"></i> Logout {$isAdmin ? '(A)' : ''}</a>
                 </div>
             </div>
         </div>

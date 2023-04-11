@@ -13,6 +13,7 @@ class CommentsController extends AppController  {
 
     protected string $menuItem;
     protected string $templateFile;
+    protected int $articleId = 0;
 
     public function __construct(protected Request $request, protected Response $response)
     {
@@ -36,7 +37,7 @@ class CommentsController extends AppController  {
         ]);
     }
 
-    public function renderAll($articleId = 0): void
+    public function renderAll(): void
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
@@ -46,8 +47,7 @@ class CommentsController extends AppController  {
         }
 
         $this->template->assign([
-            "articleId" => $articleId,
-            "comments" => $this->comments->readAll('/' . $this->menuItem, $articleId),
+            "comments" => $this->comments->readAll('/' . $this->menuItem, $this->articleId),
             "expanded" => !empty($text),
             "text" => $text
         ]);
@@ -108,7 +108,7 @@ class CommentsController extends AppController  {
 
         $text = '';
         if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getRoute()];
+            $tmpData = $_SESSION['temp'][$this->request->getRoute()."?article={$this->data['article']}"];
             $this->data = $tmpData;
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
@@ -134,13 +134,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}" => $this->data
+                "/{$this->menuItem}?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $this->comments->create($this->data);
-        header("location: /{$this->menuItem}#comments");
+        
+        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -148,13 +149,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Comments/edit" => $this->data
+                "/{$this->menuItem}/Comments/edit?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateComment($this->data);
-        header("location: /{$this->menuItem}#C" . $id);
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#C" . $id);
         exit();
     }
 
@@ -165,7 +167,8 @@ class CommentsController extends AppController  {
         }
         
         $this->comments->hide((int) $this->data['id']);
-        header("location: /{$this->menuItem}#comments");
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -176,7 +179,8 @@ class CommentsController extends AppController  {
         }
         
         $this->comments->delete((int) $this->data['id']);
-        header("location: /{$this->menuItem}#comments");
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -184,13 +188,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Reply" => $this->data
+                "/{$this->menuItem}/Reply?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         } 
         
         $id = $this->comments->createReply($this->data);
-        header("location: /{$this->menuItem}#R" . $id);
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -198,13 +203,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Reply/edit" => $this->data
+                "/{$this->menuItem}/Reply/edit?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateReply($this->data);
-        header("location: /{$this->menuItem}#R" . $id);
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -215,7 +221,8 @@ class CommentsController extends AppController  {
         }
         
         $id = $this->comments->hideReply((int) $this->data['id']);
-        header("location: /{$this->menuItem}#R" . $id);
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -226,7 +233,8 @@ class CommentsController extends AppController  {
         }
         
         $this->comments->deleteReply((int) $this->data['id']);
-        header("location: /{$this->menuItem}#C" . $this->data['comment_id']);
+
+        header("location: /{$this->menuItem}?article={$this->data['article']}#C" . $this->data['comment_id']);
         exit();
     }
 }

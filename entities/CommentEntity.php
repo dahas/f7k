@@ -29,12 +29,12 @@ class CommentEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
-    public function getArticleID(): int
+    public function getArticleId(): int
     {
         return $this->orm()->getColumn('article_id');
     }
 
-    public function setArticleID(int $article_id): self
+    public function setArticleId(int $article_id): self
     {
         $this->orm()->setColumn('article_id', $article_id);
         return $this;
@@ -73,14 +73,14 @@ class CommentEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
-    public function getController(): string
+    public function getPage(): string
     {
-        return $this->orm()->getColumn('controller');
+        return $this->orm()->getColumn('page');
     }
 
-    public function setController(string|null $controller): self
+    public function setPage(string $page): self
     {
-        $this->orm()->setColumn('controller', $controller);
+        $this->orm()->setColumn('page', $page);
         return $this;
     }
 
