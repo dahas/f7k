@@ -41,7 +41,7 @@ class BlogController extends CommentsController {
     #[Route(path: '/Blog', method: 'get')]
     public function main(): void
     {
-        parent::renderAll();
+        parent::renderComments();
     }
 
     #[Route(path: '/Blog/Reply', method: 'get')]

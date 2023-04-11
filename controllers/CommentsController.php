@@ -37,7 +37,7 @@ class CommentsController extends AppController  {
         ]);
     }
 
-    public function renderAll(): void
+    public function renderComments(): void
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
