@@ -35,12 +35,16 @@ class AuthenticationService extends ServiceBase {
             "name" => $profile->displayName,
             "email" => $profile->email,
         ];
+
+        session_regenerate_id();
     }
 
     public function logout(): void
     {
         $this->GoogleOAuthAdapter->disconnect();
         unset($_SESSION['user']);
+
+        session_regenerate_id();
     }
 
     public function isLoggedIn(): bool
