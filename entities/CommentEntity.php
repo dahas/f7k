@@ -29,6 +29,17 @@ class CommentEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
+    public function getArticleID(): int
+    {
+        return $this->orm()->getColumn('article_id');
+    }
+
+    public function setArticleID(int $article_id): self
+    {
+        $this->orm()->setColumn('article_id', $article_id);
+        return $this;
+    }
+
     public function getComment(): string
     {
         return $this->orm()->getColumn('comment');

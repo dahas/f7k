@@ -26,11 +26,12 @@ class CommentsService extends ServiceBase {
         $this->orm = $this->dbal->getEntityManager();
     }
 
-    public function readAll(string $controller = ""): array
+    public function readAll(string $controller, int $article_id = 0): array
     {
         $query = $this->orm->query(CommentEntity::class);
-        if ($controller) {
-            $query->where('controller')->is($controller);
+        $query->where('controller')->is($controller);
+        if ($article_id) {
+            $query->andWhere('article_id')->is($article_id);
         }
         if (!$this->auth->isLoggedIn()) {
             $query->andWhere('hidden')->is(0);
@@ -50,6 +51,7 @@ class CommentsService extends ServiceBase {
         $comment = $this->orm->create(CommentEntity::class)
             ->setName($_SESSION['user']['name'])
             ->setEmail($_SESSION['user']['email'])
+            ->setArticleID((int) $data['article_id'])
             ->setTitle($data['title'] ?? "")
             ->setController($data['controller'])
             ->setComment($data['comment']);

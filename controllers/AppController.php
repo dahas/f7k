@@ -29,9 +29,9 @@ class AppController extends ControllerBase {
             "nav" => $this->menu->getItems(),
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->auth->isLoggedIn(),
+            "isAdmin" => $this->auth->isAdmin(),
             "currentPath" => "/" . $this->request->getSegment(0)
         ]);
-        $this->template->parse('Menu.partial.html');
     }
 
     #[Route(path: '/Auth/login', method: 'get')]

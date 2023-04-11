@@ -22,7 +22,7 @@ class TestController extends CommentsController {
     #[Route(path: '/Test', method: 'get')]
     public function main(): void
     {
-        parent::main();
+        parent::renderAll();
     }
 
     #[Route(path: '/Test/Reply', method: 'get')]

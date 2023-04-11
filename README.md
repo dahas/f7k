@@ -18,6 +18,21 @@ $ git clone https://github.com/dahas/f7k.git .
 $ composer install
 ````
 
+## Is it secure?
+
+Yes, it is!
+
+Authentication is based entirely on **Google's** mechanism. f7k does not process unencrypted sensitive user data. The only data displayed is the name of a user who left a comment.
+
+All content, be it new articles or comments, is filtered and sanitized before being saved to the database and after being read from it.
+
+To get admin privileges, provide a hash that you create independently:
+
+````php
+echo password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
+````
+Copy the Hash value and assign it to ADMIN in your `.env` file. 
+
 ## Environment variables
 Rename example.env to `.env`. Put all your sensitive informations into this file and use the global Environment variables of PHP to access them. E. g.: `$_ENV['API_KEY']`.
 

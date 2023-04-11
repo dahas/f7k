@@ -36,7 +36,7 @@ class CommentsController extends AppController  {
         ]);
     }
 
-    public function main(): void
+    public function renderAll($articleId = 0): void
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
@@ -46,7 +46,8 @@ class CommentsController extends AppController  {
         }
 
         $this->template->assign([
-            "comments" => $this->comments->readAll('/' . $this->menuItem),
+            "articleId" => $articleId,
+            "comments" => $this->comments->readAll('/' . $this->menuItem, $articleId),
             "expanded" => !empty($text),
             "text" => $text
         ]);

@@ -2,14 +2,24 @@
 
 {block content}
 <div class="container mt-3">
-    <h1>Why you'll be amazed!</h1>
+    <div class="row">
+        <div class="col">
+            {$article|noescape}
 
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+            {include 'Comments.partial.html'}
+        </div>
+        <div class="col-3 bg-body-tertiary">
+            <h3>List of Articles</h3>
+
+            <div class="list-group" n:inner-foreach="$articles as $item">
+                <a href="/Blog?article={$item->id()}" class="list-group-item list-group-item-action {$current == $item->id() ? 'active' : ''}" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <small>{$item->getCreated()}</small>
+                    </div>
+                    <p class="mb-1">{$item->getTitle()}</p>
+                  </a>
+              </div>
+        </div>
+    </div>
 </div>
-{include 'Comments.partial.html'}
 {/block}

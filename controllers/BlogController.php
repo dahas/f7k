@@ -2,27 +2,47 @@
 
 namespace f7k\Controller;
 
-use f7k\Sources\attributes\Route;
+use f7k\Service\ArticlesService;
+use f7k\Sources\attributes\{Inject, Route};
 use f7k\Sources\{Request, Response};
 
 class BlogController extends CommentsController {
 
+    #[Inject(ArticlesService::class)]
+    protected $articles;
+
     protected string $menuItem = 'Blog';
     protected string $templateFile = 'Blog.partial.html';
+    protected int $articleId = 0;
 
     public function __construct(protected Request $request, protected Response $response)
     {
         parent::__construct($request, $response);
 
+        $articles = $this->articles->readAll('/Blog');
+
+        if (isset($this->data['article']) && $this->data['article']) {
+            $article = $this->articles->read((int) $this->data['article']);
+        } else {
+            $article = $articles[0];
+        }
+
+        $this->articleId = $article->id();
+
+        $currentArticle = $article->id();
+
         $this->template->assign([
-            'title' => "My Blog"
+            'title' => "My Blog",
+            'article' => $article->getArticle(),
+            'articles' => $articles,
+            'current' => $currentArticle
         ]);
     }
 
     #[Route(path: '/Blog', method: 'get')]
     public function main(): void
     {
-        parent::main();
+        parent::renderAll($this->articleId);
     }
 
     #[Route(path: '/Blog/Reply', method: 'get')]
