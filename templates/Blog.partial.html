@@ -2,23 +2,28 @@
 
 {block content}
 <div class="container mt-3">
-    <div class="row">
+    <h1>Topics</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4"  n:inner-foreach="$articles as $item">
         <div class="col">
-            {$article|noescape}
-
-            {include 'Comments.partial.html'}
-        </div>
-        <div class="col-3 bg-body-tertiary">
-            <h3>List of Articles</h3>
-
-            <div class="list-group" n:inner-foreach="$articles as $item">
-                <a href="/Blog?article={$item->id()}" class="list-group-item list-group-item-action {$current == $item->id() ? 'active' : ''}" aria-current="true">
+            <div class="card h-100">
+                <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" width="100%" height="250"
+                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
+                    preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="33%" y="50%" fill="#dee2e6"
+                        dy=".3em">Responsive
+                        image</text>
+                </svg>
+                <div class="card-body">
                     <div class="d-flex w-100 justify-content-between">
-                      <small>{$item->getCreated()}</small>
+                        <small>{$item->getCreated()}</small>
                     </div>
-                    <p class="mb-1">{$item->getTitle()}</p>
-                  </a>
-              </div>
+                    <h5 class="card-title">{$item->getTitle()}</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <a href="/Blog/Article?article={$item->id()}">Read more ...</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

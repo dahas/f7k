@@ -51,7 +51,7 @@ class CommentsService extends ServiceBase {
         $comment = $this->orm->create(CommentEntity::class)
             ->setName($_SESSION['user']['name'])
             ->setEmail($_SESSION['user']['email'])
-            ->setArticleId((int) $data['article_id'])
+            ->setArticleId((int) $data['article'])
             ->setTitle($data['title'] ?? "")
             ->setPage($data['page'])
             ->setComment($data['comment']);

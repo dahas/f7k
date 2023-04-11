@@ -7,7 +7,8 @@ use f7k\Sources\{Request, Response};
 
 class TestController extends CommentsController {
 
-    protected string $menuItem = 'Test';
+    protected string $page = 'Test';
+    protected string $route = '/Test';
     protected string $templateFile = 'Test.partial.html';
 
     public function __construct(protected Request $request, protected Response $response)

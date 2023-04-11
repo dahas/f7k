@@ -31,7 +31,7 @@ class AppController extends ControllerBase {
             "isLoggedIn" => $this->auth->isLoggedIn(),
             "isAdmin" => $this->auth->isAdmin(),
             "currentPath" => "/" . $this->request->getSegment(0),
-            "redirect" => "/" . $this->request->getSegment(0) . ($this->data['article'] ? '?article='.$this->data['article'] : '')
+            "redirect" => "/" . $this->request->getSegment(0) . "/" . $this->request->getSegment(1) . ($this->data['article'] ? '?article='.$this->data['article'] : '')
         ]);
     }
 

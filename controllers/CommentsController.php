@@ -11,15 +11,22 @@ class CommentsController extends AppController  {
     #[Inject(CommentsService::class)]
     protected $comments;
 
-    protected string $menuItem;
+    protected string $page;
+    protected string $route;
     protected string $templateFile;
     protected int $articleId = 0;
 
     public function __construct(protected Request $request, protected Response $response)
     {
-        if (!isset($this->menuItem) || !$this->menuItem) {
+        if (!isset($this->page) || !$this->page) {
             throw new \f7k\Sources\exceptions\InvalidConfigException(
-                "Protected parameter '\$menuItem' missing! Must be set in child class to overwrite parent setting."
+                "Protected parameter '\$page' missing! Must be set in child class to overwrite parent setting."
+            );
+        }
+        
+        if (!isset($this->route) || !$this->route) {
+            throw new \f7k\Sources\exceptions\InvalidConfigException(
+                "Protected parameter '\$route' missing! Must be set in child class to overwrite parent setting."
             );
         }
 
@@ -32,7 +39,8 @@ class CommentsController extends AppController  {
         parent::__construct($request, $response);
 
         $this->template->assign([
-            'route' => '/' . $this->menuItem,
+            'page' => '/' . $this->page,
+            'route' => $this->route,
             "expanded" => false,
         ]);
     }
@@ -47,7 +55,7 @@ class CommentsController extends AppController  {
         }
 
         $this->template->assign([
-            "comments" => $this->comments->readAll('/' . $this->menuItem, $this->articleId),
+            "comments" => $this->comments->readAll('/' . $this->page, $this->articleId),
             "expanded" => !empty($text),
             "text" => $text
         ]);
@@ -134,14 +142,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}?article={$this->data['article']}" => $this->data
+                "{$this->route}?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $this->comments->create($this->data);
         
-        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
+        header("location: {$this->route}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -149,14 +157,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Comments/edit?article={$this->data['article']}" => $this->data
+                "{$this->route}/Comments/edit?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateComment($this->data);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#C" . $id);
+        header("location: {$this->route}?article={$this->data['article']}#C" . $id);
         exit();
     }
 
@@ -168,7 +176,7 @@ class CommentsController extends AppController  {
         
         $this->comments->hide((int) $this->data['id']);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
+        header("location: {$this->route}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -180,7 +188,7 @@ class CommentsController extends AppController  {
         
         $this->comments->delete((int) $this->data['id']);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#comments");
+        header("location: {$this->route}?article={$this->data['article']}#comments");
         exit();
     }
 
@@ -188,14 +196,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Reply?article={$this->data['article']}" => $this->data
+                "{$this->route}/Reply?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         } 
         
         $id = $this->comments->createReply($this->data);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -203,14 +211,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/{$this->menuItem}/Reply/edit?article={$this->data['article']}" => $this->data
+                "{$this->route}/Reply/edit?article={$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateReply($this->data);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -222,7 +230,7 @@ class CommentsController extends AppController  {
         
         $id = $this->comments->hideReply((int) $this->data['id']);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -234,7 +242,7 @@ class CommentsController extends AppController  {
         
         $this->comments->deleteReply((int) $this->data['id']);
 
-        header("location: /{$this->menuItem}?article={$this->data['article']}#C" . $this->data['comment_id']);
+        header("location: {$this->route}?article={$this->data['article']}#C" . $this->data['comment_id']);
         exit();
     }
 }
