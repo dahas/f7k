@@ -48,6 +48,11 @@ class AuthenticationService extends ServiceBase {
         return $this->GoogleOAuthAdapter->isConnected() ? true : false;
     }
 
+    public function isAdmin(): bool
+    {
+        return isset($_SESSION['user']) && password_verify($_SESSION['user']['email'], $_ENV['ADMIN']);
+    }
+
     public function getUserProfile(): Profile
     {
         return $this->GoogleOAuthAdapter->getUserProfile(); 

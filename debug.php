@@ -9,10 +9,13 @@ use f7k\Sources\Application;
 $dotenv = Dotenv\Dotenv::createImmutable(ROOT);
 $dotenv->safeLoad();
 
+// $hash = password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
+// $verified = password_verify('your_address@gmail.com', $hash);
+
 
 # Set Request Params:
 # -----------------------------------------
-$_SERVER['REQUEST_URI'] = "/Reply?id=13";
+$_SERVER['REQUEST_URI'] = "/Blog";
 $_SERVER['REQUEST_METHOD'] = "get";
 
 $_POST['title'] = "This is the Title";
