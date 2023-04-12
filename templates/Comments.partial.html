@@ -88,7 +88,7 @@
 </div>
 {else}
 <p id="add">
-    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$redirect}">
+    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}?article={$currentArticle}%26expanded=true">
         <i class="bi bi-chat-left-text"></i> Login to leave a comment
     </a>
     <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"
@@ -117,6 +117,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a class="btn btn-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="{$expanded}" aria-controls="collapseExample">Cancel</a>
             </div>
         </div>
     </form>
@@ -163,7 +164,7 @@
             </div>
         </div>
 
-        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$redirect}">
+        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/Reply?article={$currentArticle}%26id={$comment->id()}#add">
             <i class="bi bi-chat-left-text"></i> Login to reply</a>
         <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$route}/Reply?article={$currentArticle}&amp;id={$comment->id()}#add">
             <i class="bi bi-chat-left-text"></i> Reply</a>

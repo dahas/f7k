@@ -56,7 +56,7 @@ class CommentsController extends AppController  {
 
         $this->template->assign([
             "comments" => $this->comments->readAll('/' . $this->page, $this->articleId),
-            "expanded" => !empty($text),
+            "expanded" => !empty($text) || $this->data['expanded'],
             "text" => $text
         ]);
         $this->template->parse($this->templateFile);
