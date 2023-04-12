@@ -49,7 +49,7 @@ class CommentsController extends AppController  {
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getRoute()];
+            $tmpData = $_SESSION['temp'][$this->request->getUri()];
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
         }
@@ -67,7 +67,7 @@ class CommentsController extends AppController  {
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getRoute()];
+            $tmpData = $_SESSION['temp'][$this->request->getUri()];
             $this->data['id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
@@ -88,7 +88,7 @@ class CommentsController extends AppController  {
     {
         $text = '';
         if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getRoute()];
+            $tmpData = $_SESSION['temp'][$this->request->getUri()];
             $this->data['id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
@@ -116,7 +116,7 @@ class CommentsController extends AppController  {
 
         $text = '';
         if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getRoute()."?article={$this->data['article']}"];
+            $tmpData = $_SESSION['temp'][$this->request->getUri()];
             $this->data = $tmpData;
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);

@@ -35,7 +35,7 @@ class ArticleController extends CommentsController {
             'title' => "My Blog",
             'article' => $article->getArticle(),
             'articles' => $articles,
-            'current' => $currentArticle,
+            'currentArticle' => $currentArticle,
         ]);
     }
 

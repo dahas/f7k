@@ -46,6 +46,8 @@ class AppController extends ControllerBase {
         
         $this->auth->login();
 
+        // echo "<pre>"; print_r($_SESSION); echo "</pre>"; die;
+
         $redirect = "/";
         if(isset($_SESSION['redirect'])) {
             $redirect = $_SESSION['redirect'];
