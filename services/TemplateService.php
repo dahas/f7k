@@ -27,7 +27,7 @@ class TemplateService extends ServiceBase {
 
         $this->latte = new Engine();
         $this->latte->setTempDirectory($this->cacheDir);
-        $this->latte->setAutoRefresh($_ENV['MODE'] === 'dev');
+        $this->latte->setAutoRefresh($_ENV['MODE'] !== 'prod');
 
         // Additional Custom Filter for MarkdownService:
         $this->latte->addFilter('markdown', fn(string $s) => $this->markdown->parse($s));

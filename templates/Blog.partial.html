@@ -2,9 +2,9 @@
 
 {block content}
 <div class="container mt-3">
-    <h1>Topics</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-4"  n:inner-foreach="$articles as $item">
-        <div class="col">
+    <h1>Articles</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" n:foreach="$articles as $item">
             <div class="card h-100">
                 <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" width="100%" height="250"
                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
@@ -15,12 +15,18 @@
                         image</text>
                 </svg>
                 <div class="card-body">
-                    <div class="d-flex w-100 justify-content-between">
+                    <div class="d-flex w-100 justify-content-between bg-body-tertiary pb-3">
                         <small>{$item->getCreated()}</small>
+                        <small n:if="$isAdmin" class="ms-auto">
+                            <a href="Editor/edit?page={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
+                                    class="bi bi-pencil-fill"></i></a>
+                            <a href="Editor/hide?page={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
+                                    class="bi {$item->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
+                            <a href="Editor/delete?page={$item->getPage()}&amp;articleId={$item->id()}"><i class="bi bi-trash3-fill"></i></a>
+                        </small>
                     </div>
                     <h5 class="card-title">{$item->getTitle()}</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
+                    <p class="card-text">{$item->getDescription()}</p>
                     <a href="/Blog/Article?article={$item->id()}">Read more ...</a>
                 </div>
             </div>

@@ -28,6 +28,28 @@ class ArticleEntity extends Entity implements IMappableEntity {
         return $this;
     }
 
+    public function getDescription(): string
+    {
+        return $this->orm()->getColumn('description');
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->orm()->setColumn('description', $description);
+        return $this;
+    }
+
+    public function getImage(): string
+    {
+        return $this->orm()->getColumn('image');
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->orm()->setColumn('image', $image);
+        return $this;
+    }
+
     public function getArticle(): string
     {
         return $this->orm()->getColumn('article');

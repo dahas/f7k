@@ -22,7 +22,7 @@ $ composer install
 
 Yes, it is!
 
-Authentication is based entirely on **Google's** mechanism. f7k does not process unencrypted sensitive user data. The only data displayed is the name of a user who left a comment.
+Authentication is based entirely on **Google's** mechanism. f7k only stores the name and the email address of users that left a comment. No passwords are required.
 
 All content, be it new articles or comments, is filtered and sanitized before being saved to the database and after being read from it.
 
@@ -38,15 +38,34 @@ Rename example.env to `.env`. Put all your sensitive informations into this file
 
 Make sure your `.env` file is added to `.gitignore` so it doesn't appear in your public repository.
 
-## Test locally
+## Run locally
 ````
 $ php -S localhost:2400 -t public
 ````
 
-## Running tests
-This App Skeleton uses PHPUnit to run unit tests.
+## Testing
+### Unit testing
+This App Skeleton uses **PHPUnit** to run unit tests.
 ````
 $ composer test
+````
+### e2e testing
+Additionall you can run *end-to-end* tests with **Testcafe**. 
+
+- Put all your tests into `tests/e2e.js` file. 
+- Set mode to 'test' in `.env` file.
+
+Install Testcafe:
+````
+$ npm i -g testcafe
+````
+Run test:
+````
+$ testcafe <browser> tests/e2e.js
+````
+Or on WSL2:
+````
+$ testcafe path:"/mnt/c/WINDOWS/explorer.exe" tests/e2e.js
 ````
 
 # How to

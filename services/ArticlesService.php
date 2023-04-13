@@ -7,6 +7,8 @@ use f7k\Service\DbalService;
 use f7k\Service\AuthenticationService;
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\ServiceBase;
+use \HTMLPurifier_Config;
+use \HTMLPurifier;
 
 class ArticlesService extends ServiceBase {
 
@@ -17,11 +19,16 @@ class ArticlesService extends ServiceBase {
     protected $auth;
 
     private $orm;
+    private HTMLPurifier $purifier;
 
     public function __construct(private array|null $options = []) 
     {
         parent::__construct();
+
         $this->orm = $this->dbal->getEntityManager();
+
+        $config = HTMLPurifier_Config::createDefault();
+        $this->purifier = new HTMLPurifier($config);
     }
 
     public function readAll(string $page): array
@@ -43,17 +50,27 @@ class ArticlesService extends ServiceBase {
 
     public function create(array $data): void
     {
+        $articleText = $this->purifier->purify($data['articleText']);
+        
         $article = $this->orm->create(ArticleEntity::class)
-            ->setArticle($data['article'] ?? "")
+            ->setTitle($data['title'] ?? "")
+            ->setDescription($data['description'] ?? "")
+            ->setImage($data['image'] ?? "")
+            ->setArticle($articleText)
             ->setPage($data['page']);
         $this->orm->save($article);
     }
 
     public function update(array $data): int
     {
+        $articleText = $this->purifier->purify($data['articleText']);
+
         $article = $this->orm->query(ArticleEntity::class)
-            ->find($data['id'])
-            ->setArticle($data['article']);
+            ->find($data['articleId'])
+            ->setTitle($data['title'] ?? "")
+            ->setDescription($data['description'] ?? "")
+            ->setImage($data['image'] ?? "")
+            ->setArticle($articleText);
         $this->orm->save($article);
         return $article->id();
     }

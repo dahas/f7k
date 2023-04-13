@@ -27,21 +27,29 @@ class AuthenticationService extends ServiceBase {
 
     public function login(): void
     {
-        $this->GoogleOAuthAdapter->authenticate();
-
-        $profile = $this->getUserProfile();
-
-        $_SESSION['user'] = [
-            "name" => $profile->displayName,
-            "email" => $profile->email,
-        ];
+        // E2E Testing
+        if ($_ENV['MODE'] === 'test') {
+            $_SESSION['user'] = [
+                "name" => $_ENV['TEST_CRED_NAME'],
+                "email" => $_ENV['TEST_CRED_EMAIL'],
+            ];
+        } else {
+            $this->GoogleOAuthAdapter->authenticate();
+            $profile = $this->getUserProfile();
+            $_SESSION['user'] = [
+                "name" => $profile->displayName,
+                "email" => $profile->email,
+            ];
+        }
 
         session_regenerate_id();
     }
 
     public function logout(): void
     {
-        $this->GoogleOAuthAdapter->disconnect();
+        if ($_ENV['MODE'] !== 'test') {
+            $this->GoogleOAuthAdapter->disconnect();
+        }
         unset($_SESSION['user']);
 
         session_regenerate_id();
@@ -49,7 +57,11 @@ class AuthenticationService extends ServiceBase {
 
     public function isLoggedIn(): bool
     {
-        return $this->GoogleOAuthAdapter->isConnected() ? true : false;
+        if ($_ENV['MODE'] === 'test' && isset($_SESSION['user'])) {
+            return true;
+        } else {
+            return $this->GoogleOAuthAdapter->isConnected() ? true : false;
+        }
     }
 
     public function isAdmin(): bool

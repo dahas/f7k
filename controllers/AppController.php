@@ -26,6 +26,7 @@ class AppController extends ControllerBase {
         $this->data = $this->request->getData();
 
         $this->template->assign([
+            "e2eTestMode" => $_ENV['MODE'] === 'test',
             "nav" => $this->menu->getItems(),
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->auth->isLoggedIn(),

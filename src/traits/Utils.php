@@ -12,7 +12,10 @@ trait Utils {
     public function sanitizeRequest(array $request): array
     {
         return array_map(function ($var) {
-            $allowedTags = '<div><a><br><p><span><img><b><hr>';
+            $allowedTags = ["small", "dfn", "sup", "sub", "pre", "blockquote", "ins", "ul", "var", "samp", "del",
+            "h6", "h5", "h4", "h3", "h2", "h1", "span", "br", "hr", "em", "address", "img", "kbd",
+            "tt", "a", "acronym", "abbr", "code", "p", "i", "b", "strong", "dd", "dt", "dl", "ol",
+            "li", "div", "big", "cite"];
             return strip_tags($var, $allowedTags);
         }, $request);
     }
