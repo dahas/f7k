@@ -33,7 +33,7 @@ class ArticleController extends CommentsController {
 
         $this->template->assign([
             'title' => "My Blog",
-            'article' => $article->getArticle(),
+            'article' => $article,
             'articles' => $articles,
             'currentArticle' => $currentArticle,
         ]);

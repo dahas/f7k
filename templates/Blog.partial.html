@@ -18,11 +18,11 @@
                     <div class="d-flex w-100 justify-content-between bg-body-tertiary pb-3">
                         <small>{$item->getCreated()}</small>
                         <small n:if="$isAdmin" class="ms-auto">
-                            <a href="Editor/edit?page={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
+                            <a href="/Editor/edit?redirect={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
                                     class="bi bi-pencil-fill"></i></a>
-                            <a href="Editor/hide?page={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
+                            <a href="/Editor/hide?page={$item->getPage()}&amp;articleId={$item->id()}" style="margin-right: 0.25rem"><i
                                     class="bi {$item->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-                            <a href="Editor/delete?page={$item->getPage()}&amp;articleId={$item->id()}"><i class="bi bi-trash3-fill"></i></a>
+                            <a href="/Editor/delete?page={$item->getPage()}&amp;articleId={$item->id()}"><i class="bi bi-trash3-fill"></i></a>
                         </small>
                     </div>
                     <h5 class="card-title">{$item->getTitle()}</h5>

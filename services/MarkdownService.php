@@ -2,24 +2,26 @@
 
 namespace f7k\Service;
 
+use f7k\Sources\attributes\Inject;
+use f7k\Service\PurifyService;
+use f7k\Sources\ServiceBase;
 use \Parsedown;
-use \HTMLPurifier_Config;
-use \HTMLPurifier;
 
-class MarkdownService {
+class MarkdownService extends ServiceBase {
+
+    #[Inject(PurifyService::class)]
+    protected $purifier;
 
     private Parsedown $parsedown;
-    private HTMLPurifier $purifier;
 
     public function __construct(private array|null $options = [])
     {
+        parent::__construct();
+
         $escaped = $options['escaped'] ?? false;
 
         $this->parsedown = new Parsedown();
         $this->parsedown->setMarkupEscaped($escaped);
-
-        $config = HTMLPurifier_Config::createDefault();
-        $this->purifier = new HTMLPurifier($config);
     }
 
     public function parse(string $value): string

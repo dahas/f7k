@@ -1,24 +1,39 @@
 {layout 'App.layout.html'}
 
 {block content}
-<div class="container mt-3">
+<div n:if="$isAdmin || !$article->getHidden()" class="container mt-3">
     <div class="row">
-        <div class="col">
-            {$article|noescape}
+        <div class="col me-md-4">
+            <div class="d-flex w-100 justify-content-between">
+                <small>
+                    {$article->getCreated()|noescape}<br><b>{$article->getTitle()|noescape}</b>
+                </small>
+                <small n:if="$isAdmin" class="ms-auto">
+                    <a href="/Editor/edit?redirect={$article->getPage()}/Article?article={$article->id()}&amp;articleId={$article->id()}" style="margin-right: 0.25rem"><i
+                            class="bi bi-pencil-fill"></i></a>
+                    <a href="/Editor/hide?page={$article->getPage()}/Article?article={$article->id()}&amp;articleId={$article->id()}" style="margin-right: 0.25rem"><i
+                            class="bi {$article->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
+                    <a href="/Editor/delete?page={$article->getPage()}&amp;articleId={$article->id()}"><i class="bi bi-trash3-fill"></i></a>
+                </small>
+            </div>
+            <hr>
+            {$article->getArticle()|noescape}
 
             {include 'Comments.partial.html'}
         </div>
-        <div class="col-3 bg-body-tertiary">
+        <div class="col-md-3 col-12">
             <h3>List of Articles</h3>
 
             <div class="list-group" n:inner-foreach="$articles as $item">
-                <a n:if="!$item->getHidden()" href="{$item->getPage()}/Article?article={$item->id()}" class="list-group-item list-group-item-action {$currentArticle == $item->id() ? 'active' : ''}" aria-current="true">
+                <a href="{$item->getPage()}/Article?article={$item->id()}"
+                    class="list-group-item list-group-item-action {$currentArticle == $item->id() ? 'active' : ''}"
+                    aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
-                      <small>{$item->getCreated()}</small>
+                        <small>{$item->getCreated()}</small>
                     </div>
                     <p class="mb-1">{$item->getTitle()}</p>
-                  </a>
-              </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>

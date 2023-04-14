@@ -18,9 +18,13 @@ class Response {
         $this->body .= $content;
     }
 
-    public function setStatus(int $code): void
+    public function setStatus(int $code, string $message = ""): void
     {
-        $this->status = $this->mapStatusCode($code);
+        if ($message) {
+            $this->status = $code . " " . $message;
+        } else {
+            $this->status = $this->mapStatusCode($code);
+        }
     }
 
     public function getStatus(): string
