@@ -15,8 +15,8 @@ $dotenv->safeLoad();
 
 # Set Request Params:
 # -----------------------------------------
-$_SERVER['REQUEST_URI'] = "/Blog";
-$_SERVER['REQUEST_METHOD'] = "get";
+$_SERVER['REQUEST_URI'] = "/Editor/edit";
+$_SERVER['REQUEST_METHOD'] = "GET";
 
 $_POST['title'] = "This is the Title";
 $_POST['comment'] = "And here comes a really sweet comment. <script>alert('XSS')</script>";

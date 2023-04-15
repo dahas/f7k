@@ -9,8 +9,18 @@ class Route
 {
     public function __construct(
         public string|array $path = "/",
-        public string $method = "get"
+        public string|array $method = "get"
     )
     {
+    }
+
+    public function getPaths(): array
+    {
+        return is_string($this->path) ? [$this->path] : $this->path;
+    }
+
+    public function getMethods(): array
+    {
+        return is_string($this->method) ? [$this->method] : $this->method;
     }
 }

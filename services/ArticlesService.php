@@ -38,7 +38,7 @@ class ArticlesService extends ServiceBase {
         return $query->all();
     }
 
-    public function read(int $id): ArticleEntity
+    public function read(int $id): ?ArticleEntity
     {
         return $this->orm->query(ArticleEntity::class)
             ->find($id);

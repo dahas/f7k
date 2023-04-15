@@ -4,7 +4,6 @@ namespace f7k\Controller;
 
 use f7k\Service\ArticlesService;
 use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{Request, Response};
 
 class EditorController extends AppController {
 
@@ -38,7 +37,7 @@ class EditorController extends AppController {
         $this->template->render($this->request, $this->response);
     }
 
-    #[Route(path: '/Editor/edit', method: 'get')]
+    #[Route(path: '/Editor/edit/{articleId}', method: 'get')]
     public function edit(): void
     {
         if (!$this->auth->isLoggedIn()) {
@@ -112,7 +111,7 @@ class EditorController extends AppController {
         exit();
     }
 
-    #[Route(path: '/Editor/hide', method: 'get')]
+    #[Route(path: '/Editor/hide/{articleId}', method: 'get')]
     public function hideArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
@@ -122,11 +121,11 @@ class EditorController extends AppController {
 
         $this->articles->hide((int) $this->data['articleId']);
 
-        header("location: " . $this->data['page']);
+        header("location: " . $this->data['redirect']);
         exit();
     }
 
-    #[Route(path: '/Editor/delete', method: 'get')]
+    #[Route(path: '/Editor/delete/{articleId}', method: 'get')]
     public function deleteArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
@@ -136,7 +135,7 @@ class EditorController extends AppController {
 
         $this->articles->delete((int) $this->data['articleId']);
 
-        header("location: " . $this->data['page']);
+        header("location: " . $this->data['redirect']);
         exit();
     }
 

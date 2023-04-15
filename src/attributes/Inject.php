@@ -4,13 +4,17 @@ namespace f7k\Sources\attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY)]  // <-- Turns the class into an attribute that can be attached to a property
-class Inject
-{
+#[Attribute(Attribute::TARGET_PROPERTY)]
+class Inject {
+    
     public function __construct(
         public string $service = "",
         public array $options = []
-    )
+    ) {
+    }
+
+    public function getOptions(): array
     {
+        return $this->options;
     }
 }

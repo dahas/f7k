@@ -36,26 +36,17 @@ class Router {
                     foreach ($attributes as $attribute) {
                         $route = $attribute->newInstance();
 
-                        $rqMethod = strtolower($route->method);
-                        if (is_array($route->path)) {
-                            foreach($route->path as $rt) {
-                                $this->handlers[$rqMethod . $rt] = [
-                                    "method" => $rqMethod,
-                                    "path" => $rt,
-                                    "callback" => [$controller, $method->getName()]
-                                ];
-                            }
-                        } else {
-                            $this->handlers[$rqMethod . $route->path] = [
-                                "method" => $rqMethod,
-                                "path" => $route->path,
+                        $methods = $route->getMethods();
+                        foreach($route->getPaths() as $path) {
+                            $this->handlers[$path] = [
+                                "methods" => $methods,
+                                "path" => $path,
                                 "callback" => [$controller, $method->getName()]
                             ];
                         }
                     }
                 }
             }
-
             $cache->set("routes", $this->handlers);
         }
     }
@@ -70,32 +61,71 @@ class Router {
         $route = $this->request->getRoute();
         $method = $this->request->getMethod();
 
-        if (isset($this->handlers[$method . $route])) {
-            $handler = $this->handlers[$method . $route];
+        foreach ($this->handlers as $hdlr) {
+            if ($this->match($route, $method, $hdlr, $params)) {
+                $handler = [
+                    'method' => $method,
+                    'path' => $hdlr['path'],
+                    'callback' => $hdlr['callback']
+                ];
 
-            if (is_array($handler["callback"]) && count($handler["callback"]) == 2) {
-                $callback = [new $handler["callback"][0]($this->request, $this->response), $handler["callback"][1]];
-            } else if (is_array($handler["callback"]) && count($handler["callback"]) != 2) {
-                $callback = null;
-            } else {
-                $callback = $handler["callback"];
-            }
+                if (!empty($params)) {
+                    $this->request->setData($params);
+                }
 
-            if ($callback) {
-                $res = call_user_func_array($callback, []);
-                if ($res === false) {
-                    $this->response->setStatus(500);
+                if (is_array($handler["callback"]) && count($handler["callback"]) == 2) {
+                    $callback = [new $handler["callback"][0]($this->request, $this->response), $handler["callback"][1]];
+                } else if (is_array($handler["callback"]) && count($handler["callback"]) != 2) {
+                    $callback = null;
+                } else {
+                    $callback = $handler["callback"];
                 }
-            }
-        } else {
-            if ($this->notFoundHandler) {
-                $res = call_user_func_array($this->notFoundHandler, []);
-                if ($res === false) {
-                    $this->response->setStatus(500);
+    
+                if ($callback) {
+                    $res = call_user_func_array($callback, []);
+                    if ($res === false) {
+                        $this->response->setStatus(500);
+                    }
                 }
-            } else {
-                $this->response->setStatus(404);
+                return;
             }
         }
+
+        if ($this->notFoundHandler) {
+            $res = call_user_func_array($this->notFoundHandler, []);
+            if ($res === false) {
+                $this->response->setStatus(500);
+            }
+        } else {
+            $this->response->setStatus(404);
+        }
+    }
+
+    private function match(string $request, string $method, array $handler, ?array &$params = []): bool
+    {
+        $requestArr = explode('/', substr($request, 1));
+        $pathArr = explode('/', substr($handler['path'], 1));
+
+        if (count($requestArr) !== count($pathArr) || !in_array($method, $handler['methods'])) {
+            return false;
+        }
+
+        foreach ($pathArr as $i => $segment) {
+            if (isset($requestArr[$i])) {
+                if (str_starts_with($segment, '{')) {
+                    $parameter = explode(' ', preg_replace('/{([\w\-%]+)(<(.+)>)?}/', '$1 $3', $segment));
+                    $paramName = $parameter[0];
+                    $paramRegExp = (empty($parameter[1]) ? '[\w\-]+': $parameter[1]);
+                    if (preg_match('/^' . $paramRegExp . '$/', $requestArr[$i])) {
+                        $params[$paramName] = $requestArr[$i];
+                        continue;
+                    }
+                } elseif ($segment === $requestArr[$i]) {
+                    continue;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }

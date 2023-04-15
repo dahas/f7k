@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}?article={$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}?article={$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
@@ -81,14 +81,14 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}?article={$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
 </div>
 {else}
 <p id="add">
-    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}?article={$currentArticle}%26expanded=true">
+    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/{$currentArticle}%26expanded=true">
         <i class="bi bi-chat-left-text"></i> Login to leave a comment
     </a>
     <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"
@@ -131,11 +131,11 @@
     <div class="card-header d-flex" style="font-size: 0.75rem;">
         <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
         <div n:if="isset($user['email']) && $user['email']==$comment->getEmail() || $isAdmin" class="ms-auto">
-            <a href="{$route}/Comments/edit?article={$comment->getArticleId()}&amp;id={$comment->id()}" style="margin-right: 0.25rem"><i
+            <a href="{$route}/Comments/edit/{$comment->getArticleId()}/{$comment->id()}" style="margin-right: 0.25rem"><i
                     class="bi bi-pencil-fill"></i></a>
-            <a href="{$route}/Comments/hide?article={$comment->getArticleId()}&amp;id={$comment->id()}" style="margin-right: 0.25rem"><i
+            <a href="{$route}/Comments/hide/{$comment->getArticleId()}/{$comment->id()}" style="margin-right: 0.25rem"><i
                     class="bi {$comment->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-            <a href="{$route}/Comments/delete?article={$comment->getArticleId()}&amp;id={$comment->id()}"><i class="bi bi-trash3-fill"></i></a>
+            <a href="{$route}/Comments/delete/{$comment->getArticleId()}/{$comment->id()}"><i class="bi bi-trash3-fill"></i></a>
         </div>
     </div>
     <div class="card-body">
@@ -148,12 +148,12 @@
             <div class="card-header d-flex" style="font-size: 0.75rem;">
                 <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                 <div n:if="isset($user['email']) && $user['email']==$reply->getEmail() || $isAdmin" class="ms-auto">
-                    <a href="{$route}/Reply/edit?article={$comment->getArticleId()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
+                    <a href="{$route}/Reply/edit/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"
                         style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
-                    <a href="{$route}/Reply/hide?article={$comment->getArticleId()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"
+                    <a href="{$route}/Reply/hide/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"
                         style="margin-right: 0.25rem"><i
                             class="bi {$reply->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-                    <a href="{$route}/Reply/delete?article={$comment->getArticleId()}&amp;comment_id={$comment->id()}&amp;id={$reply->id()}"><i
+                    <a href="{$route}/Reply/delete/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"><i
                             class="bi bi-trash3-fill"></i></a>
                 </div>
             </div>
@@ -164,9 +164,9 @@
             </div>
         </div>
 
-        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/Reply?article={$currentArticle}%26id={$comment->id()}#add">
+        <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/Reply/{$currentArticle}/{$comment->id()}#add">
             <i class="bi bi-chat-left-text"></i> Login to reply</a>
-        <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$route}/Reply?article={$currentArticle}&amp;id={$comment->id()}#add">
+        <a n:if="isset($isLoggedIn) && $isLoggedIn" href="{$route}/Reply/{$currentArticle}/{$comment->id()}#add">
             <i class="bi bi-chat-left-text"></i> Reply</a>
     </div>
 </div>

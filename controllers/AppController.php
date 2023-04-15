@@ -34,7 +34,7 @@ class AppController extends ControllerBase {
             "currentPath" => "/" . $this->request->getSegment(0),
             "redirect" => "/" . $this->request->getSegment(0) . 
                 ($this->request->getSegment(1) ? "/" . $this->request->getSegment(1) : '') . 
-                ($this->data['article'] ? '?article='.$this->data['article'] : '')
+                (isset($this->data['article']) ? "/{$this->data['article']}" : '')
         ]);
     }
 

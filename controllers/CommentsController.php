@@ -142,14 +142,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "{$this->route}?article={$this->data['article']}" => $this->data
+                "{$this->route}/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $this->comments->create($this->data);
         
-        header("location: {$this->route}?article={$this->data['article']}#comments");
+        header("location: {$this->route}/{$this->data['article']}#comments");
         exit();
     }
 
@@ -157,14 +157,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "{$this->route}/Comments/edit?article={$this->data['article']}" => $this->data
+                "{$this->route}/Comments/edit/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateComment($this->data);
 
-        header("location: {$this->route}?article={$this->data['article']}#C" . $id);
+        header("location: {$this->route}/{$this->data['article']}#C" . $id);
         exit();
     }
 
@@ -176,7 +176,7 @@ class CommentsController extends AppController  {
         
         $this->comments->hide((int) $this->data['id']);
 
-        header("location: {$this->route}?article={$this->data['article']}#comments");
+        header("location: {$this->route}/{$this->data['article']}#comments");
         exit();
     }
 
@@ -188,7 +188,7 @@ class CommentsController extends AppController  {
         
         $this->comments->delete((int) $this->data['id']);
 
-        header("location: {$this->route}?article={$this->data['article']}#comments");
+        header("location: {$this->route}/{$this->data['article']}#comments");
         exit();
     }
 
@@ -196,14 +196,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "{$this->route}/Reply?article={$this->data['article']}" => $this->data
+                "{$this->route}/Reply/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         } 
         
         $id = $this->comments->createReply($this->data);
 
-        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}/{$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -211,14 +211,14 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "{$this->route}/Reply/edit?article={$this->data['article']}" => $this->data
+                "{$this->route}/Reply/edit/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
         
         $id = $this->comments->updateReply($this->data);
 
-        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}/{$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -230,7 +230,7 @@ class CommentsController extends AppController  {
         
         $id = $this->comments->hideReply((int) $this->data['id']);
 
-        header("location: {$this->route}?article={$this->data['article']}#R" . $id);
+        header("location: {$this->route}/{$this->data['article']}#R" . $id);
         exit();
     }
 
@@ -242,7 +242,7 @@ class CommentsController extends AppController  {
         
         $this->comments->deleteReply((int) $this->data['id']);
 
-        header("location: {$this->route}?article={$this->data['article']}#C" . $this->data['comment_id']);
+        header("location: {$this->route}/{$this->data['article']}#C" . $this->data['comment_id']);
         exit();
     }
 }

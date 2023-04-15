@@ -48,6 +48,7 @@ final class Request {
 
     public function setData(array $data): void
     {
+        $data = array_merge($this->data, $data);
         $this->data = $this->sanitizeRequest($data);
     }
 

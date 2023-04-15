@@ -19,7 +19,7 @@ class ServiceBase {
             foreach ($attributes as $attribute) {
                 $instance = $attribute->newInstance();
                 $service = $instance->service;
-                $options = $instance->options;
+                $options = $instance->getOptions();
                 if ($options) {
                     $this->$pName = new $service(options: $options);
                 } else {

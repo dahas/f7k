@@ -8,7 +8,7 @@ use f7k\Sources\{Request, Response};
 
 class ArticleController extends CommentsController {
 
-    #[Inject(ArticlesService::class)]
+    #[Inject(ArticlesService::class, ['hello' => "world"])]
     protected $articles;
 
     protected string $page = 'Blog';
@@ -27,37 +27,39 @@ class ArticleController extends CommentsController {
             $article = $articles[0];
         }
 
-        $this->articleId = $article->id();
+        if ($article) {
+            $this->articleId = $article->id();
 
-        $currentArticle = $article->id();
-
-        $this->template->assign([
-            'title' => "My Blog",
-            'article' => $article,
-            'articles' => $articles,
-            'currentArticle' => $currentArticle,
-        ]);
+            $this->template->assign([
+                'title' => "My Blog",
+                'article' => $article,
+                'articles' => $articles,
+                'currentArticle' => $this->articleId,
+            ]);
+        } else {
+            $this->templateFile = '404.partial.html';
+        }
     }
 
-    #[Route(path: '/Blog/Article', method: 'get')]
+    #[Route(path: '/Blog/Article/{article}', method: 'get')]
     public function read(): void
     {
         parent::renderComments();
     }
 
-    #[Route(path: '/Blog/Article/Reply', method: 'get')]
+    #[Route(path: '/Blog/Article/Reply/{article}/{id}', method: 'get')]
     public function reply(): void
     {
         parent::reply();
     }
 
-    #[Route(path: '/Blog/Article/Comments/edit', method: 'get')]
+    #[Route(path: '/Blog/Article/Comments/edit/{article}/{id}', method: 'get')]
     public function editComment(): void
     {
         parent::editComment();
     }
 
-    #[Route(path: '/Blog/Article/Reply/edit', method: 'get')]
+    #[Route(path: '/Blog/Article/Reply/edit/{article}/{comment_id}/{id}', method: 'get')]
     public function editReply(): void
     {
         parent::editReply();
@@ -75,13 +77,13 @@ class ArticleController extends CommentsController {
         parent::updateComment();
     }
 
-    #[Route(path: '/Blog/Article/Comments/hide', method: 'get')]
+    #[Route(path: '/Blog/Article/Comments/hide/{article}/{id}', method: 'get')]
     public function hideComment(): void
     {
         parent::hideComment();
     }
 
-    #[Route(path: '/Blog/Article/Comments/delete', method: 'get')]
+    #[Route(path: '/Blog/Article/Comments/delete/{article}/{id}', method: 'get')]
     public function deleteComment(): void
     {
         parent::deleteComment();
@@ -99,13 +101,13 @@ class ArticleController extends CommentsController {
         parent::updateReply();
     }
 
-    #[Route(path: '/Blog/Article/Reply/hide', method: 'get')]
+    #[Route(path: '/Blog/Article/Reply/hide/{article}/{comment_id}/{id}', method: 'get')]
     public function hideReply(): void
     {
         parent::hideReply();
     }
 
-    #[Route(path: '/Blog/Article/Reply/delete', method: 'get')]
+    #[Route(path: '/Blog/Article/Reply/delete/{article}/{comment_id}/{id}', method: 'get')]
     public function deleteReply(): void
     {
         parent::deleteReply();

@@ -9,11 +9,11 @@
                     {$article->getCreated()|noescape}<br><b>{$article->getTitle()|noescape}</b>
                 </small>
                 <small n:if="$isAdmin" class="ms-auto">
-                    <a href="/Editor/edit?redirect={$article->getPage()}/Article?article={$article->id()}&amp;articleId={$article->id()}" style="margin-right: 0.25rem"><i
+                    <a href="/Editor/edit/{$article->id()}?redirect={$article->getPage()}/Article/{$article->id()}" style="margin-right: 0.25rem"><i
                             class="bi bi-pencil-fill"></i></a>
-                    <a href="/Editor/hide?page={$article->getPage()}/Article?article={$article->id()}&amp;articleId={$article->id()}" style="margin-right: 0.25rem"><i
+                    <a href="/Editor/hide/{$article->id()}?redirect={$article->getPage()}/Article/{$article->id()}" style="margin-right: 0.25rem"><i
                             class="bi {$article->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-                    <a href="/Editor/delete?page={$article->getPage()}&amp;articleId={$article->id()}"><i class="bi bi-trash3-fill"></i></a>
+                    <a href="/Editor/delete/{$article->id()}?redirect={$article->getPage()}"><i class="bi bi-trash3-fill"></i></a>
                 </small>
             </div>
             <hr>
@@ -25,7 +25,7 @@
             <h3>List of Articles</h3>
 
             <div class="list-group" n:inner-foreach="$articles as $item">
-                <a href="{$item->getPage()}/Article?article={$item->id()}"
+                <a href="{$item->getPage()}/Article/{$item->id()}"
                     class="list-group-item list-group-item-action {$currentArticle == $item->id() ? 'active' : ''}"
                     aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
