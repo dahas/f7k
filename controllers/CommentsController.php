@@ -6,7 +6,7 @@ use f7k\Service\CommentsService;
 use f7k\Sources\attributes\Inject;
 use f7k\Sources\{Request, Response};
 
-class CommentsController extends AppController  {
+class CommentsController extends AppController {
 
     #[Inject(CommentsService::class)]
     protected $comments;
@@ -23,7 +23,7 @@ class CommentsController extends AppController  {
                 "Protected parameter '\$page' missing! Must be set in child class to overwrite parent setting."
             );
         }
-        
+
         if (!isset($this->route) || !$this->route) {
             throw new \f7k\Sources\exceptions\InvalidConfigException(
                 "Protected parameter '\$route' missing! Must be set in child class to overwrite parent setting."
@@ -72,16 +72,23 @@ class CommentsController extends AppController  {
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
         }
-        
-        $this->template->assign([
-            'isReply' => true,
-            'form_header' => 'Reply to #' . $this->data['id'],
-            'comment_id' => $this->data['id'],
-            'text' => $text,
-            "comments" => [$this->comments->read((int) $this->data['id'])]
-        ]);
-        $this->template->parse($this->templateFile);
-        $this->template->render($this->request, $this->response);
+
+        $comment = $this->comments->read((int) $this->data['id']);
+
+        if ($comment) {
+            $this->template->assign([
+                'isReply' => true,
+                'form_header' => 'Reply to #' . $this->data['id'],
+                'comment_id' => $this->data['id'],
+                'text' => $text,
+                "comments" => [$comment]
+            ]);
+            $this->template->parse($this->templateFile);
+            $this->template->render($this->request, $this->response);
+        } else {
+            header("location: /PageNotFound");
+            exit();
+        }
     }
 
     public function editComment(): void
@@ -93,19 +100,30 @@ class CommentsController extends AppController  {
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
         }
-        
+
         $comment = $this->comments->read((int) $this->data['id']);
-        $this->template->assign([
-            'isUpdate' => true,
-            'form_header' => 'Edit Comment #' . $this->data['id'],
-            'comment_id' => $this->data['id'],
-            "name" => $comment->getName(),
-            "email" => $comment->getEmail(),
-            "text" => $text ? $text : $comment->getComment(),
-            "comments" => [$comment]
-        ]);
-        $this->template->parse($this->templateFile);
-        $this->template->render($this->request, $this->response);
+
+        if ($comment) {
+            if ($this->isLoggedIn && $_SESSION['user']['email'] !== $comment->getEmail()) {
+                header("location: /PermissionDenied");
+                exit();
+            }
+
+            $this->template->assign([
+                'isUpdate' => true,
+                'form_header' => 'Edit Comment #' . $this->data['id'],
+                'comment_id' => $this->data['id'],
+                "name" => $comment->getName(),
+                "email" => $comment->getEmail(),
+                "text" => $text ? $text : $comment->getComment(),
+                "comments" => [$comment]
+            ]);
+            $this->template->parse($this->templateFile);
+            $this->template->render($this->request, $this->response);
+        } else {
+            header("location: /PageNotFound");
+            exit();
+        }
     }
 
     public function editReply(): void
@@ -121,21 +139,27 @@ class CommentsController extends AppController  {
             $text = $tmpData['comment'];
             unset($_SESSION['temp']);
         }
-        
+
         $comment = $this->comments->read((int) $this->data['comment_id']);
-        $reply = $this->comments->getReply((int) $this->data['id']);
-        $this->template->assign([
-            'isReplyUpdate' => true,
-            'form_header' => 'Edit Reply #' . $reply->id(),
-            'comment_id' => $reply->getCommentID(),
-            'id' => $reply->id(),
-            "name" => $reply->getName(),
-            "email" => $reply->getEmail(),
-            "text" => $text ? $text : $reply->getReply(),
-            "comments" => [$comment]
-        ]);
-        $this->template->parse($this->templateFile);
-        $this->template->render($this->request, $this->response);
+
+        if ($comment) {
+            $reply = $this->comments->getReply((int) $this->data['id']);
+            $this->template->assign([
+                'isReplyUpdate' => true,
+                'form_header' => 'Edit Reply #' . $reply->id(),
+                'comment_id' => $reply->getCommentID(),
+                'id' => $reply->id(),
+                "name" => $reply->getName(),
+                "email" => $reply->getEmail(),
+                "text" => $text ? $text : $reply->getReply(),
+                "comments" => [$comment]
+            ]);
+            $this->template->parse($this->templateFile);
+            $this->template->render($this->request, $this->response);
+        } else {
+            header("location: /PageNotFound");
+            exit();
+        }
     }
 
     public function createComment(): void
@@ -146,9 +170,9 @@ class CommentsController extends AppController  {
             ];
             $this->auth->login();
         }
-        
+
         $this->comments->create($this->data);
-        
+
         header("location: {$this->route}/{$this->data['article']}#comments");
         exit();
     }
@@ -157,11 +181,11 @@ class CommentsController extends AppController  {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "{$this->route}/Comments/edit/{$this->data['article']}" => $this->data
+                "{$this->route}/Comments/edit/{$this->data['article']}/{$this->data['comment_id']}" => $this->data
             ];
             $this->auth->login();
         }
-        
+
         $id = $this->comments->updateComment($this->data);
 
         header("location: {$this->route}/{$this->data['article']}#C" . $id);
@@ -171,9 +195,12 @@ class CommentsController extends AppController  {
     public function hideComment(): void
     {
         if (!$this->auth->isLoggedIn()) {
+            $_SESSION['temp'] = [
+                "{$this->route}/Comments/hide/{$this->data['article']}/{$this->data['id']}" => $this->data
+            ];
             $this->auth->login();
         }
-        
+
         $this->comments->hide((int) $this->data['id']);
 
         header("location: {$this->route}/{$this->data['article']}#comments");
@@ -183,9 +210,12 @@ class CommentsController extends AppController  {
     public function deleteComment(): void
     {
         if (!$this->auth->isLoggedIn()) {
+            $_SESSION['temp'] = [
+                "{$this->route}/Comments/delete/{$this->data['article']}/{$this->data['id']}" => $this->data
+            ];
             $this->auth->login();
         }
-        
+
         $this->comments->delete((int) $this->data['id']);
 
         header("location: {$this->route}/{$this->data['article']}#comments");
@@ -199,8 +229,8 @@ class CommentsController extends AppController  {
                 "{$this->route}/Reply/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
-        } 
-        
+        }
+
         $id = $this->comments->createReply($this->data);
 
         header("location: {$this->route}/{$this->data['article']}#R" . $id);
@@ -215,7 +245,7 @@ class CommentsController extends AppController  {
             ];
             $this->auth->login();
         }
-        
+
         $id = $this->comments->updateReply($this->data);
 
         header("location: {$this->route}/{$this->data['article']}#R" . $id);
@@ -227,7 +257,7 @@ class CommentsController extends AppController  {
         if (!$this->auth->isLoggedIn()) {
             $this->auth->login();
         }
-        
+
         $id = $this->comments->hideReply((int) $this->data['id']);
 
         header("location: {$this->route}/{$this->data['article']}#R" . $id);
@@ -239,7 +269,7 @@ class CommentsController extends AppController  {
         if (!$this->auth->isLoggedIn()) {
             $this->auth->login();
         }
-        
+
         $this->comments->deleteReply((int) $this->data['id']);
 
         header("location: {$this->route}/{$this->data['article']}#C" . $this->data['comment_id']);

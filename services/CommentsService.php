@@ -40,7 +40,7 @@ class CommentsService extends ServiceBase {
         return $query->all();
     }
 
-    public function read(int $id): CommentEntity
+    public function read(int $id): ?CommentEntity
     {
         return $this->orm->query(CommentEntity::class)
             ->find($id);

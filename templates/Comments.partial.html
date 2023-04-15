@@ -88,7 +88,7 @@
 </div>
 {else}
 <p id="add">
-    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/{$currentArticle}%26expanded=true">
+    <a n:if="isset($isLoggedIn) && !$isLoggedIn" href="/Auth/login?redirect={$route}/{$currentArticle}?expanded=true">
         <i class="bi bi-chat-left-text"></i> Login to leave a comment
     </a>
     <a n:if="isset($isLoggedIn) && $isLoggedIn" data-bs-toggle="collapse" href="#collapseExample" role="button"

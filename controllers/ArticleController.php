@@ -37,7 +37,8 @@ class ArticleController extends CommentsController {
                 'currentArticle' => $this->articleId,
             ]);
         } else {
-            $this->templateFile = '404.partial.html';
+            header("location: /PageNotFound");
+            exit();
         }
     }
 

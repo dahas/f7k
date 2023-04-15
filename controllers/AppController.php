@@ -18,6 +18,8 @@ class AppController extends ControllerBase {
     protected $auth;
 
     protected array $data;
+    protected bool $isLoggedIn;
+    protected bool $isAdmin;
 
     public function __construct(protected Request $request, protected Response $response)
     {
@@ -25,12 +27,15 @@ class AppController extends ControllerBase {
 
         $this->data = $this->request->getData();
 
+        $this->isLoggedIn = $this->auth->isLoggedIn();
+        $this->isAdmin = $this->auth->isAdmin();
+
         $this->template->assign([
             "e2eTestMode" => $_ENV['MODE'] === 'test',
             "nav" => $this->menu->getItems(),
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
-            "isLoggedIn" => $this->auth->isLoggedIn(),
-            "isAdmin" => $this->auth->isAdmin(),
+            "isLoggedIn" => $this->isLoggedIn,
+            "isAdmin" => $this->isAdmin,
             "currentPath" => "/" . $this->request->getSegment(0),
             "redirect" => "/" . $this->request->getSegment(0) . 
                 ($this->request->getSegment(1) ? "/" . $this->request->getSegment(1) : '') . 

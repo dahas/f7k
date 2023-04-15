@@ -4,11 +4,23 @@ namespace f7k\Controller;
 
 use f7k\Service\ArticlesService;
 use f7k\Sources\attributes\{Inject, Route};
+use f7k\Sources\{Request, Response};
 
 class EditorController extends AppController {
 
     #[Inject(ArticlesService::class)]
     protected $articles;
+
+    public function __construct(protected Request $request, protected Response $response)
+    {
+        parent::__construct($request, $response);
+
+        // Only an Admin may create and modify articles!
+        if(!$this->isAdmin) {
+            header("location: /PermissionDenied");
+            exit();
+        }
+    }
 
     #[Route(path: '/Editor', method: 'get')]
     public function main(): void
