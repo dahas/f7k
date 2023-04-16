@@ -4,7 +4,7 @@
 <div class="container mt-3">
     <form action="{$articleId ? '/Editor/update' : '/Editor/create'}" method="post">
         <input type="hidden" name="articleId" value="{$articleId}">
-        <input type="hidden" name="redirect" value="{$redirect}">
+        <input type="hidden" name="referer" value="{$referer}">
         <div class="row mb-3">
             <div class="col">
                 <label for="exampleFormControlInput1" class="form-label">Title (Max. 64 Zeichen)</label>
@@ -137,7 +137,7 @@
             </script>
         </div>
         <button type="submit" class="btn btn-primary">Save Article</button>
-        <a href="{$articlePage}" class="btn btn-secondary">Cancel</a>
+        <a href="{$referer}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {/block}

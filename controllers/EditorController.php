@@ -4,23 +4,11 @@ namespace f7k\Controller;
 
 use f7k\Service\ArticlesService;
 use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{Request, Response};
 
 class EditorController extends AppController {
 
     #[Inject(ArticlesService::class)]
     protected $articles;
-
-    public function __construct(protected Request $request, protected Response $response)
-    {
-        parent::__construct($request, $response);
-
-        // Only an Admin may create and modify articles!
-        if(!$this->isAdmin) {
-            header("location: /PermissionDenied");
-            exit();
-        }
-    }
 
     #[Route(path: '/Editor', method: 'get')]
     public function main(): void
@@ -38,6 +26,7 @@ class EditorController extends AppController {
 
         $this->template->assign([
             'title' => "Create an Article",
+            'referer' => $tmpData['referer'] ?? $_SERVER['HTTP_REFERER'],
             'articleTitle' => $this->data['title'],
             'articleDescription' => $this->data['description'],
             'articleText' => $this->data['articleText'],
@@ -64,7 +53,7 @@ class EditorController extends AppController {
 
             $this->template->assign([
                 'title' => "Create an Article",
-                'redirect' => $this->data['redirect'],
+                'referer' => $this->data['referer'],
                 'articleId' => $this->data['articleId'],
                 'articleTitle' => $this->data['title'],
                 'articleDescription' => $this->data['description'],
@@ -77,7 +66,7 @@ class EditorController extends AppController {
 
             $this->template->assign([
                 'title' => "Edit an Article",
-                'redirect' => $this->data['redirect'],
+                'referer' => $_SERVER['HTTP_REFERER'],
                 'articleId' => $article->id(),
                 'articleTitle' => $article->getTitle(),
                 'articleDescription' => $article->getDescription(),
@@ -96,14 +85,14 @@ class EditorController extends AppController {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/Editor?page={$this->data['page']}" => $this->data
+                "/Editor" => $this->data
             ];
             $this->auth->login();
         }
         
         $this->articles->create($this->data);
 
-        header("location: " . $this->data['page']);
+        header("location: " . $this->data['referer']);
         exit();
     }
 
@@ -112,14 +101,14 @@ class EditorController extends AppController {
     {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['temp'] = [
-                "/Editor/edit?page={$this->data['page']}" => $this->data
+                "/Editor/edit/{$this->data['articleId']}" => $this->data
             ];
             $this->auth->login();
         }
 
         $this->articles->update($this->data);
 
-        header("location: " . $this->data['redirect']);
+        header("location: " . $this->data['referer']);
         exit();
     }
 
@@ -127,13 +116,13 @@ class EditorController extends AppController {
     public function hideArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $this->request->getUri();
+            $_SESSION['redirect'] = $_SERVER['HTTP_REFERER'];
             $this->auth->login();
         }
 
         $this->articles->hide((int) $this->data['articleId']);
 
-        header("location: " . $this->data['redirect']);
+        header("location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -141,13 +130,13 @@ class EditorController extends AppController {
     public function deleteArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $this->request->getUri();
+            $_SESSION['redirect'] = $_SERVER['HTTP_REFERER'];
             $this->auth->login();
         }
 
         $this->articles->delete((int) $this->data['articleId']);
 
-        header("location: " . $this->data['redirect']);
+        header("location: " . (intval($this->request->getSegment(2)) > 0 ? "/Blog" : $_SERVER['HTTP_REFERER'] ));
         exit();
     }
 
