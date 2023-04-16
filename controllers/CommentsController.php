@@ -93,6 +93,11 @@ class CommentsController extends AppController {
 
     public function editComment(): void
     {
+        if (!$this->auth->isLoggedIn()) {
+            $_SESSION['redirect'] = $this->request->getUri();
+            $this->auth->login();
+        }
+        
         $text = '';
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getUri()];
@@ -129,6 +134,7 @@ class CommentsController extends AppController {
     public function editReply(): void
     {
         if (!$this->auth->isLoggedIn()) {
+            $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
 
@@ -195,9 +201,7 @@ class CommentsController extends AppController {
     public function hideComment(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['temp'] = [
-                "{$this->route}/Comments/hide/{$this->data['article']}/{$this->data['id']}" => $this->data
-            ];
+            $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
 
@@ -210,9 +214,7 @@ class CommentsController extends AppController {
     public function deleteComment(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['temp'] = [
-                "{$this->route}/Comments/delete/{$this->data['article']}/{$this->data['id']}" => $this->data
-            ];
+            $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
 
@@ -255,6 +257,7 @@ class CommentsController extends AppController {
     public function hideReply(): void
     {
         if (!$this->auth->isLoggedIn()) {
+            $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
 
@@ -267,6 +270,7 @@ class CommentsController extends AppController {
     public function deleteReply(): void
     {
         if (!$this->auth->isLoggedIn()) {
+            $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
 

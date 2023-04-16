@@ -9,7 +9,9 @@ use \Parsedown;
 
 class MarkdownService extends ServiceBase {
 
-    #[Inject(PurifyService::class)]
+    #[Inject(PurifyService::class, [
+        'HTML.ForbiddenElements' => ['img', 'iframe', 'a', 'script']
+    ])]
     protected $purifier;
 
     private Parsedown $parsedown;

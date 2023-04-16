@@ -12,8 +12,9 @@ class PurifyService {
     public function __construct(private array|null $options = [])
     {
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Trusted', true);
-        $config->set('Filter.YouTube', true);
+        foreach($options as $option => $value) {
+            $config->set($option, $value);
+        }
         $this->purifier = new HTMLPurifier($config);
     }
 
