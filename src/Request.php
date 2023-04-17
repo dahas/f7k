@@ -9,6 +9,7 @@ final class Request {
     use Utils;
 
     private string $uri;
+    private string $referer;
     private string $method;
     private string $route;
     private array $segments = [];
@@ -17,6 +18,7 @@ final class Request {
     public function __construct()
     {
         $this->uri = $_SERVER['REQUEST_URI'] ?? "";
+        $this->referer = $_SERVER['HTTP_REFERER'] ?? "/";
         $this->method = strtolower($_SERVER['REQUEST_METHOD'] ?? "get");
         $this->parseUri($this->uri);
     }
@@ -24,6 +26,11 @@ final class Request {
     public function getUri(): string
     {
         return $this->uri;
+    }
+
+    public function getReferer(): string
+    {
+        return $this->referer;
     }
 
     public function getMethod(): string

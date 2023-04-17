@@ -61,6 +61,9 @@
                     /* enable automatic uploads of images represented by blob or data URIs*/
                     automatic_uploads: true,
                     images_upload_url: '/Editor/upload',
+                    relative_urls: false,
+                    remove_script_host: false,
+                    convert_urls: true,
                     file_picker_types: 'image',
                     /* and here's our custom image picker*/
                     file_picker_callback: function (cb, value, meta) {

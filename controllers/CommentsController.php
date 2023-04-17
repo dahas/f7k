@@ -65,6 +65,11 @@ class CommentsController extends AppController {
 
     public function reply(): void
     {
+        if (!$this->auth->isLoggedIn()) {
+            $_SESSION['redirect'] = $this->request->getUri();
+            $this->auth->login();
+        }
+
         $text = '';
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getUri()];
@@ -86,8 +91,7 @@ class CommentsController extends AppController {
             $this->template->parse($this->templateFile);
             $this->template->render($this->request, $this->response);
         } else {
-            header("location: /PageNotFound");
-            exit();
+            $this->response->redirect("/PageNotFound");
         }
     }
 
@@ -97,7 +101,7 @@ class CommentsController extends AppController {
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         }
-        
+
         $text = '';
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getUri()];
@@ -109,9 +113,8 @@ class CommentsController extends AppController {
         $comment = $this->comments->read((int) $this->data['id']);
 
         if ($comment) {
-            if ($this->isLoggedIn && $_SESSION['user']['email'] !== $comment->getEmail()) {
-                header("location: /PermissionDenied");
-                exit();
+            if (!$this->auth->isAuthorized($comment->getEmail())) {
+                $this->response->redirect("/PermissionDenied");
             }
 
             $this->template->assign([
@@ -126,8 +129,7 @@ class CommentsController extends AppController {
             $this->template->parse($this->templateFile);
             $this->template->render($this->request, $this->response);
         } else {
-            header("location: /PageNotFound");
-            exit();
+            $this->response->redirect("/PageNotFound");
         }
     }
 
@@ -150,6 +152,11 @@ class CommentsController extends AppController {
 
         if ($comment) {
             $reply = $this->comments->getReply((int) $this->data['id']);
+
+            if (!$this->auth->isAuthorized($reply->getEmail())) {
+                $this->response->redirect("/PermissionDenied");
+            }
+
             $this->template->assign([
                 'isReplyUpdate' => true,
                 'form_header' => 'Edit Reply #' . $reply->id(),
@@ -163,120 +170,107 @@ class CommentsController extends AppController {
             $this->template->parse($this->templateFile);
             $this->template->render($this->request, $this->response);
         } else {
-            header("location: /PageNotFound");
-            exit();
+            $this->response->redirect("/PageNotFound");
         }
     }
 
     public function createComment(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->create($this->data);
+        if ($id < 0) { // Not logged in!
             $_SESSION['temp'] = [
                 "{$this->route}/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
-
-        $this->comments->create($this->data);
-
-        header("location: {$this->route}/{$this->data['article']}#comments");
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
     }
 
     public function updateComment(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->updateComment($this->data);
+        if ($id < 0) { // Not logged in!
             $_SESSION['temp'] = [
                 "{$this->route}/Comments/edit/{$this->data['article']}/{$this->data['comment_id']}" => $this->data
             ];
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $id = $this->comments->updateComment($this->data);
-
-        header("location: {$this->route}/{$this->data['article']}#C" . $id);
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#C" . $id);
     }
 
     public function hideComment(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->hide((int) $this->data['id']);
+        if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $this->comments->hide((int) $this->data['id']);
-
-        header("location: {$this->route}/{$this->data['article']}#comments");
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
     }
 
     public function deleteComment(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->delete((int) $this->data['id']);
+        if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $this->comments->delete((int) $this->data['id']);
-
-        header("location: {$this->route}/{$this->data['article']}#comments");
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
     }
 
     public function createReply(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->createReply($this->data);
+        if ($id < 0) { // Not logged in!
             $_SESSION['temp'] = [
                 "{$this->route}/Reply/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
         }
-
-        $id = $this->comments->createReply($this->data);
-
-        header("location: {$this->route}/{$this->data['article']}#R" . $id);
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
     }
 
     public function updateReply(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->updateReply($this->data);
+        if ($id < 0) { // Not logged in!
             $_SESSION['temp'] = [
                 "{$this->route}/Reply/edit/{$this->data['article']}" => $this->data
             ];
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $id = $this->comments->updateReply($this->data);
-
-        header("location: {$this->route}/{$this->data['article']}#R" . $id);
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
     }
 
     public function hideReply(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->hideReply((int) $this->data['id']);
+        if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $id = $this->comments->hideReply((int) $this->data['id']);
-
-        header("location: {$this->route}/{$this->data['article']}#R" . $id);
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
     }
 
     public function deleteReply(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->comments->deleteReply((int) $this->data['id']);
+        if ($id < 0) {  // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
+        } else if ($id == 0) {
+            $this->response->redirect("/PermissionDenied");
         }
-
-        $this->comments->deleteReply((int) $this->data['id']);
-
-        header("location: {$this->route}/{$this->data['article']}#C" . $this->data['comment_id']);
-        exit();
+        $this->response->redirect("{$this->route}/{$this->data['article']}#C" . $this->data['comment_id']);
     }
 }

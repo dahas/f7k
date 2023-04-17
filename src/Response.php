@@ -18,6 +18,12 @@ class Response {
         $this->body .= $content;
     }
 
+    public function redirect(string $uri): void
+    {
+        header("location: $uri");
+        exit;
+    }
+
     public function setStatus(int $code, string $message = ""): void
     {
         if ($message) {

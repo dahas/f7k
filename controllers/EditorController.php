@@ -18,6 +18,10 @@ class EditorController extends AppController {
             $this->auth->login();
         }
 
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
+        }
+
         if (isset($_SESSION['temp'])) {
             $tmpData = $_SESSION['temp'][$this->request->getUri()];
             $this->data = $tmpData;
@@ -26,7 +30,7 @@ class EditorController extends AppController {
 
         $this->template->assign([
             'title' => "Create an Article",
-            'referer' => $tmpData['referer'] ?? $_SERVER['HTTP_REFERER'],
+            'referer' => $this->request->getReferer(),
             'articleTitle' => $this->data['title'],
             'articleDescription' => $this->data['description'],
             'articleText' => $this->data['articleText'],
@@ -44,6 +48,10 @@ class EditorController extends AppController {
         if (!$this->auth->isLoggedIn()) {
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
+        }
+
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
         }
 
         if (isset($_SESSION['temp'])) {
@@ -66,7 +74,7 @@ class EditorController extends AppController {
 
             $this->template->assign([
                 'title' => "Edit an Article",
-                'referer' => $_SERVER['HTTP_REFERER'],
+                'referer' => $this->request->getReferer(),
                 'articleId' => $article->id(),
                 'articleTitle' => $article->getTitle(),
                 'articleDescription' => $article->getDescription(),
@@ -89,11 +97,14 @@ class EditorController extends AppController {
             ];
             $this->auth->login();
         }
-        
+
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
+        }
+
         $this->articles->create($this->data);
 
-        header("location: " . $this->data['referer']);
-        exit();
+        $this->response->redirect($this->data['referer']);
     }
 
     #[Route(path: '/Editor/update', method: 'post')]
@@ -106,43 +117,57 @@ class EditorController extends AppController {
             $this->auth->login();
         }
 
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
+        }
+
         $this->articles->update($this->data);
 
-        header("location: " . $this->data['referer']);
-        exit();
+        $this->response->redirect($this->data['referer']);
     }
 
     #[Route(path: '/Editor/hide/{articleId}', method: 'get')]
     public function hideArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $_SERVER['HTTP_REFERER'];
+            $_SESSION['redirect'] = $this->request->getReferer();
             $this->auth->login();
+        }
+
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
         }
 
         $this->articles->hide((int) $this->data['articleId']);
 
-        header("location: " . $_SERVER['HTTP_REFERER']);
-        exit();
+        $this->response->redirect($this->request->getReferer());
     }
 
     #[Route(path: '/Editor/delete/{articleId}', method: 'get')]
     public function deleteArticle(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $_SERVER['HTTP_REFERER'];
+            $_SESSION['redirect'] = $this->request->getReferer();
             $this->auth->login();
         }
 
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
+        }
+        
         $this->articles->delete((int) $this->data['articleId']);
-
-        header("location: " . (intval($this->request->getSegment(2)) > 0 ? "/Blog" : $_SERVER['HTTP_REFERER'] ));
-        exit();
+        
+        $this->response->redirect((intval($this->request->getSegment(2)) > 0 ?
+            "/Blog" : $this->request->getReferer()));
     }
 
     #[Route(path: '/Editor/upload', method: 'post')]
     public function upload(): void
     {
+        if (!$this->auth->isAdmin()) {
+            $this->response->redirect("/PermissionDenied");
+        }
+
         $accepted_origins = array_map('trim', explode(",", $_ENV['ALLOW_ORIGINS']));
 
         $imageFolder = ROOT . "/public/blog_files/";
