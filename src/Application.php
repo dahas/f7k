@@ -11,6 +11,9 @@ class Application implements AppInterface {
 
     public function execute(): void
     {
+        session_name('sid');
+        session_start();
+
         $request = new Request();
         $response = new Response();
         

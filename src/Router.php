@@ -74,7 +74,10 @@ class Router {
                 }
 
                 if (is_array($handler["callback"]) && count($handler["callback"]) == 2) {
-                    $callback = [new $handler["callback"][0]($this->request, $this->response), $handler["callback"][1]];
+                    $callback = [
+                        new $handler["callback"][0]($this->request, $this->response), 
+                        $handler["callback"][1]
+                    ];
                 } else if (is_array($handler["callback"]) && count($handler["callback"]) != 2) {
                     $callback = null;
                 } else {

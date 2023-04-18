@@ -37,8 +37,7 @@ class ArticleController extends CommentsController {
                 'currentArticle' => $this->articleId,
             ]);
         } else {
-            header("location: /PageNotFound");
-            exit();
+            $this->response->redirect("/PageNotFound");
         }
     }
 

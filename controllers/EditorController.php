@@ -22,10 +22,10 @@ class EditorController extends AppController {
             $this->response->redirect("/PermissionDenied");
         }
 
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $this->data = $tmpData;
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
         }
 
         $this->template->assign([
@@ -54,10 +54,10 @@ class EditorController extends AppController {
             $this->response->redirect("/PermissionDenied");
         }
 
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $this->data = $tmpData;
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
 
             $this->template->assign([
                 'title' => "Create an Article",
@@ -93,9 +93,7 @@ class EditorController extends AppController {
     {
         $id = $this->articles->create($this->data);
         if ($id < 0) {
-            $_SESSION['temp'] = [
-                "/Editor" => $this->data
-            ];
+            $this->session->setTempData("/Editor", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -108,9 +106,7 @@ class EditorController extends AppController {
     {
         $id = $this->articles->update($this->data);
         if ($id < 0) {
-            $_SESSION['temp'] = [
-                "/Editor/edit/{$this->data['articleId']}" => $this->data
-            ];
+            $this->session->setTempData("/Editor/edit/{$this->data['articleId']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");

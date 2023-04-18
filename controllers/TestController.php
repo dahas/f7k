@@ -26,7 +26,7 @@ class TestController extends CommentsController {
         parent::renderComments();
     }
 
-    #[Route(path: '/Test/Reply', method: 'get')]
+    #[Route(path: '/Test/Article/Reply/{article}/{id}', method: 'get')]
     public function reply(): void
     {
         parent::reply();

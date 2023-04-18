@@ -43,6 +43,7 @@ class AppController extends ControllerBase {
     #[Route(path: '/Auth/login', method: 'get')]
     public function login(): void 
     {
+        // Param "state" coming from Google after Login
         if(!isset($this->data['state'])) {
             $_SESSION['redirect'] = $this->request->getReferer();
         }
@@ -54,8 +55,8 @@ class AppController extends ControllerBase {
             $redirect = $_SESSION['redirect'];
             unset($_SESSION['redirect']);
         }
-        if(isset($_SESSION['temp'])) {
-            $redirect = key($_SESSION['temp']);
+        if($this->session->issetTemp()) {
+            $redirect = $this->session->getTempRoute();
         }
 
         $this->response->redirect($redirect);

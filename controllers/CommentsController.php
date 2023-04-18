@@ -16,8 +16,10 @@ class CommentsController extends AppController {
     protected string $templateFile;
     protected int $articleId = 0;
 
-    public function __construct(protected Request $request, protected Response $response)
-    {
+    public function __construct(
+        protected Request $request,
+        protected Response $response
+    ) {
         if (!isset($this->page) || !$this->page) {
             throw new \f7k\Sources\exceptions\InvalidConfigException(
                 "Protected parameter '\$page' missing! Must be set in child class to overwrite parent setting."
@@ -48,10 +50,10 @@ class CommentsController extends AppController {
     public function renderComments(): void
     {
         $text = '';
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $text = $tmpData['comment'];
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
         }
 
         $this->template->assign([
@@ -71,11 +73,11 @@ class CommentsController extends AppController {
         }
 
         $text = '';
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $this->data['id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
         }
 
         $comment = $this->comments->read((int) $this->data['id']);
@@ -103,11 +105,11 @@ class CommentsController extends AppController {
         }
 
         $text = '';
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $this->data['id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
         }
 
         $comment = $this->comments->read((int) $this->data['id']);
@@ -141,11 +143,11 @@ class CommentsController extends AppController {
         }
 
         $text = '';
-        if (isset($_SESSION['temp'])) {
-            $tmpData = $_SESSION['temp'][$this->request->getUri()];
+        if ($this->session->issetTemp()) {
+            $tmpData = $this->session->getTempData($this->request->getUri());
             $this->data = $tmpData;
             $text = $tmpData['comment'];
-            unset($_SESSION['temp']);
+            $this->session->unsetTemp();
         }
 
         $comment = $this->comments->read((int) $this->data['comment_id']);
@@ -178,9 +180,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->create($this->data);
         if ($id < 0) { // Not logged in!
-            $_SESSION['temp'] = [
-                "{$this->route}/{$this->data['article']}" => $this->data
-            ];
+            $this->session->setTempData("{$this->route}/{$this->data['article']}", $this->data);
             $this->auth->login();
         }
         $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
@@ -190,9 +190,8 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->updateComment($this->data);
         if ($id < 0) { // Not logged in!
-            $_SESSION['temp'] = [
-                "{$this->route}/Comments/edit/{$this->data['article']}/{$this->data['comment_id']}" => $this->data
-            ];
+            $this->session->setTempData("{$this->route}/Comments/edit/{$this->data['article']}/
+                {$this->data['comment_id']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -228,9 +227,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->createReply($this->data);
         if ($id < 0) { // Not logged in!
-            $_SESSION['temp'] = [
-                "{$this->route}/Reply/{$this->data['article']}" => $this->data
-            ];
+            $this->session->setTempData("{$this->route}/Reply/{$this->data['article']}", $this->data);
             $this->auth->login();
         }
         $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
@@ -240,9 +237,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->updateReply($this->data);
         if ($id < 0) { // Not logged in!
-            $_SESSION['temp'] = [
-                "{$this->route}/Reply/edit/{$this->data['article']}" => $this->data
-            ];
+            $this->session->setTempData("{$this->route}/Reply/edit/{$this->data['article']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -265,7 +260,7 @@ class CommentsController extends AppController {
     public function deleteReply(): void
     {
         $id = $this->comments->deleteReply((int) $this->data['id']);
-        if ($id < 0) {  // Not logged in!
+        if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
         } else if ($id == 0) {

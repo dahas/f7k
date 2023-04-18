@@ -6,11 +6,6 @@ use f7k\Sources\interfaces\SessionInterface;
 
 class Session implements SessionInterface {
 
-    public function start(): void
-    {
-        session_start();
-    }
-
     public function get(string $name): mixed
     {
         return $_SESSION[$name];
@@ -26,14 +21,24 @@ class Session implements SessionInterface {
         unset($_SESSION[$name]);
     }
 
-    public function getTemp(): mixed
+    public function issetTemp(): bool
     {
-        return $_SESSION['temp'] ?? null;
+        return isset($_SESSION['temp']);
     }
 
-    public function setTemp(mixed $temp): void
+    public function getTempRoute(): string
     {
-        $_SESSION['temp'] = $temp;
+        return key($_SESSION['temp']);
+    }
+
+    public function getTempData(string $route): mixed
+    {
+        return $_SESSION['temp'][$route] ?? null;
+    }
+
+    public function setTempData(string $route, mixed $data): void
+    {
+        $_SESSION['temp'][$route] = $data;
     }
 
     public function unsetTemp(): void
