@@ -23,7 +23,7 @@ class ArticlesService extends ServiceBase {
 
     private $orm;
 
-    public function __construct(private array|null $options = []) 
+    public function __construct(private array|null $options = [])
     {
         parent::__construct();
 
@@ -47,50 +47,74 @@ class ArticlesService extends ServiceBase {
             ->find($id);
     }
 
-    public function create(array $data): void
+    public function create(array $data): int
     {
-        $articleText = $this->purifier->purify($data['articleText']);
-        
-        $article = $this->orm->create(ArticleEntity::class)
-            ->setTitle($data['title'] ?? "")
-            ->setDescription($data['description'] ?? "")
-            ->setImage($data['image'] ?? "")
-            ->setArticle($articleText)
-            ->setPage($data['page'])
-            ->setHidden($data['hidden']);
-        $this->orm->save($article);
+        if ($this->auth->isLoggedIn()) {
+            if ($this->auth->isAdmin()) {
+                $articleText = $this->purifier->purify($data['articleText']);
+                $article = $this->orm->create(ArticleEntity::class)
+                    ->setTitle($data['title'] ?? "")
+                    ->setDescription($data['description'] ?? "")
+                    ->setImage($data['image'] ?? "")
+                    ->setArticle($articleText)
+                    ->setPage($data['page'])
+                    ->setHidden($data['hidden']);
+                $this->orm->save($article);
+                return $article->id();
+            }
+            return 0;
+        }
+        return -1;
     }
 
     public function update(array $data): int
     {
-        $articleText = $this->purifier->purify($data['articleText']);
-
-        $article = $this->orm->query(ArticleEntity::class)
-            ->find($data['articleId'])
-            ->setTitle($data['title'] ?? "")
-            ->setDescription($data['description'] ?? "")
-            ->setImage($data['image'] ?? "")
-            ->setPage($data['page'] ?? "")
-            ->setHidden($data['hidden'] ?? "")
-            ->setArticle($articleText);
-        $this->orm->save($article);
-        return $article->id();
+        if ($this->auth->isLoggedIn()) {
+            if ($this->auth->isAdmin()) {
+                $articleText = $this->purifier->purify($data['articleText']);
+                $article = $this->orm->query(ArticleEntity::class)
+                    ->find($data['articleId'])
+                    ->setTitle($data['title'] ?? "")
+                    ->setDescription($data['description'] ?? "")
+                    ->setImage($data['image'] ?? "")
+                    ->setPage($data['page'] ?? "")
+                    ->setHidden($data['hidden'] ?? "")
+                    ->setArticle($articleText);
+                $this->orm->save($article);
+                return $article->id();
+            }
+            return 0;
+        }
+        return -1;
     }
 
     public function hide(int $id): int
     {
-        $article = $this->orm->query(ArticleEntity::class)
-            ->find($id);
-        $hidden = $article->getHidden() === 1 ? 0 : 1;
-        $article->setHidden($hidden);
-        $this->orm->save($article);
-        return $article->id();
+        if ($this->auth->isLoggedIn()) {
+            if ($this->auth->isAdmin()) {
+                $article = $this->orm->query(ArticleEntity::class)
+                    ->find($id);
+                $hidden = $article->getHidden() === 1 ? 0 : 1;
+                $article->setHidden($hidden);
+                $this->orm->save($article);
+                return $article->id();
+            }
+            return 0;
+        }
+        return -1;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): int
     {
-        $this->orm->query(ArticleEntity::class)
-            ->where('id')->is($id)
-            ->delete();
+        if ($this->auth->isLoggedIn()) {
+            if ($this->auth->isAdmin()) {
+                $this->orm->query(ArticleEntity::class)
+                    ->where('id')->is($id)
+                    ->delete();
+                return $id;
+            }
+            return 0;
+        }
+        return -1;
     }
 }

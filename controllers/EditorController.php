@@ -91,74 +91,57 @@ class EditorController extends AppController {
     #[Route(path: '/Editor/create', method: 'post')]
     public function createArticle(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->articles->create($this->data);
+        if ($id < 0) {
             $_SESSION['temp'] = [
                 "/Editor" => $this->data
             ];
             $this->auth->login();
-        }
-
-        if (!$this->auth->isAdmin()) {
+        } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-
-        $this->articles->create($this->data);
-
-        $this->response->redirect($this->data['referer']);
+        $this->response->redirect("/Blog/Article/{$id}");
     }
 
     #[Route(path: '/Editor/update', method: 'post')]
     public function updateArticle(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->articles->update($this->data);
+        if ($id < 0) {
             $_SESSION['temp'] = [
                 "/Editor/edit/{$this->data['articleId']}" => $this->data
             ];
             $this->auth->login();
-        }
-
-        if (!$this->auth->isAdmin()) {
+        } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-
-        $this->articles->update($this->data);
-
         $this->response->redirect($this->data['referer']);
     }
 
     #[Route(path: '/Editor/hide/{articleId}', method: 'get')]
     public function hideArticle(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->articles->hide((int) $this->data['articleId']);
+        if ($id < 0) {
             $_SESSION['redirect'] = $this->request->getReferer();
             $this->auth->login();
-        }
-
-        if (!$this->auth->isAdmin()) {
+        } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-
-        $this->articles->hide((int) $this->data['articleId']);
-
         $this->response->redirect($this->request->getReferer());
     }
 
     #[Route(path: '/Editor/delete/{articleId}', method: 'get')]
     public function deleteArticle(): void
     {
-        if (!$this->auth->isLoggedIn()) {
+        $id = $this->articles->delete((int) $this->data['articleId']);
+        if ($id < 0) {
             $_SESSION['redirect'] = $this->request->getReferer();
             $this->auth->login();
-        }
-
-        if (!$this->auth->isAdmin()) {
+        } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        
-        $this->articles->delete((int) $this->data['articleId']);
-        
-        $this->response->redirect((intval($this->request->getSegment(2)) > 0 ?
-            "/Blog" : $this->request->getReferer()));
+        $this->response->redirect("/Blog");
     }
 
     #[Route(path: '/Editor/upload', method: 'post')]
