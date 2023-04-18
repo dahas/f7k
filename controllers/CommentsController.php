@@ -180,23 +180,23 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->create($this->data);
         if ($id < 0) { // Not logged in!
-            $this->session->setTempData("{$this->route}/{$this->data['article']}", $this->data);
+            $this->session->setTempData("{$this->route}/{$this->data['articleId']}", $this->data);
             $this->auth->login();
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#comments");
     }
 
     public function updateComment(): void
     {
         $id = $this->comments->updateComment($this->data);
         if ($id < 0) { // Not logged in!
-            $this->session->setTempData("{$this->route}/Comments/edit/{$this->data['article']}/
+            $this->session->setTempData("{$this->route}/Comments/edit/{$this->data['articleId']}/
                 {$this->data['comment_id']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#C" . $id);
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#C" . $id);
     }
 
     public function hideComment(): void
@@ -208,7 +208,7 @@ class CommentsController extends AppController {
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#comments");
     }
 
     public function deleteComment(): void
@@ -220,29 +220,29 @@ class CommentsController extends AppController {
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#comments");
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#comments");
     }
 
     public function createReply(): void
     {
         $id = $this->comments->createReply($this->data);
         if ($id < 0) { // Not logged in!
-            $this->session->setTempData("{$this->route}/Reply/{$this->data['article']}", $this->data);
+            $this->session->setTempData("{$this->route}/Reply/{$this->data['articleId']}", $this->data);
             $this->auth->login();
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#R" . $id);
     }
 
     public function updateReply(): void
     {
         $id = $this->comments->updateReply($this->data);
         if ($id < 0) { // Not logged in!
-            $this->session->setTempData("{$this->route}/Reply/edit/{$this->data['article']}", $this->data);
+            $this->session->setTempData("{$this->route}/Reply/edit/{$this->data['articleId']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#R" . $id);
     }
 
     public function hideReply(): void
@@ -254,7 +254,7 @@ class CommentsController extends AppController {
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#R" . $id);
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#R" . $id);
     }
 
     public function deleteReply(): void
@@ -266,6 +266,6 @@ class CommentsController extends AppController {
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}/{$this->data['article']}#C" . $this->data['comment_id']);
+        $this->response->redirect("{$this->route}/{$this->data['articleId']}#C" . $this->data['comment_id']);
     }
 }
