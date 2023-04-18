@@ -36,23 +36,18 @@ class AppController extends ControllerBase {
             "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->isLoggedIn,
             "isAdmin" => $this->isAdmin,
-            "currentPath" => "/" . $this->request->getSegment(0),
-            "redirect" => "/" . $this->request->getSegment(0) . 
-                ($this->request->getSegment(1) ? "/" . $this->request->getSegment(1) : '') . 
-                (isset($this->data['article']) ? "/{$this->data['article']}" : '')
+            "currentPath" => "/" . $this->request->getSegment(0)
         ]);
     }
 
     #[Route(path: '/Auth/login', method: 'get')]
     public function login(): void 
     {
-        if(isset($this->data['redirect']) && $this->data['redirect']) {
-            $_SESSION['redirect'] = $this->data['redirect'];
+        if(!isset($this->data['state'])) {
+            $_SESSION['redirect'] = $this->request->getReferer();
         }
         
         $this->auth->login();
-
-        // echo "<pre>"; print_r($_SESSION); echo "</pre>"; die;
 
         $redirect = "/";
         if(isset($_SESSION['redirect'])) {
@@ -63,15 +58,14 @@ class AppController extends ControllerBase {
             $redirect = key($_SESSION['temp']);
         }
 
-        header("location: $redirect");
-        exit();
+        $this->response->redirect($redirect);
     }
 
     #[Route(path: '/Auth/logout', method: 'get')]
     public function logout(): void 
     {
-        if(isset($this->data['redirect']) && $this->data['redirect']) {
-            $_SESSION['redirect'] = $this->data['redirect'];
+        if(!isset($this->data['state'])) {
+            $_SESSION['redirect'] = $this->request->getReferer();
         }
 
         $this->auth->logout();
@@ -82,7 +76,6 @@ class AppController extends ControllerBase {
             unset($_SESSION['redirect']);
         }
 
-        header("location: $redirect");
-        exit();
+        $this->response->redirect($redirect);
     }
 }
