@@ -26,28 +26,16 @@ class TestController extends CommentsController {
         parent::renderComments("/Test");
     }
 
-    #[Route(path: '/Test/Reply/{commentId}', method: 'get')]
-    public function reply(): void
+    #[Route(path: '/Test/Comments/create', method: 'post')]
+    public function createComment(): void
     {
-        parent::reply();
+        parent::createComment();
     }
 
     #[Route(path: '/Test/Comments/edit/{commentId}', method: 'get')]
     public function editComment(): void
     {
         parent::editComment();
-    }
-
-    #[Route(path: '/Test/Reply/edit/{commentId}/{replyId}', method: 'get')]
-    public function editReply(): void
-    {
-        parent::editReply();
-    }
-
-    #[Route(path: '/Test/Comments/create', method: 'post')]
-    public function createComment(): void
-    {
-        parent::createComment();
     }
 
     #[Route(path: '/Test/Comments/update/{commentId}', method: 'post')]
@@ -68,10 +56,22 @@ class TestController extends CommentsController {
         parent::deleteComment();
     }
 
+    #[Route(path: '/Test/Reply/{commentId}', method: 'get')]
+    public function reply(): void
+    {
+        parent::reply();
+    }
+
     #[Route(path: '/Test/Reply/create/{commentId}', method: 'post')]
     public function createReply(): void
     {
         parent::createReply();
+    }
+
+    #[Route(path: '/Test/Reply/edit/{commentId}/{replyId}', method: 'get')]
+    public function editReply(): void
+    {
+        parent::editReply();
     }
 
     #[Route(path: '/Test/Reply/update/{commentId}/{replyId}', method: 'post')]

@@ -47,28 +47,16 @@ class ArticleController extends CommentsController {
         parent::renderComments("/Blog", (int) $this->data['articleId']);
     }
 
-    #[Route(path: '/Blog/Article/{articleId}/Reply/{commentId}', method: 'get')]
-    public function reply(): void
+    #[Route(path: '/Blog/Article/{articleId}/Comments/create', method: 'post')]
+    public function createComment(): void
     {
-        parent::reply();
+        parent::createComment();
     }
 
     #[Route(path: '/Blog/Article/{articleId}/Comments/edit/{commentId}', method: 'get')]
     public function editComment(): void
     {
         parent::editComment();
-    }
-
-    #[Route(path: '/Blog/Article/{articleId}/Reply/edit/{commentId}/{replyId}', method: 'get')]
-    public function editReply(): void
-    {
-        parent::editReply();
-    }
-
-    #[Route(path: '/Blog/Article/{articleId}/Comments/create', method: 'post')]
-    public function createComment(): void
-    {
-        parent::createComment();
     }
 
     #[Route(path: '/Blog/Article/{articleId}/Comments/update/{commentId}', method: 'post')]
@@ -89,10 +77,22 @@ class ArticleController extends CommentsController {
         parent::deleteComment();
     }
 
+    #[Route(path: '/Blog/Article/{articleId}/Reply/{commentId}', method: 'get')]
+    public function reply(): void
+    {
+        parent::reply();
+    }
+
     #[Route(path: '/Blog/Article/{articleId}/Reply/create/{commentId}', method: 'post')]
     public function createReply(): void
     {
         parent::createReply();
+    }
+
+    #[Route(path: '/Blog/Article/{articleId}/Reply/edit/{commentId}/{replyId}', method: 'get')]
+    public function editReply(): void
+    {
+        parent::editReply();
     }
 
     #[Route(path: '/Blog/Article/{articleId}/Reply/update/{commentId}/{replyId}', method: 'post')]
