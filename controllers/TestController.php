@@ -26,13 +26,13 @@ class TestController extends CommentsController {
         parent::renderComments("/Test");
     }
 
-    #[Route(path: '/Test/Reply/{id}', method: 'get')]
+    #[Route(path: '/Test/Reply/{comment_id}', method: 'get')]
     public function reply(): void
     {
         parent::reply();
     }
 
-    #[Route(path: '/Test/Comments/edit/{id}', method: 'get')]
+    #[Route(path: '/Test/Comments/edit/{comment_id}', method: 'get')]
     public function editComment(): void
     {
         parent::editComment();
@@ -50,19 +50,19 @@ class TestController extends CommentsController {
         parent::createComment();
     }
 
-    #[Route(path: '/Test/Comments/update/{id}', method: 'post')]
+    #[Route(path: '/Test/Comments/update/{comment_id}', method: 'post')]
     public function updateComment(): void
     {
         parent::updateComment();
     }
 
-    #[Route(path: '/Test/Comments/hide/{id}', method: 'get')]
+    #[Route(path: '/Test/Comments/hide/{comment_id}', method: 'get')]
     public function hideComment(): void
     {
         parent::hideComment();
     }
 
-    #[Route(path: '/Test/Comments/delete/{id}', method: 'get')]
+    #[Route(path: '/Test/Comments/delete/{comment_id}', method: 'get')]
     public function deleteComment(): void
     {
         parent::deleteComment();
@@ -74,19 +74,19 @@ class TestController extends CommentsController {
         parent::createReply();
     }
 
-    #[Route(path: '/Test/Reply/update/{comment_id}/{id}', method: 'post')]
+    #[Route(path: '/Test/Reply/update/{comment_id}/{replyId}', method: 'post')]
     public function updateReply(): void
     {
         parent::updateReply();
     }
 
-    #[Route(path: '/Test/Reply/hide/{comment_id}/{id}', method: 'get')]
+    #[Route(path: '/Test/Reply/hide/{comment_id}/{replyId}', method: 'get')]
     public function hideReply(): void
     {
         parent::hideReply();
     }
 
-    #[Route(path: '/Test/Reply/delete/{comment_id}/{id}', method: 'get')]
+    #[Route(path: '/Test/Reply/delete/{comment_id}/{replyId}', method: 'get')]
     public function deleteReply(): void
     {
         parent::deleteReply();

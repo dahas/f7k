@@ -74,19 +74,19 @@ class CommentsController extends AppController {
         $text = '';
         if ($this->session->issetTemp()) {
             $tmpData = $this->session->getTempData($this->request->getUri());
-            $this->data['id'] = $tmpData['comment_id'];
+            $this->data['comment_id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
             $this->session->unsetTemp();
         }
 
-        $comment = $this->comments->read((int) $this->data['id']);
+        $comment = $this->comments->read((int) $this->data['comment_id']);
 
         if ($comment) {
             $this->template->assign([
                 'isReply' => true,
                 'route' => $this->route,
-                'form_header' => 'Reply to #' . $this->data['id'],
-                'comment_id' => $this->data['id'],
+                'form_header' => 'Reply to #' . $this->data['comment_id'],
+                'comment_id' => $this->data['comment_id'],
                 'text' => $text,
                 "comments" => [$comment]
             ]);
@@ -107,12 +107,12 @@ class CommentsController extends AppController {
         $text = '';
         if ($this->session->issetTemp()) {
             $tmpData = $this->session->getTempData($this->request->getUri());
-            $this->data['id'] = $tmpData['comment_id'];
+            $this->data['comment_id'] = $tmpData['comment_id'];
             $text = $tmpData['comment'];
             $this->session->unsetTemp();
         }
 
-        $comment = $this->comments->read((int) $this->data['id']);
+        $comment = $this->comments->read((int) $this->data['comment_id']);
 
         if ($comment) {
             if (!$this->auth->isAuthorized($comment->getEmail())) {
@@ -122,8 +122,8 @@ class CommentsController extends AppController {
             $this->template->assign([
                 'isUpdate' => true,
                 'route' => $this->route,
-                'form_header' => 'Edit Comment #' . $this->data['id'],
-                'comment_id' => $this->data['id'],
+                'form_header' => 'Edit Comment #' . $this->data['comment_id'],
+                'comment_id' => $this->data['comment_id'],
                 "name" => $comment->getName(),
                 "email" => $comment->getEmail(),
                 "text" => $text ? $text : $comment->getComment(),
@@ -203,7 +203,7 @@ class CommentsController extends AppController {
 
     public function hideComment(): void
     {
-        $id = $this->comments->hide((int) $this->data['id']);
+        $id = $this->comments->hide((int) $this->data['comment_id']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
@@ -215,7 +215,7 @@ class CommentsController extends AppController {
 
     public function deleteComment(): void
     {
-        $id = $this->comments->delete((int) $this->data['id']);
+        $id = $this->comments->delete((int) $this->data['comment_id']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
@@ -251,7 +251,7 @@ class CommentsController extends AppController {
 
     public function hideReply(): void
     {
-        $id = $this->comments->hideReply((int) $this->data['id']);
+        $id = $this->comments->hideReply((int) $this->data['replyId']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
@@ -263,7 +263,7 @@ class CommentsController extends AppController {
 
     public function deleteReply(): void
     {
-        $id = $this->comments->deleteReply((int) $this->data['id']);
+        $id = $this->comments->deleteReply((int) $this->data['replyId']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
