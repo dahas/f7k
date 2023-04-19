@@ -21,6 +21,26 @@ class Session implements SessionInterface {
         unset($_SESSION[$name]);
     }
 
+    public function issetRedirect(): bool
+    {
+        return isset($_SESSION['redirect']);
+    }
+
+    public function getRedirect(): string
+    {
+        return $_SESSION['redirect'];
+    }
+
+    public function setRedirect(string $route): void
+    {
+        $_SESSION['redirect'] = $route;
+    }
+
+    public function unsetRedirect(): void
+    {
+        unset($_SESSION['redirect']);
+    }
+
     public function issetTemp(): bool
     {
         return isset($_SESSION['temp']);

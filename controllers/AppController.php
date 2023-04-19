@@ -40,20 +40,23 @@ class AppController extends ControllerBase {
         ]);
     }
 
+    /**
+     * Redirects to Googles OAuth Client and back when successfully authorized.
+     */
     #[Route(path: '/Auth/login', method: 'get')]
     public function login(): void 
     {
         // Param "state" coming from Google after Login
         if(!isset($this->data['state'])) {
-            $_SESSION['redirect'] = $this->request->getReferer();
+            $this->session->setRedirect($this->request->getReferer());
         }
         
         $this->auth->login();
 
         $redirect = "/";
-        if(isset($_SESSION['redirect'])) {
-            $redirect = $_SESSION['redirect'];
-            unset($_SESSION['redirect']);
+        if($this->session->issetRedirect()) {
+            $redirect = $this->session->getRedirect();
+            $this->session->unsetRedirect();
         }
         if($this->session->issetTemp()) {
             $redirect = $this->session->getTempRoute();
@@ -62,19 +65,23 @@ class AppController extends ControllerBase {
         $this->response->redirect($redirect);
     }
 
+    /**
+     * Redirects to Googles OAuth Client and back when successfully logged out.
+     */
     #[Route(path: '/Auth/logout', method: 'get')]
     public function logout(): void 
     {
+        // Param "state" coming from Google after Login
         if(!isset($this->data['state'])) {
-            $_SESSION['redirect'] = $this->request->getReferer();
+            $this->session->setRedirect($this->request->getReferer());
         }
 
         $this->auth->logout();
 
         $redirect = "/";
-        if(isset($_SESSION['redirect'])) {
-            $redirect = $_SESSION['redirect'];
-            unset($_SESSION['redirect']);
+        if($this->session->issetRedirect()) {
+            $redirect = $this->session->getRedirect();
+            $this->session->unsetRedirect();
         }
 
         $this->response->redirect($redirect);

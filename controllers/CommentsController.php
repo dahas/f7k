@@ -67,7 +67,7 @@ class CommentsController extends AppController {
     public function reply(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         }
 
@@ -100,7 +100,7 @@ class CommentsController extends AppController {
     public function editComment(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         }
 
@@ -139,7 +139,7 @@ class CommentsController extends AppController {
     public function editReply(): void
     {
         if (!$this->auth->isLoggedIn()) {
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         }
 
@@ -205,7 +205,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->hide((int) $this->data['commentId']);
         if ($id < 0) { // Not logged in!
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -217,7 +217,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->delete((int) $this->data['commentId']);
         if ($id < 0) { // Not logged in!
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -253,7 +253,7 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->hideReply((int) $this->data['replyId']);
         if ($id < 0) { // Not logged in!
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -265,12 +265,11 @@ class CommentsController extends AppController {
     {
         $id = $this->comments->deleteReply((int) $this->data['replyId']);
         if ($id < 0) { // Not logged in!
-            $_SESSION['redirect'] = $this->request->getUri();
+            $this->session->setRedirect($this->request->getUri());
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
         }
-        $this->response->redirect("{$this->route}#C" .
-            $this->data['commentId']);
+        $this->response->redirect("{$this->route}#C{$this->data['commentId']}");
     }
 }
