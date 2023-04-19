@@ -5,7 +5,7 @@
     <h1>Articles</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col" n:foreach="$articles as $item">
-            <div n:if="$isAdmin || !$item->getHidden()" class="card h-100">
+            <div class="card h-100">
                 <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" width="100%" height="250"
                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
                     preserveAspectRatio="xMidYMid slice" focusable="false">

@@ -34,7 +34,7 @@ class ArticlesService extends ServiceBase {
     {
         $query = $this->orm->query(ArticleEntity::class);
         $query->where('page')->is($page);
-        if (!$this->auth->isLoggedIn()) {
+        if (!$this->auth->isLoggedIn() || ($this->auth->isLoggedIn() && !$this->auth->isAdmin())) {
             $query->andWhere('hidden')->is(0);
         }
         $query->orderBy('created', 'desc');
