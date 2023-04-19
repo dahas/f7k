@@ -27,7 +27,7 @@ class ArticleController extends CommentsController {
             $article = $articles[0];
         }
 
-        $this->route = "{$this->route}/{$article->id()}";
+        $this->route = "{$this->route}/{$this->data['articleId']}";
 
         if ($article) {
             $this->template->assign([
