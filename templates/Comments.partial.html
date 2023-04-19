@@ -1,7 +1,7 @@
 {if isset($isReply)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Reply/create/{$comment_id}">
+    <form method="post" action="{$route}/Reply/create/{$commentId}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -28,7 +28,7 @@
 {elseif isset($isReplyUpdate)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Reply/update/{$comment_id}/{$id}">
+    <form method="post" action="{$route}/Reply/update/{$commentId}/{$replyId}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -55,7 +55,7 @@
 {elseif isset($isUpdate)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Comments/update/{$comment_id}">
+    <form method="post" action="{$route}/Comments/update/{$commentId}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">

@@ -74,19 +74,19 @@ class CommentsController extends AppController {
         $text = '';
         if ($this->session->issetTemp()) {
             $tmpData = $this->session->getTempData($this->request->getUri());
-            $this->data['comment_id'] = $tmpData['comment_id'];
+            $this->data['commentId'] = $tmpData['commentId'];
             $text = $tmpData['comment'];
             $this->session->unsetTemp();
         }
 
-        $comment = $this->comments->read((int) $this->data['comment_id']);
+        $comment = $this->comments->read((int) $this->data['commentId']);
 
         if ($comment) {
             $this->template->assign([
                 'isReply' => true,
                 'route' => $this->route,
-                'form_header' => 'Reply to #' . $this->data['comment_id'],
-                'comment_id' => $this->data['comment_id'],
+                'form_header' => 'Reply to #' . $this->data['commentId'],
+                'commentId' => $this->data['commentId'],
                 'text' => $text,
                 "comments" => [$comment]
             ]);
@@ -107,12 +107,12 @@ class CommentsController extends AppController {
         $text = '';
         if ($this->session->issetTemp()) {
             $tmpData = $this->session->getTempData($this->request->getUri());
-            $this->data['comment_id'] = $tmpData['comment_id'];
+            $this->data['commentId'] = $tmpData['commentId'];
             $text = $tmpData['comment'];
             $this->session->unsetTemp();
         }
 
-        $comment = $this->comments->read((int) $this->data['comment_id']);
+        $comment = $this->comments->read((int) $this->data['commentId']);
 
         if ($comment) {
             if (!$this->auth->isAuthorized($comment->getEmail())) {
@@ -122,8 +122,8 @@ class CommentsController extends AppController {
             $this->template->assign([
                 'isUpdate' => true,
                 'route' => $this->route,
-                'form_header' => 'Edit Comment #' . $this->data['comment_id'],
-                'comment_id' => $this->data['comment_id'],
+                'form_header' => 'Edit Comment #' . $this->data['commentId'],
+                'commentId' => $this->data['commentId'],
                 "name" => $comment->getName(),
                 "email" => $comment->getEmail(),
                 "text" => $text ? $text : $comment->getComment(),
@@ -151,10 +151,10 @@ class CommentsController extends AppController {
             $this->session->unsetTemp();
         }
 
-        $comment = $this->comments->read((int) $this->data['comment_id']);
+        $comment = $this->comments->read((int) $this->data['commentId']);
 
         if ($comment) {
-            $reply = $this->comments->getReply((int) $this->data['id']);
+            $reply = $this->comments->getReply((int) $this->data['replyId']);
 
             if (!$this->auth->isAuthorized($reply->getEmail())) {
                 $this->response->redirect("/PermissionDenied");
@@ -164,8 +164,8 @@ class CommentsController extends AppController {
                 'isReplyUpdate' => true,
                 'route' => $this->route,
                 'form_header' => 'Edit Reply #' . $reply->id(),
-                'comment_id' => $reply->getCommentID(),
-                'id' => $reply->id(),
+                'commentId' => $reply->getCommentID(),
+                'replyId' => $reply->id(),
                 "name" => $reply->getName(),
                 "email" => $reply->getEmail(),
                 "text" => $text ? $text : $reply->getReply(),
@@ -193,7 +193,7 @@ class CommentsController extends AppController {
         $id = $this->comments->updateComment($this->data);
         if ($id < 0) { // Not logged in!
             $this->session->setTempData("{$this->route}/Comments/edit/
-                {$this->data['comment_id']}", $this->data);
+                {$this->data['commentId']}", $this->data);
             $this->auth->login();
         } else if ($id == 0) {
             $this->response->redirect("/PermissionDenied");
@@ -203,7 +203,7 @@ class CommentsController extends AppController {
 
     public function hideComment(): void
     {
-        $id = $this->comments->hide((int) $this->data['comment_id']);
+        $id = $this->comments->hide((int) $this->data['commentId']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
@@ -215,7 +215,7 @@ class CommentsController extends AppController {
 
     public function deleteComment(): void
     {
-        $id = $this->comments->delete((int) $this->data['comment_id']);
+        $id = $this->comments->delete((int) $this->data['commentId']);
         if ($id < 0) { // Not logged in!
             $_SESSION['redirect'] = $this->request->getUri();
             $this->auth->login();
@@ -271,6 +271,6 @@ class CommentsController extends AppController {
             $this->response->redirect("/PermissionDenied");
         }
         $this->response->redirect("{$this->route}#C" .
-            $this->data['comment_id']);
+            $this->data['commentId']);
     }
 }
