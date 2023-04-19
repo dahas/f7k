@@ -19,7 +19,7 @@ class BlogController extends AppController {
         $articles = $this->articles->readAll('/Blog');
 
         $this->template->assign([
-            'title' => "My Blog",
+            'title' => "Blog",
             'articles' => $articles
         ]);
 

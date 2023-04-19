@@ -4,7 +4,7 @@ namespace f7k\Sources\attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_METHOD)]  // <-- Turns the class into an attribute that can be attached to a method
+#[Attribute(Attribute::TARGET_METHOD)]
 class Route
 {
     public function __construct(
