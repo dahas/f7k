@@ -18,17 +18,6 @@ class CommentEntity extends Entity implements IMappableEntity {
         return $this->orm()->getColumn('id');
     }
 
-    public function getTitle(): string
-    {
-        return $this->orm()->getColumn('title');
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->orm()->setColumn('title', $title);
-        return $this;
-    }
-
     public function getArticleId(): int
     {
         return $this->orm()->getColumn('article_id');

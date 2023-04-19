@@ -18,17 +18,6 @@ class RepliesEntity extends Entity implements IMappableEntity {
         return $this->orm()->getColumn('id');
     }
 
-    public function getTitle(): string
-    {
-        return $this->orm()->getColumn('title');
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->orm()->setColumn('title', $title);
-        return $this;
-    }
-
     public function getReply(): string
     {
         return $this->orm()->getColumn('reply');

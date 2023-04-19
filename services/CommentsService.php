@@ -53,7 +53,6 @@ class CommentsService extends ServiceBase {
                 ->setName($_SESSION['user']['name'])
                 ->setEmail($_SESSION['user']['email'])
                 ->setArticleId((int) $data['articleId'])
-                ->setTitle($data['title'] ?? "")
                 ->setPage($data['page'])
                 ->setComment($data['comment']);
             $this->orm->save($comment);
@@ -119,7 +118,6 @@ class CommentsService extends ServiceBase {
             $reply = $this->orm->create(RepliesEntity::class)
                 ->setName($_SESSION['user']['name'])
                 ->setEmail($_SESSION['user']['email'])
-                ->setTitle($data['title'] ?? "")
                 ->setCommentID((int) $data['commentId'])
                 ->setReply($data['comment']);
             $this->orm->save($reply);
