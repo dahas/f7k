@@ -80,7 +80,7 @@
     </form>
 </div>
 {else}
-<p id="add">
+<p id="add" class="mt-4">
     <a data-bs-toggle="collapse" href="#collapseExample" role="button"
         aria-expanded="{$expanded}" aria-controls="collapseExample">
         <i class="bi bi-chat-left-text"></i> Leave a comment
@@ -93,7 +93,7 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div n:if="isset($isLoggedIn) && !$isLoggedIn" class="col-12 ps-3 pt-2">
-                        Please log in to leave a comment.
+                        Please <a href="/Authenticate">sign in</a> to leave a comment.
                     </div>
                     <div n:if="isset($isLoggedIn) && $isLoggedIn" class="col-12 ps-4 pt-2">
                         Signed in as: <b>{$user['name']}</b>
