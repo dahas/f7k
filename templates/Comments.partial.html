@@ -1,9 +1,7 @@
 {if isset($isReply)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Reply/create">
-        <input type="hidden" name="articleId" value="{$currentArticle}">
-        <input type="hidden" name="comment_id" value="{$comment_id}">
+    <form method="post" action="{$route}/Reply/create/{$comment_id}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -22,7 +20,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
@@ -30,10 +28,7 @@
 {elseif isset($isReplyUpdate)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Reply/update">
-        <input type="hidden" name="articleId" value="{$currentArticle}">
-        <input type="hidden" name="comment_id" value="{$comment_id}">
-        <input type="hidden" name="id" value="{$id}">
+    <form method="post" action="{$route}/Reply/update/{$comment_id}/{$id}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -52,7 +47,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
@@ -60,9 +55,7 @@
 {elseif isset($isUpdate)}
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
-    <form method="post" action="{$route}/Comments/update">
-        <input type="hidden" name="articleId" value="{$currentArticle}">
-        <input type="hidden" name="comment_id" value="{$comment_id}">
+    <form method="post" action="{$route}/Comments/update/{$comment_id}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -81,7 +74,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{$route}/{$currentArticle}#comments" type="button" class="btn btn-secondary">Cancel</a>
+                <a href="{$route}#comments" type="button" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </form>
@@ -95,7 +88,6 @@
 </p>
 <div class="collapse {$expanded ? 'show' : ''}" id="collapseExample">
     <form method="post" action="{$route}/Comments/create">
-        <input type="hidden" name="articleId" value="{$currentArticle}">
         <input type="hidden" name="page" value="{$page}">
         <div class="card mb-3">
             <div class="card-body">
@@ -129,12 +121,12 @@
     <div class="card-header d-flex" style="font-size: 0.75rem;">
         <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
         <div n:if="isset($user['email']) && $user['email']==$comment->getEmail() || $isAdmin" class="ms-auto">
-            <a href="{$route}/Comments/edit/{$comment->getArticleId()}/{$comment->id()}"
+            <a href="{$route}/Comments/edit/{$comment->id()}"
                 style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
-            <a href="{$route}/Comments/hide/{$comment->getArticleId()}/{$comment->id()}"
+            <a href="{$route}/Comments/hide/{$comment->id()}"
                 style="margin-right: 0.25rem"><i
                     class="bi {$comment->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-            <a href="{$route}/Comments/delete/{$comment->getArticleId()}/{$comment->id()}"><i
+            <a href="{$route}/Comments/delete/{$comment->id()}"><i
                     class="bi bi-trash3-fill"></i></a>
         </div>
     </div>
@@ -148,12 +140,12 @@
             <div class="card-header d-flex" style="font-size: 0.75rem;">
                 <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
                 <div n:if="isset($user['email']) && $user['email']==$reply->getEmail() || $isAdmin" class="ms-auto">
-                    <a href="{$route}/Reply/edit/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"
+                    <a href="{$route}/Reply/edit/{$comment->id()}/{$reply->id()}"
                         style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
-                    <a href="{$route}/Reply/hide/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"
+                    <a href="{$route}/Reply/hide/{$comment->id()}/{$reply->id()}"
                         style="margin-right: 0.25rem"><i
                             class="bi {$reply->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
-                    <a href="{$route}/Reply/delete/{$comment->getArticleId()}/{$comment->id()}/{$reply->id()}"><i
+                    <a href="{$route}/Reply/delete/{$comment->id()}/{$reply->id()}"><i
                             class="bi bi-trash3-fill"></i></a>
                 </div>
             </div>
@@ -164,7 +156,7 @@
             </div>
         </div>
 
-        <a href="{$route}/Reply/{$currentArticle}/{$comment->id()}#add">
+        <a href="{$route}/Reply/{$comment->id()}#add">
             <i class="bi bi-chat-left-text"></i> Reply</a>
     </div>
 </div>

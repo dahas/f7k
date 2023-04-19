@@ -23,22 +23,22 @@ class TestController extends CommentsController {
     #[Route(path: '/Test', method: 'get')]
     public function main(): void
     {
-        parent::renderComments();
+        parent::renderComments("/Test");
     }
 
-    #[Route(path: '/Test/Article/Reply/{article}/{id}', method: 'get')]
+    #[Route(path: '/Test/Reply/{id}', method: 'get')]
     public function reply(): void
     {
         parent::reply();
     }
 
-    #[Route(path: '/Test/Comments/edit', method: 'get')]
+    #[Route(path: '/Test/Comments/edit/{id}', method: 'get')]
     public function editComment(): void
     {
         parent::editComment();
     }
 
-    #[Route(path: '/Test/Reply/edit', method: 'get')]
+    #[Route(path: '/Test/Reply/edit/{comment_id}/{id}', method: 'get')]
     public function editReply(): void
     {
         parent::editReply();
@@ -50,43 +50,43 @@ class TestController extends CommentsController {
         parent::createComment();
     }
 
-    #[Route(path: '/Test/Comments/update', method: 'post')]
+    #[Route(path: '/Test/Comments/update/{id}', method: 'post')]
     public function updateComment(): void
     {
         parent::updateComment();
     }
 
-    #[Route(path: '/Test/Comments/hide', method: 'get')]
+    #[Route(path: '/Test/Comments/hide/{id}', method: 'get')]
     public function hideComment(): void
     {
         parent::hideComment();
     }
 
-    #[Route(path: '/Test/Comments/delete', method: 'get')]
+    #[Route(path: '/Test/Comments/delete/{id}', method: 'get')]
     public function deleteComment(): void
     {
         parent::deleteComment();
     }
 
-    #[Route(path: '/Test/Reply/create', method: 'post')]
+    #[Route(path: '/Test/Reply/create/{comment_id}', method: 'post')]
     public function createReply(): void
     {
         parent::createReply();
     }
 
-    #[Route(path: '/Test/Reply/update', method: 'post')]
+    #[Route(path: '/Test/Reply/update/{comment_id}/{id}', method: 'post')]
     public function updateReply(): void
     {
         parent::updateReply();
     }
 
-    #[Route(path: '/Test/Reply/hide', method: 'get')]
+    #[Route(path: '/Test/Reply/hide/{comment_id}/{id}', method: 'get')]
     public function hideReply(): void
     {
         parent::hideReply();
     }
 
-    #[Route(path: '/Test/Reply/delete', method: 'get')]
+    #[Route(path: '/Test/Reply/delete/{comment_id}/{id}', method: 'get')]
     public function deleteReply(): void
     {
         parent::deleteReply();

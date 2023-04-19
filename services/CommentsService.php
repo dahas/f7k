@@ -52,7 +52,7 @@ class CommentsService extends ServiceBase {
             $comment = $this->orm->create(CommentEntity::class)
                 ->setName($_SESSION['user']['name'])
                 ->setEmail($_SESSION['user']['email'])
-                ->setArticleId((int) $data['article'])
+                ->setArticleId((int) $data['articleId'])
                 ->setTitle($data['title'] ?? "")
                 ->setPage($data['page'])
                 ->setComment($data['comment']);
@@ -66,7 +66,7 @@ class CommentsService extends ServiceBase {
     {
         if ($this->auth->isLoggedIn()) {
             $comment = $this->orm->query(CommentEntity::class)
-                ->find($data['comment_id']);
+                ->find($data['id']);
             if ($this->auth->isAuthorized($comment->getEmail())) {
                 $comment->setComment($data['comment']);
                 $this->orm->save($comment);
