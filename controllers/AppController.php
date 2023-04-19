@@ -44,49 +44,34 @@ class AppController extends ControllerBase {
     }
 
     /**
-     * Redirects to Googles OAuth Client and back when successfully authorized.
+     * Redirects to Googles OAuth Client and back when successfully authenticated.
+     * 
+     * Note: If you change the routes path below, you have to change the URI
+     * in the Google Cloud OAuth Client API as well as in .env file!
      */
-    #[Route(path: '/Auth/login', method: 'get')]
-    public function login(): void 
+    #[Route(path: '/Authenticate', method: 'get')]
+    public function authenticate(): void
     {
-        // Param "state" coming from Google after Login
-        if(!isset($this->data['state'])) {
-            $this->session->setRedirect($this->request->getReferer());
-        }
-        
-        $this->auth->login();
-
-        $redirect = "/";
-        if($this->session->issetRedirect()) {
-            $redirect = $this->session->getRedirect();
-            $this->session->unsetRedirect();
-        }
-        if($this->session->issetTemp()) {
-            $redirect = $this->session->getTempRoute();
-        }
-
-        $this->response->redirect($redirect);
-    }
-
-    /**
-     * Redirects to Googles OAuth Client and back when successfully logged out.
-     */
-    #[Route(path: '/Auth/logout', method: 'get')]
-    public function logout(): void 
-    {
-        // Param "state" coming from Google after Login
-        if(!isset($this->data['state'])) {
+        // Store referer and avoid refering to Google:
+        if (!isset($this->data['state'])) {
             $this->session->setRedirect($this->request->getReferer());
         }
 
-        $this->auth->logout();
-
-        $redirect = "/";
-        if($this->session->issetRedirect()) {
-            $redirect = $this->session->getRedirect();
-            $this->session->unsetRedirect();
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->logout();
+        } else {
+            $this->auth->login();
         }
 
-        $this->response->redirect($redirect);
+        $path = "/";
+        if ($this->session->issetRedirect()) {
+            $path = $this->session->getRedirect();
+            $this->session->unsetRedirect();
+        }
+        if ($this->session->issetTemp()) {
+            $path = $this->session->getTempRoute();
+        }
+
+        $this->response->redirect($path);
     }
 }
