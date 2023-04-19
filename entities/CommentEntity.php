@@ -106,7 +106,7 @@ class CommentEntity extends Entity implements IMappableEntity {
         $mapper->primaryKey(self::$primaryKey);
         $mapper->sequence(implode("_", [self::$tableName, self::$primaryKey, "seq"]));
 
-        $mapper->relation('replies')->hasMany(RepliesEntity::class, new ForeignKey([
+        $mapper->relation('replies')->hasMany(ReplyEntity::class, new ForeignKey([
             self::$primaryKey => 'comment_id'
         ]));
 

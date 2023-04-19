@@ -3,7 +3,7 @@
 namespace f7k\Service;
 
 use f7k\Entities\CommentEntity;
-use f7k\Entities\RepliesEntity;
+use f7k\Entities\ReplyEntity;
 use f7k\Service\DbalService;
 use f7k\Service\AuthenticationService;
 use f7k\Sources\attributes\Inject;
@@ -106,16 +106,16 @@ class CommentsService extends ServiceBase {
         return -1;
     }
 
-    public function getReply(int $id): RepliesEntity
+    public function getReply(int $id): ReplyEntity
     {
-        return $this->orm->query(RepliesEntity::class)
+        return $this->orm->query(ReplyEntity::class)
             ->find($id);
     }
 
     public function createReply(array $data): int
     {
         if ($this->auth->isLoggedIn()) {
-            $reply = $this->orm->create(RepliesEntity::class)
+            $reply = $this->orm->create(ReplyEntity::class)
                 ->setName($_SESSION['user']['name'])
                 ->setEmail($_SESSION['user']['email'])
                 ->setCommentID((int) $data['commentId'])
@@ -129,7 +129,7 @@ class CommentsService extends ServiceBase {
     public function updateReply(array $data): int
     {
         if ($this->auth->isLoggedIn()) {
-            $reply = $this->orm->query(RepliesEntity::class)
+            $reply = $this->orm->query(ReplyEntity::class)
                 ->find($data['replyId']);
             if ($this->auth->isAuthorized($reply->getEmail())) {
                 $reply->setReply($data['comment']);
@@ -144,7 +144,7 @@ class CommentsService extends ServiceBase {
     public function hideReply(int $id): int
     {
         if ($this->auth->isLoggedIn()) {
-            $reply = $this->orm->query(RepliesEntity::class)
+            $reply = $this->orm->query(ReplyEntity::class)
                 ->find($id);
             if ($this->auth->isAuthorized($reply->getEmail())) {
                 $hidden = $reply->getHidden() === 1 ? 0 : 1;
@@ -160,7 +160,7 @@ class CommentsService extends ServiceBase {
     public function deleteReply(int $id): int
     {
         if ($this->auth->isLoggedIn()) {
-            $reply = $this->orm->query(RepliesEntity::class)
+            $reply = $this->orm->query(ReplyEntity::class)
                 ->find($id);
             if ($this->auth->isAuthorized($reply->getEmail())) {
                 $this->orm->delete($reply);

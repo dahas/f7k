@@ -4,7 +4,7 @@ namespace f7k\Entities;
 
 use Opis\ORM\{Entity, IEntityMapper, IMappableEntity};
 
-class RepliesEntity extends Entity implements IMappableEntity {
+class ReplyEntity extends Entity implements IMappableEntity {
 
     private static string $tableName = "blog_comment_replies";
     private static string $primaryKey = "id";
