@@ -10,6 +10,7 @@
 ## Minimum Requirements
 
 - PHP 8.1.2
+- MySQL
 - Composer
 
 ## Installation
