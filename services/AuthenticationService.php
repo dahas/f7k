@@ -14,8 +14,14 @@ class AuthenticationService extends ServiceBase {
     {
         parent::__construct();
 
+        if ($_ENV['MODE'] === 'prod') {
+            $callback = $_ENV['PUBLIC_DOMAIN'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
+        } else {
+            $callback = $_ENV['LOCAL_HOST'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
+        }
+
         $config = [
-            'callback' => $_ENV['OAUTH_GOOGLE_REDIRECT_URI'],
+            'callback' => $callback,
             'keys' => [
                 'id' => $_ENV['OAUTH_GOOGLE_CLIENT_ID'],
                 'secret' => $_ENV['OAUTH_GOOGLE_CLIENT_SECRET']
@@ -66,7 +72,7 @@ class AuthenticationService extends ServiceBase {
 
     public function isAdmin(): bool
     {
-        return isset($_SESSION['user']) && password_verify($_SESSION['user']['email'], $_ENV['ADMIN']);
+        return isset($_SESSION['user']) && password_verify($_SESSION['user']['email'], $_ENV['ACCOUNT_HASH']);
     }
 
     public function isAuthorized(string $email): bool

@@ -1,9 +1,11 @@
-# f7k - Yet another framework
+# f7k - a Blog framework
 
 <img src="https://img.shields.io/badge/PHP-8.1.2-orange" /> <img src="https://img.shields.io/badge/Latte-3.x-green" /> <img src="https://img.shields.io/badge/Opis ORM-1.x-yellow" /> <img src="https://img.shields.io/badge/PHPUnit-10.x-blue" />
 
 - f7k is the numeronym of the word 'framework'.
 - f7k follows the PHP Standard Recommendations (PSR).
+- f7k takes security aspects into account based on the findings of the OWASP project.
+- f7k requires good knowledge of the php programming language.
 
 ## Minimum Requirements
 
@@ -18,25 +20,44 @@ $ git clone https://github.com/dahas/f7k.git .
 $ composer install
 ````
 
-## Is it secure?
-
-Yes, it is!
-
-Authentication is based entirely on **Google's** mechanism. f7k only stores the name and the email address of users that left a comment. No passwords are required.
-
-All content, be it new articles or comments, is filtered and sanitized before being saved to the database and after being read from it.
-
-To get admin privileges, provide a hash that you create independently:
-
-````php
-echo password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
-````
-Copy the Hash value and assign it to ADMIN in your `.env` file. 
+# Get started
 
 ## Environment variables
 Rename example.env to `.env`. Put all your sensitive informations into this file and use the global Environment variables of PHP to access them. E. g.: `$_ENV['API_KEY']`.
 
-Make sure your `.env` file is added to `.gitignore` so it doesn't appear in your public repository.
+Double check that your `.env` file is added to `.gitignore` so it won't appear in your public repository.
+
+- Leave the LOCAL_HOST setting as it is.
+- Set your production host as the PUBLIC_DOMAIN.
+
+## Administration
+
+To get admin privileges, you must provide a hash that you create independently:
+
+````php
+echo password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
+````
+Copy the Hash value and assign it to ACCOUNT_HASH in your `.env` file. 
+
+## Enable Google User Authentication
+
+1. In the Google Cloud Console go to API credentials:  
+https://console.developers.google.com/apis/credentials?hl=de
+1. Create a new Project
+1. Click on "Configure Consent Screen", choose "External".
+1. Enter a name and provide your email address.
+1. Skip "Scopes" and "Test Users" and finish the configuration.
+1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
+1. Select "Web Application" as application type.
+1. Add the LOCAL_HOST and the PUBLIC_DOMAIN from your `.env` file as authorised redirect URIs.
+1. Save it.
+1. Copy and paste the Client ID and Secret from the final screen and the redirect URI into your `.env` file.
+
+## Register Tiny MCE WYSIWYG Editor
+
+1. Open https://www.tiny.cloud/.
+1. Register a Domain.
+1. Copy and paste the API Key into your `.env` file.
 
 ## Run locally
 ````
@@ -69,30 +90,6 @@ $ testcafe path:"/mnt/c/WINDOWS/explorer.exe" tests/e2e.js
 ````
 
 # How to
-
-## Enable Google User Authentication
-
-1. In the Google Cloud Console go to API credentials:  
-https://console.developers.google.com/apis/credentials?hl=de
-
-1. Create a new Project
-
-1. Click on "Configure Consent Screen", choose "External".
-
-1. Enter a name and provide your email address.
-
-1. Skip "Scopes" and "Test Users" and finish the configuration.
-
-1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
-
-1. Select "Web Application" as application type.
-
-1. Add "http(s)://your.domain.tld/Auth/login" as authorised redirect URI.
-
-1. Save it.
-
-1. Copy and paste the Client ID and Secret from the final screen and the redirect URI into your `.env` file.
-
 
 ## Extend f7k with Controllers
 Create a file `YourController.php` in the `controllers` directory:

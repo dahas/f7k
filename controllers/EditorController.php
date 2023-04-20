@@ -30,6 +30,7 @@ class EditorController extends AppController {
 
         $this->template->assign([
             'title' => "Create an Article",
+            'tinymceApiKey' => $_ENV['TINYMCE_API_KEY'],
             'referer' => $this->request->getReferer(),
             'articleTitle' => $this->data['title'],
             'articleDescription' => $this->data['description'],
@@ -60,7 +61,8 @@ class EditorController extends AppController {
             $this->session->unsetTemp();
 
             $this->template->assign([
-                'title' => "Create an Article",
+                'title' => "Edit an Article",
+                'tinymceApiKey' => $_ENV['TINYMCE_API_KEY'],
                 'referer' => $this->data['referer'],
                 'articleId' => $this->data['articleId'],
                 'articleTitle' => $this->data['title'],
@@ -74,6 +76,7 @@ class EditorController extends AppController {
 
             $this->template->assign([
                 'title' => "Edit an Article",
+                'tinymceApiKey' => $_ENV['TINYMCE_API_KEY'],
                 'referer' => $this->request->getReferer(),
                 'articleId' => $article->id(),
                 'articleTitle' => $article->getTitle(),
@@ -147,7 +150,7 @@ class EditorController extends AppController {
             $this->response->redirect("/PermissionDenied");
         }
 
-        $accepted_origins = array_map('trim', explode(",", $_ENV['ALLOW_ORIGINS']));
+        $accepted_origins = [$_ENV['LOCAL_HOST'], $_ENV['PUBLIC_DOMAIN']];
 
         $imageFolder = ROOT . "/public/blog_files/";
 
