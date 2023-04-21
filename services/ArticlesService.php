@@ -30,7 +30,7 @@ class ArticlesService extends ServiceBase {
         $this->orm = $this->dbal->getEntityManager();
     }
 
-    public function readAll(string $page, int $offset = 1, int $limit = 6, int &$count = 0): array
+    public function readAll(string $page, int $offset = 0, int $limit = 0, int &$count = 0): array
     {
         // Get totalcount for Pagination:
         $db = $this->dbal->getDatabase();
@@ -47,7 +47,11 @@ class ArticlesService extends ServiceBase {
         if (!$this->auth->isLoggedIn() || ($this->auth->isLoggedIn() && !$this->auth->isAdmin())) {
             $query->andWhere('hidden')->is(0);
         }
-        $query->orderBy('created', 'desc')->offset($offset*$limit-$limit)->limit($limit);
+        $query->orderBy('created', 'desc');
+        if($offset > 0 && $limit > 0) {
+            $query->offset($offset*$limit-$limit);
+            $query->limit($limit);
+        }
         return $query->all();
     }
 

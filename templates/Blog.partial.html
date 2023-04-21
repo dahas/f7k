@@ -9,9 +9,9 @@
     <div class="row row-cols-1 row-cols-lg-{$cols} g-4 mb-4">
         <div class="col" n:foreach="$articles as $item">
             <div class="card h-100">
-                <div class="blog-img"
+                <a href="/Blog/Article/{$item->id()}" class="blog-img"
                     style="background: url('{f7k\Controller\ArticleController::extractPreviewImage($item->getArticle()) }') no-repeat center center; background-size: cover;">
-                </div>
+                </a>
                 <div class="card-body">
                     <div class="d-flex w-100 justify-content-between pb-3">
                         <small>{$item->getCreated()}</small>

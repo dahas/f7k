@@ -1,4 +1,5 @@
 {if isset($isReply)}
+<div class="clearfix"></div>
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
     <form method="post" action="{$route}/Reply/create/{$commentId}">
@@ -26,6 +27,7 @@
     </form>
 </div>
 {elseif isset($isReplyUpdate)}
+<div class="clearfix"></div>
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
     <form method="post" action="{$route}/Reply/update/{$commentId}/{$replyId}">
@@ -53,6 +55,7 @@
     </form>
 </div>
 {elseif isset($isUpdate)}
+<div class="clearfix"></div>
 <div class="collapse show" id="collapseExample">
     <h2 id="comments" class="mt-4">{$form_header}</h2>
     <form method="post" action="{$route}/Comments/update/{$commentId}">
@@ -80,6 +83,7 @@
     </form>
 </div>
 {else}
+<div class="clearfix"></div>
 <p id="add" class="mt-4">
     <a data-bs-toggle="collapse" href="#collapseExample" role="button"
         aria-expanded="{$expanded}" aria-controls="collapseExample">
@@ -118,9 +122,9 @@
 
 <div id="C{$comment->id()}" class="card text-bg-light mb-3" n:foreach="$comments as $comment"
     n:if="!$comment->getHidden() || ($isLoggedIn && $user['email']==$comment->getEmail()) || $isAdmin">
-    <div class="card-header d-flex" style="font-size: 0.75rem;">
-        <div>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</div>
-        <div n:if="isset($user['email']) && $user['email']==$comment->getEmail() || $isAdmin" class="ms-auto">
+    <div class="card-header d-flex">
+        <small>#{$comment->id()} | <b>{$comment->getName()}</b> wrote at {$comment->getCreated()}</small>
+        <small n:if="isset($user['email']) && $user['email']==$comment->getEmail() || $isAdmin" class="ms-auto">
             <a href="{$route}/Comments/edit/{$comment->id()}"
                 style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
             <a href="{$route}/Comments/hide/{$comment->id()}"
@@ -128,7 +132,7 @@
                     class="bi {$comment->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
             <a href="{$route}/Comments/delete/{$comment->id()}"><i
                     class="bi bi-trash3-fill"></i></a>
-        </div>
+        </small>
     </div>
     <div class="card-body">
         <div class="markdown">
@@ -137,9 +141,9 @@
 
         <div id="R{$reply->id()}" class="card mb-3" n:foreach="$comment->getReplies() as $reply"
             n:if="!$reply->getHidden() || ($isLoggedIn && $user['email']==$reply->getEmail()) || $isAdmin">
-            <div class="card-header d-flex" style="font-size: 0.75rem;">
-                <div>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</div>
-                <div n:if="isset($user['email']) && $user['email']==$reply->getEmail() || $isAdmin" class="ms-auto">
+            <div class="card-header d-flex">
+                <small>#{$reply->id()} | <b>{$reply->getName()}</b> replied at {$reply->getCreated()}</small>
+                <small n:if="isset($user['email']) && $user['email']==$reply->getEmail() || $isAdmin" class="ms-auto">
                     <a href="{$route}/Reply/edit/{$comment->id()}/{$reply->id()}"
                         style="margin-right: 0.25rem"><i class="bi bi-pencil-fill"></i></a>
                     <a href="{$route}/Reply/hide/{$comment->id()}/{$reply->id()}"
@@ -147,7 +151,7 @@
                             class="bi {$reply->getHidden() ? 'text-warning bi-eye-fill' : 'bi-eye-slash-fill'}"></i></a>
                     <a href="{$route}/Reply/delete/{$comment->id()}/{$reply->id()}"><i
                             class="bi bi-trash3-fill"></i></a>
-                </div>
+                </small>
             </div>
             <div class="card-body">
                 <div class="markdown">

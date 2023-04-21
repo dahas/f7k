@@ -52,6 +52,8 @@ class Response {
     {
         header("HTTP/1.1 {$this->status}");
 
+        header("Cache-Control: max-age=2592000"); //30days (60sec * 60min * 24hours * 30days)
+
         foreach ($this->headers as $name => $value) {
             header("{$name}: {$value}");
         }
