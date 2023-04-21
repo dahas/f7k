@@ -2,20 +2,13 @@
 
 {block content}
 <div class="container mt-3">
-    <h1>Articles</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <h1 class="text-left mb-3">Blog</h1>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         <div class="col" n:foreach="$articles as $item">
             <div class="card h-100">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" width="100%" height="250"
-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="33%" y="50%" fill="#dee2e6"
-                        dy=".3em">Responsive
-                        image</text>
-                </svg>
+                <div class="blog-img" style="background: url('{f7k\Controller\ArticleController::extractPreviewImage($item->getArticle()) }') no-repeat center center; background-size: cover;"></div>
                 <div class="card-body">
-                    <div class="d-flex w-100 justify-content-between bg-body-tertiary pb-3">
+                    <div class="d-flex w-100 justify-content-between pb-3">
                         <small>{$item->getCreated()}</small>
                         <small n:if="$isAdmin" class="ms-auto">
                             <a href="/Editor/edit/{$item->id()}" style="margin-right: 0.25rem"><i
