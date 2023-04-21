@@ -30,14 +30,24 @@ class ArticlesService extends ServiceBase {
         $this->orm = $this->dbal->getEntityManager();
     }
 
-    public function readAll(string $page): array
+    public function readAll(string $page, int $offset = 1, int $limit = 6, int &$count = 0): array
     {
+        // Get totalcount for Pagination:
+        $db = $this->dbal->getDatabase();
+        $cQuery = $db->from('blog_articles');
+        $cQuery->where('page')->is($page);
+        if (!$this->auth->isLoggedIn() || ($this->auth->isLoggedIn() && !$this->auth->isAdmin())) {
+            $cQuery->andWhere('hidden')->is(0);
+        }
+        $count = $cQuery->count();
+
+        // Get Blog articles:
         $query = $this->orm->query(ArticleEntity::class);
         $query->where('page')->is($page);
         if (!$this->auth->isLoggedIn() || ($this->auth->isLoggedIn() && !$this->auth->isAdmin())) {
             $query->andWhere('hidden')->is(0);
         }
-        $query->orderBy('created', 'desc');
+        $query->orderBy('created', 'desc')->offset($offset*$limit-$limit)->limit($limit);
         return $query->all();
     }
 

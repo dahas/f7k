@@ -19,7 +19,7 @@ class ArticleController extends CommentsController {
     {
         parent::__construct($request, $response);
 
-        $articles = $this->articles->readAll('/Blog');
+        $articles = $this->articles->readAll('/Blog', );
 
         if (isset($this->data['articleId']) && $this->data['articleId']) {
             $article = $this->articles->read((int) $this->data['articleId']);

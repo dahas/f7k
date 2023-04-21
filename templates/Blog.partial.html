@@ -2,11 +2,16 @@
 
 {block content}
 <div class="container mt-3">
-    <h1 class="text-left mb-3">Blog</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <div class="d-flex">
+        <h1 class="text-left mb-3">Blog</h1>
+        {$pagination|noescape}
+    </div>
+    <div class="row row-cols-1 row-cols-lg-{$cols} g-4 mb-4">
         <div class="col" n:foreach="$articles as $item">
             <div class="card h-100">
-                <div class="blog-img" style="background: url('{f7k\Controller\ArticleController::extractPreviewImage($item->getArticle()) }') no-repeat center center; background-size: cover;"></div>
+                <div class="blog-img"
+                    style="background: url('{f7k\Controller\ArticleController::extractPreviewImage($item->getArticle()) }') no-repeat center center; background-size: cover;">
+                </div>
                 <div class="card-body">
                     <div class="d-flex w-100 justify-content-between pb-3">
                         <small>{$item->getCreated()}</small>
@@ -25,5 +30,6 @@
             </div>
         </div>
     </div>
+    {$pagination|noescape}
 </div>
 {/block}

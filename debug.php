@@ -15,7 +15,7 @@ $dotenv->safeLoad();
 
 # Set Request Params:
 # -----------------------------------------
-$_SERVER['REQUEST_URI'] = "/Blog/Article/11";
+$_SERVER['REQUEST_URI'] = "/Blog/1";
 $_SERVER['REQUEST_METHOD'] = "GET";
 
 $_POST['title'] = "This is the Title";

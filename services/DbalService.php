@@ -3,6 +3,7 @@
 namespace f7k\Service;
 
 use Opis\Database\Connection;
+use Opis\Database\Database;
 use Opis\ORM\EntityManager;
 use PDO;
 
@@ -29,6 +30,11 @@ class DbalService {
     public function getConnection(): Connection
     {
         return $this->con; 
+    }
+
+    public function getDatabase(): Database
+    {
+        return new Database($this->con); 
     }
 
     public function getEntityManager(): EntityManager
