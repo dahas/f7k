@@ -31,9 +31,11 @@ Double check that your `.env` file is added to `.gitignore` so it won't appear i
 - Leave the LOCAL_HOST setting as it is.
 - Set your production host as the PUBLIC_DOMAIN.
 
-## Administration
+# The Blog
 
-To get admin privileges, you must provide a hash that you create independently:
+## Becoming the Blog Admin
+
+To be able to write and manage Blog articles, you must provide a hash that you create manually:
 
 ````php
 echo password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
@@ -57,10 +59,14 @@ https://console.developers.google.com/apis/credentials?hl=de
 ## Register Tiny MCE WYSIWYG Editor
 
 1. Open https://www.tiny.cloud/.
-1. Register a Domain.
-1. Copy and paste the API Key into your `.env` file.
+1. Register your public Domain.
+1. Copy and paste the API Key into your `.env` file.  
+
+# Run f7k
 
 ## Run locally
+
+Set Mode to **dev** in `.env` file. Then launch the web server:
 ````
 $ php -S localhost:2400 -t public
 ````
@@ -74,13 +80,14 @@ $ composer test
 ### e2e testing
 Additionall you can run *end-to-end* tests with **Testcafe**. 
 
-- Put all your tests into `tests/e2e.js` file. 
-- Set mode to 'test' in `.env` file.
-
 Install Testcafe:
 ````
 $ npm i -g testcafe
 ````
+
+- Put all your tests into `tests/e2e.js` file. 
+- Set Mode to **test** in `.env` file.
+
 Run test:
 ````
 $ testcafe <browser> tests/e2e.js
@@ -290,26 +297,47 @@ class YourService extends ServiceBase {
 # Available Services 
 There are some Services already available which you can use and/or modify to your needs.
 
+## ArticlesService
+### *Dependencies*: 
+* Services: `AuthenticationService`, `DbalService`, `PurifyService`
+* Templates: `Article.partial.html`
+### *Description*:  
+Create and edit Blog articles.
+
+## AuthenticationService
+### *Description*:  
+Use this service to authenticate and authorize users to post comments and/or write Blog articles.
+
 ## CommentsService
 ### *Dependencies*: 
-* Services: `DatabaseLayer`
+* Services: `AuthenticationService`, `DbalService`, `MarkdownService`
 * Controllers: `CommentsController`
 * Entities: `CommentsEntity`, `RepliesEntity`
 * Templates: `Comments.partial.html`
 ### *Description*:  
 Add a commentary feature to a page. Users can add comments and reply to them.
   
-## DatabaseLayer
+## DbalService
 ### *Description*:  
 A database abstraction layer. f7k uses the DBAL and ORM from Opis. Check it out here: https://opis.io/orm/1.x/quick-start.html
 
-## Navigation
+## MarkdownService
 ### *Dependencies*:
-* Templates: `Nav.partial.html`
+* Services: `PurifyService`
 ### *Description*:  
-Creates and renders the navigation bar according the specification in `menu.json`.
+Creates and renders HTML from Markdown.
 
-## TemplateEngine
+## MenuService
+### *Dependencies*:
+* Templates: `Menu.partial.html`
+### *Description*:  
+Creates and renders the menu inside the navigation bar according to the specification in `menu.json`.
+
+## PurifyService
+### *Description*:  
+Uses HTMLPurifier to remove malicious code.
+
+## TemplateService
 ### *Description*:  
 Parses HTML templates. The Template Engine is build upon the Latte library. Learn more about Latte here: https://latte.nette.org/en/guide
 
