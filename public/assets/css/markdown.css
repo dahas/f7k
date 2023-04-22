@@ -1,47 +1,12 @@
 
+.card-body .markdown  {
+  color: #444;
+  text-align: left;
+}
+
 .card-body .markdown p {
   color: #444;
-  font-size: .9rem;
   margin-bottom: 1rem;
-}
-
-.card-body .markdown h1,
-.card-body .markdown h2,
-.card-body .markdown h3,
-.card-body .markdown h4 {
-  margin: 1.414rem 0 .5rem;
-  font-weight: inherit;
-  line-height: 1.42;
-}
-
-.card-body .markdown h1 {
-  margin-top: 0;
-  font-size: 24px;
-}
-
-.card-body .markdown h2 {
-  margin-top: 0;
-  font-size: 22px;
-}
-
-.card-body .markdown h3 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-.card-body .markdown h4 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-.card-body .markdown h5 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-.card-body .markdown h6 {
-  margin-top: 0;
-  font-size: 14px;
 }
 
 .card-body .markdown small {
@@ -60,21 +25,8 @@
   max-width: 100%;
 }
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,300);
-
-.card-body .markdown  {
-  color: #444;
-  font-family: 'Open Sans', Helvetica, sans-serif;
-  font-weight: 300;
-  text-align: left;
-  line-height: 1.85;
-}
-
 .card-body .markdown img {
-  /* border-radius: 50%; */
   max-height: 100px;
-  /* margin: 0 auto; */
-  /* width: 200px; */
 }
 
 .card-body .markdown a, 

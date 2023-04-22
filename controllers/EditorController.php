@@ -165,6 +165,9 @@ class EditorController extends AppController {
         }
 
         reset($_FILES);
+
+        // echo "<pre>"; print_r($_FILES); echo "<pre>"; die;
+
         $temp = current($_FILES);
         if (is_uploaded_file($temp['tmp_name'])) {
             /*

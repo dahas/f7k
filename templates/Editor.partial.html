@@ -66,11 +66,11 @@
                     remove_script_host: false,
                     convert_urls: true,
                     file_picker_types: 'image',
-                    /* and here's our custom image picker*/
+                    images_file_types: 'jpg,gif,png',
                     file_picker_callback: function (cb, value, meta) {
                         var input = document.createElement('input');
                         input.setAttribute('type', 'file');
-                        input.setAttribute('accept', 'image/*');
+                        input.setAttribute('accept', 'image/jpeg, image/png, image/gif, image/webp');
                         input.onchange = function () {
                             var file = this.files[0];
 

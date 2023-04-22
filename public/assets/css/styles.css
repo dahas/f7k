@@ -18,9 +18,11 @@ body {
 }
 
 blockquote {
-  margin-left: 20px;
-  padding-left: 10px;
-  padding-right: 30px;
+  margin: 0;
+  margin-bottom: 1rem;
+  border-left: 5px solid #97b8d6;
+  background-color: #edf2f5;
   font-style: italic;
-  border-left: 4px solid #cee7f1 !important;
+  padding: 1rem 1rem 0.1rem 1rem;
+  text-align: left;
 }
