@@ -25,6 +25,10 @@ class TemplateService extends ServiceBase {
     ) {
         parent::__construct();
 
+        if (!is_dir($this->cacheDir)) {
+            mkdir($this->cacheDir, 0775, true);
+        }
+
         $this->latte = new Engine();
         $this->latte->setTempDirectory($this->cacheDir);
         $this->latte->setAutoRefresh($_ENV['MODE'] !== 'prod');
