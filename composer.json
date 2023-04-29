@@ -28,8 +28,6 @@
     "require": {
         "vlucas/phpdotenv": "^5.5",
         "latte/latte": "^3.0",
-        "opis/database": "^4.0",
-        "opis/orm": "^1.0",
         "erusev/parsedown": "^1.7",
         "ezyang/htmlpurifier": "^4.16",
         "hybridauth/hybridauth": "^3.9"

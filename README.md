@@ -1,48 +1,46 @@
-# f7k - a Blog framework
+# f7k - yet another framework
 
 <img src="https://img.shields.io/badge/PHP-8.1.2-orange" /> <img src="https://img.shields.io/badge/Latte-3.x-green" /> <img src="https://img.shields.io/badge/Opis ORM-1.x-yellow" /> <img src="https://img.shields.io/badge/PHPUnit-10.x-blue" />
 
 - f7k is the numeronym of the word 'framework'.
 - f7k follows the PHP Standard Recommendations (PSR).
-- f7k takes security aspects into account based on the findings of the OWASP project.
 - f7k requires good knowledge of the php programming language.
 
 ## Minimum Requirements
 
 - PHP 8.1.2
-- MySQL
 - Composer
+- A Google Account
 
 ## Installation
 ````
-$ mkdir your_project
-$ cd your_project
+$ mkdir <your_project> && cd <your_project>
 $ git clone https://github.com/dahas/f7k.git .
 $ composer install
 ````
 
-# Get started
+# Setting things up
 
 ## Environment variables
-Rename example.env to `.env`. Put all your sensitive informations into this file and use the global Environment variables of PHP to access them. E. g.: `$_ENV['API_KEY']`.
 
-Double check that your `.env` file is added to `.gitignore` so it won't appear in your public repository.
+Rename `.env.example` to `.env`. All sensitive informations are stored in this file. Double check that it is added to `.gitignore` so it won't accidentially appear in your public repository.
+
+Open the `.env` file and adjust some settings:
 
 - Leave the LOCAL_HOST setting as it is.
-- Set your production host as the PUBLIC_DOMAIN.
+- Set your PUBLIC_DOMAIN if you have one already registered.
 
-# The Blog
+## Become the Admin. 
 
-## Becoming the Blog Admin
-
-To be able to write and manage Blog articles, you must provide a hash that you create manually:
-
-````php
-echo password_hash("your_address@gmail.com", PASSWORD_DEFAULT);
+In the terminal run:
 ````
-Copy the Hash value and assign it to ACCOUNT_HASH in your `.env` file. 
+$ php encrypt.php <your_gmail_address>
+````
+- Copy the hash and assign it to ACCOUNT_HASH. 
 
 ## Enable Google User Authentication
+
+All kind of authentication and authorization is done externally using the Google OAuth service. Therefore it is neccessary that you have a Google account and have the API enabled. Below is a description of how to enable the Authentication API.
 
 1. In the Google Cloud Console go to API credentials:  
 https://console.developers.google.com/apis/credentials?hl=de
@@ -52,78 +50,41 @@ https://console.developers.google.com/apis/credentials?hl=de
 1. Skip "Scopes" and "Test Users" and finish the configuration.
 1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
 1. Select "Web Application" as application type.
-1. Add the LOCAL_HOST and the PUBLIC_DOMAIN from your `.env` file as authorised redirect URIs.
+1. Copy the LOCAL_HOST and the PUBLIC_DOMAIN from your `.env` file, paste them into authorised redirect URIs and extend both of them with *"/Authenticate"*.  
+    E. g.: http://localhost:2400/Authenticate
 1. Save it.
-1. Copy and paste the Client ID and Secret from the final screen and the redirect URI into your `.env` file.
+1. Copy and paste the Client ID and Secret from the final screen into the `.env` file.
 
-## Register Tiny MCE WYSIWYG Editor
+# Run locally
 
-1. Open https://www.tiny.cloud/.
-1. Register your public Domain.
-1. Copy and paste the API Key into your `.env` file.  
+Configure your Apache or Nginx Webservere to serve from the `www` directory
 
-# Run f7k
-
-## Run locally
-
-Set Mode to **dev** in `.env` file. Then launch the web server:
+Launch the PHP build-in web server:
 ````
-$ php -S localhost:2400 -t public
-````
-
-## Testing
-### Unit testing
-This App Skeleton uses **PHPUnit** to run unit tests.
-````
-$ composer test
-````
-### e2e testing
-Additionall you can run *end-to-end* tests with **Testcafe**. 
-
-Install Testcafe:
-````
-$ npm i -g testcafe
-````
-
-- Put all your tests into `tests/e2e.js` file. 
-- Set Mode to **test** in `.env` file.
-
-Run test:
-````
-$ testcafe <browser> tests/e2e.js
-````
-Or on WSL2:
-````
-$ testcafe path:"/mnt/c/WINDOWS/explorer.exe" tests/e2e.js
+$ php -S localhost:2400 -t www
 ````
 
 # How to
 
 ## Extend f7k with Controllers
-Create a file `YourController.php` in the `controllers` directory:
+
+With a Controller you can extend f7k with new Pages and new Functionality.
+
+Create a file `MyController.php` in the `controllers` directory:
 
 ````php
-// controllers/YourController.php
+// controllers/MyController.php
 
 <?php declare(strict_types=1);
 
 namespace f7k\Controller;
 
 use f7k\Sources\attributes\Route;
-use f7k\Sources\{ControllerBase, Request, Response};
+use f7k\Sources\ControllerBase;
 
-class YourController extends ControllerBase {
+class MyController extends ControllerBase {
 
-    private array $data;
-
-    public function __construct(
-        protected Request $request, 
-        protected Response $response)
-    {
-        $this->data = $this->request->getData();
-    }
-
-    #[Route(path: '/YourController', method: 'get')]
+    #[Route(path: '/SayMyName/{name}', method: 'get')]
     public function main(): void
     {
         $this->response->write("Hello " . $this->data['name']);
@@ -133,71 +94,53 @@ class YourController extends ControllerBase {
 }
 ````
 Check it out in the web browser (provide your name):  
-http://localhost:2400/YourController?name=<YourName\>
+http://localhost:2400/SayMyName/<YourName\>
 
 ### Render HTML
 
-Now you probably want to return a beautiful HTML template. Therefor you need a Template Engine. The Latte Engine is already available as a Service. 
+Now, if you want to render a beautiful HTML template, you need a Template Engine. The Latte Engine is available as a Service. 
 
 Here is how you use it:
 
-Create an HTML file named `Your.layout.html` with the following content in the `templates` folder:  
+Create an HTML file named `My.partial.html` with the following content in the `templates` folder:  
 
 ````html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{$title}</title>
-</head>
-<body style="font-family: 'Courier New', Courier, monospace; margin: 60px auto; text-align: center">
-    <div style="background-color: rgb(196, 250, 255); padding: 20px 0;">
-        <h1>{$header}</h1>
-        <p>{$message}</p>
-    </div>
-</body>
-</html>
+{layout 'App.layout.html'}
+
+{block content}
+<div style="background-color: rgb(196, 250, 255); padding: 20px 0; font-family: 'Courier New', Courier, monospace; margin: 0px auto; text-align: center">
+    <h1>{$header}</h1>
+    <p>{$message}</p>
+</div>
+{/block}
 ````
 Inject the Template Engine as shown below:  
 
 ````php
-// controllers/YourController.php
+// controllers/MyController.php
 
 <?php declare(strict_types=1);
 
 namespace f7k\Controller;
 
-use f7k\Service\TemplateEngine;
+use f7k\Service\TemplateService;
 use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{ControllerBase, Request, Response};
+use f7k\Sources\ControllerBase;
 
-class YourController extends ControllerBase {
+class MyController extends ControllerBase {
 
-    #[Inject(TemplateEngine::class)]
+    #[Inject(TemplateService::class)]
     protected $template;
 
-    protected array $data;
-
-    public function __construct(
-        protected Request $request, 
-        protected Response $response)
+    #[Route(path: '/SayMyName/{name}', method: 'get')]
+    public function main(): void
     {
-        $this->data = $this->request->getData();
-    }
-
-    #[Route(path: '/YourRoute', method: 'get')]
-    public function yourMethod(): void
-    {
-        $this->injectServices();
-
         $this->template->assign([
             'title' => 'Your Controller',
             'header' => 'f7k is cool!',
-            'message' => 'But ' . $this->data['name'] . ' is even cooler :p'
+            'message' => 'But ' . $this->data['name'] . ' is way cooler :p'
         ]);
-        $this->template->parse('Your.layout.html');
+        $this->template->parse('My.partial.html');
         $this->template->render($this->request, $this->response);
     }
     
@@ -205,99 +148,97 @@ class YourController extends ControllerBase {
 }
 ````
 Check it out again:  
-http://localhost:2400/YourController?name=<YourName\>
+http://localhost:2400/SayMyName/<YourName\>
 
-Learn more about Services next.
+## Extend the Menu
+
+Finally, you might want your new page to appear in the navigation bar. Therefore open `menu.json` and insert the following lines:
+
+````
+// ...
+{
+    "path": "/SayMyName/<YourName\>",
+    "controller": "MyController",
+    "title": "Say My Name",
+    "enabled": true
+},
+// ...
+````
+To see the Menu you have to do one last little change in your Controller: 
+````php
+class MyController extends AppController {
+    
+    //...
+}
+````
+The `AppController` hosts all the features you need throughout the whole app.
 
 ## Extend f7k with Services
-In addition to installing libraries with Composer, you can create your own Services. To do this, you simply create a Class in the `lib` directory and inject it via Attributes in the Classes where you need the Service. 
+A Service is an Object that provides additional features and/or data. Most of the time you will retrieve data from a database table within a Service.  
 
-Below is a template of a Service class. The constructor with an array of options is mandatory, although using options is optional.
+To create a Service you simply create a Class in the `services` directory and inject it via an Attribute in the Controller where you need the Service. Name it `MyService.php`.
 
 ````php
-// lib/YourService.php
+// services/MyService.php
 
 <?php declare(strict_types=1);
 
 namespace f7k\Service;
 
-class YourService {
+use f7k\Sources\Session;
 
-    public function __construct(private array|null $options = [])
+class MyService {
+
+    /**
+     * The constructor is optional. Use it, when you require access 
+     * to the Session.
+     */
+    public function __construct(private Session $session)
+    {}
+    //...
+
+    public function myMethod(string $name): string
     {
-
+        return "Hey $name! How can I serve you?";
     }
-    ...
 }
 ````
-Here is how you inject Services in another Class. Note how the constructor triggers the parent constructor:
+Now inject the Service in your Controller `MyController.php`:
 ````php
 // controllers/AnyController.php
 
-<?php declare(strict_types=1);
+use f7k\Service\{TemplateService, MyService};
 
-namespace f7k\Controller;
+class MyController extends AppController {
 
-use f7k\Sources\ControllerBase;
-use f7k\Service\YourService;
-use f7k\Service\AnotherService;
-
-class AnyController extends ControllerBase {
-
-    /**
-     * Service without Options:
-     */
-    #[Inject(YourService::class)]
-    protected $yourService;
-
-    /**
-     * Service with Options:
-     */
-    #[Inject(AnotherService::class, [
-        "opt1" => "Option 1", 
-        "opt2" => "Option 2"
-    ])]
-    protected $anotherService;
-    
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    #[Inject(MyService::class)]
+    protected $myService;
 
     // ...
 }
 ````
-It is also possible to use Services in a Service. Therefore the Service must inherit from the ServiceBase. Like so:
+To use the Service assign `$myService->myMethod(<name>)` to the 'message' marker of the template:
 ````php
-// lib/YourService.php
-
-<?php declare(strict_types=1);
-
-namespace f7k\Service;
-
-use f7k\Sources\ServiceBase;
-
-class YourService extends ServiceBase {
-
-    #[Inject(AnyService::class)]
-    protected $anyService;
-
-    #[Inject(AnotherService::class)]
-    protected $anotherService;
-
-    public function __construct(private array|null $options = [])
-    {
-        parent::__construct();
-    }
-    
-    // ...
+#[Route(path: '/SayMyName/{name}', method: 'get')]
+public function main(): void
+{
+    $this->template->assign([
+        'title' => 'Your Controller',
+        'header' => 'f7k is cool!',
+        'message' => $this->myService->myMethod($this->data['name'])
+    ]);
+    $this->template->parse('My.partial.html');
+    $this->template->render($this->request, $this->response);
 }
 ````
+
+It is also possible to use Services in other Service.
 
 # Available Services 
-There are some Services already available which you can use and/or modify to your needs.
+Next you find some Services that are already available. Feel free to use and/or modify them as you like.
 
 ## ArticlesService
+
 ### *Dependencies*: 
 * Services: `AuthenticationService`, `DbalService`, `PurifyService`
 * Templates: `Article.partial.html`
@@ -316,10 +257,6 @@ Use this service to authenticate and authorize users to post comments and/or wri
 * Templates: `Comments.partial.html`
 ### *Description*:  
 Add a commentary feature to a page. Users can add comments and reply to them.
-  
-## DbalService
-### *Description*:  
-A database abstraction layer. f7k uses the DBAL and ORM from Opis. Check it out here: https://opis.io/orm/1.x/quick-start.html
 
 ## MarkdownService
 ### *Dependencies*:
