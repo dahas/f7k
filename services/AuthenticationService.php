@@ -2,7 +2,7 @@
 
 namespace f7k\Service;
 
-use f7k\Sources\Session;
+use f7k\Sources\{Request, Response, Session};
 use Hybridauth\Provider\Google;
 use Hybridauth\User\Profile;
 
@@ -13,8 +13,11 @@ class AuthenticationService {
 
     private Google $GoogleOAuthAdapter;
 
-    public function __construct(private Session $session)
-    {
+    public function __construct(
+        protected Request $request, 
+        protected Response $response, 
+        protected Session $session
+    ) {
         if ($_ENV['MODE'] === 'prod') {
             $callback = $_ENV['PUBLIC_DOMAIN'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
         } else {

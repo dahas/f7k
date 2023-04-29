@@ -19,6 +19,6 @@ class HomeController extends AppController {
         ]);
 
         $this->template->parse('Home.partial.html');
-        $this->template->render($this->request, $this->response);
+        $this->template->render();
     }
 }

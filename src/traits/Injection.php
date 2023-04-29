@@ -2,12 +2,12 @@
 
 namespace f7k\Sources\traits;
 
-use f7k\Sources\Session;
+use f7k\Sources\{Request, Response, Session};
 use ReflectionClass;
 
 trait Injection {
 
-    public function triggerServiceInjection(Session $session)
+    public function triggerServiceInjection(Request $request, Response $response, Session $session)
     {
         /**
          * Use of a ReflectionClass to inject Services assigned to Attributes.
@@ -20,7 +20,7 @@ trait Injection {
             foreach ($attributes as $attribute) {
                 $instance = $attribute->newInstance();
                 $service = $instance->service;
-                $this->$pName = new $service($session);
+                $this->$pName = new $service($request, $response, $session);
             }
         }
     }

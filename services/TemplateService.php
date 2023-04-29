@@ -5,8 +5,7 @@ namespace f7k\Service;
 use f7k\Service\MarkdownService;
 use f7k\Sources\attributes\Inject;
 use Latte\Engine;
-use f7k\Sources\Request;
-use f7k\Sources\Response;
+use f7k\Sources\{Request, Response, Session};
 
 class TemplateService {
 
@@ -20,8 +19,11 @@ class TemplateService {
     private array $templateVars = [];
     private string $html = "";
 
-    public function __construct()
-    {
+    public function __construct(
+        protected Request $request, 
+        protected Response $response, 
+        protected Session $session
+    ) {
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir, 0775, true);
         }
@@ -56,10 +58,10 @@ class TemplateService {
         return $this->html;
     }
 
-    public function render(Request $request, Response $response): void
+    public function render(): void
     {
-        $response->addHeader("Content-Type", "text/html");
-        $response->write($this->html);
+        $this->response->addHeader("Content-Type", "text/html");
+        $this->response->write($this->html);
     }
 
     public function setTemplateDir(string $dir): void
