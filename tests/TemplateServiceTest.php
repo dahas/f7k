@@ -22,7 +22,10 @@ class TemplateServiceTest extends TestCase {
 
         $this->request = new Request();
         $this->response = new Response();
-        $this->template = new TemplateService(__DIR__ . '/files', __DIR__ . '/cache/templates');
+
+        $this->template = new TemplateService();
+        $this->template->setTemplateDir(__DIR__ . '/files');
+        $this->template->setCacheDir(__DIR__ . '/cache/templates');
     }
 
     protected function tearDown(): void
