@@ -5,6 +5,8 @@
 - f7k is the numeronym of the word 'framework'.
 - f7k follows the PHP Standard Recommendations (PSR).
 - f7k requires good knowledge of the php programming language.
+- f7k is the most difficult framework on the planet.
+- f7k is so difficult, that only the nerdiest nerds can handle it. 
 
 ## Minimum Requirements
 
