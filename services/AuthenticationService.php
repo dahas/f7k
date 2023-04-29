@@ -2,6 +2,7 @@
 
 namespace f7k\Service;
 
+use f7k\Sources\Session;
 use Hybridauth\Provider\Google;
 use Hybridauth\User\Profile;
 
@@ -12,7 +13,7 @@ class AuthenticationService {
 
     private Google $GoogleOAuthAdapter;
 
-    public function __construct(private array|null $options = [])
+    public function __construct(private Session $session)
     {
         if ($_ENV['MODE'] === 'prod') {
             $callback = $_ENV['PUBLIC_DOMAIN'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
@@ -42,10 +43,10 @@ class AuthenticationService {
         } else {
             $this->GoogleOAuthAdapter->authenticate();
             $profile = $this->getUserProfile();
-            $_SESSION['user'] = [
+            $this->session->set('user', [
                 "name" => $profile->displayName,
                 "email" => $profile->email,
-            ];
+            ]);
         }
 
         session_regenerate_id();
@@ -56,7 +57,7 @@ class AuthenticationService {
         if ($_ENV['MODE'] !== 'test') {
             $this->GoogleOAuthAdapter->disconnect();
         }
-        unset($_SESSION['user']);
+        $this->session->unset('user');
 
         session_regenerate_id();
     }

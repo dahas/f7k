@@ -8,13 +8,7 @@ use Attribute;
 class Inject {
     
     public function __construct(
-        public string $service = "",
-        public array $options = []
+        public string $service = ""
     ) {
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 }
