@@ -4,12 +4,11 @@ namespace f7k\Service;
 
 use f7k\Service\MarkdownService;
 use f7k\Sources\attributes\Inject;
-use f7k\Sources\ServiceBase;
 use Latte\Engine;
 use f7k\Sources\Request;
 use f7k\Sources\Response;
 
-class TemplateService extends ServiceBase {
+class TemplateService {
 
     #[Inject(MarkdownService::class)]
     protected $markdown;
@@ -23,8 +22,6 @@ class TemplateService extends ServiceBase {
         private string $cacheDir = ROOT . '/.latte/cache',
         private array|null $options = []
     ) {
-        parent::__construct();
-
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir, 0775, true);
         }

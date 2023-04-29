@@ -2,18 +2,18 @@
 
 namespace f7k\Service;
 
-use f7k\Sources\ServiceBase;
 use Hybridauth\Provider\Google;
 use Hybridauth\User\Profile;
 
-class AuthenticationService extends ServiceBase {
+/**
+ * This Service uses the Google OAuth API to login and authorize users.
+ */
+class AuthenticationService {
 
     private Google $GoogleOAuthAdapter;
 
     public function __construct(private array|null $options = [])
     {
-        parent::__construct();
-
         if ($_ENV['MODE'] === 'prod') {
             $callback = $_ENV['PUBLIC_DOMAIN'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
         } else {

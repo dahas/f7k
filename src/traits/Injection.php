@@ -4,7 +4,6 @@ namespace f7k\Sources\traits;
 
 use ReflectionClass;
 
-
 trait Injection {
 
     public function triggerServiceInjection()

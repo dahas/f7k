@@ -4,10 +4,9 @@ namespace f7k\Service;
 
 use f7k\Sources\attributes\Inject;
 use f7k\Service\PurifyService;
-use f7k\Sources\ServiceBase;
 use \Parsedown;
 
-class MarkdownService extends ServiceBase {
+class MarkdownService  {
 
     #[Inject(PurifyService::class, [
         'HTML.ForbiddenElements' => ['img', 'iframe', 'a', 'script']
@@ -18,8 +17,6 @@ class MarkdownService extends ServiceBase {
 
     public function __construct(private array|null $options = [])
     {
-        parent::__construct();
-
         $escaped = $options['escaped'] ?? false;
 
         $this->parsedown = new Parsedown();
