@@ -34,11 +34,11 @@ Open the `.env` file and adjust some settings:
 
 # Run locally
 
-Configure your Apache or Nginx Webservere to serve from the `www` directory
+Configure your Apache or Nginx Webservere to serve from the `public` directory
 
 Launch the PHP build-in web server:
 ````
-$ php -S localhost:2400 -t www
+$ php -S localhost:2400 -t public
 ````
 
 # How to 
