@@ -30,31 +30,6 @@ Open the `.env` file and adjust some settings:
 - Leave the LOCAL_HOST setting as it is.
 - Set your PUBLIC_DOMAIN if you have one already registered.
 
-## Become the Admin. 
-
-In the terminal run:
-````
-$ php encrypt.php <your_gmail_address>
-````
-- Copy the hash and assign it to ACCOUNT_HASH. 
-
-## Enable Google User Authentication
-
-All kind of authentication and authorization is done externally using the Google OAuth service. Therefore it is neccessary that you have a Google account and have the API enabled. Below is a description of how to enable the Authentication API.
-
-1. In the Google Cloud Console go to API credentials:  
-https://console.developers.google.com/apis/credentials?hl=de
-1. Create a new Project
-1. Click on "Configure Consent Screen", choose "External".
-1. Enter a name and provide your email address.
-1. Skip "Scopes" and "Test Users" and finish the configuration.
-1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
-1. Select "Web Application" as application type.
-1. Copy the LOCAL_HOST and the PUBLIC_DOMAIN from your `.env` file, paste them into authorised redirect URIs and extend both of them with *"/Authenticate"*.  
-    E. g.: http://localhost:2400/Authenticate
-1. Save it.
-1. Copy and paste the Client ID and Secret from the final screen into the `.env` file.
-
 # Run locally
 
 Configure your Apache or Nginx Webservere to serve from the `www` directory
@@ -64,7 +39,7 @@ Launch the PHP build-in web server:
 $ php -S localhost:2400 -t www
 ````
 
-# How to
+# How to 
 
 ## Extend f7k with Controllers
 
@@ -136,12 +111,12 @@ class MyController extends ControllerBase {
     public function main(): void
     {
         $this->template->assign([
-            'title' => 'Your Controller',
+            'title' => 'My Controller',
             'header' => 'f7k is cool!',
             'message' => 'But ' . $this->data['name'] . ' is way cooler :p'
         ]);
         $this->template->parse('My.partial.html');
-        $this->template->render($this->request, $this->response);
+        $this->template->render();
     }
     
     //...
@@ -171,12 +146,12 @@ class MyController extends AppController {
     //...
 }
 ````
-The `AppController` hosts all the features you need throughout the whole app.
+The `AppController` hosts all the features and services that you need throughout the whole app (like Navigation Bar, Footer, etc.).
 
 ## Extend f7k with Services
 A Service is an Object that provides additional features and/or data. Most of the time you will retrieve data from a database table within a Service.  
 
-To create a Service you simply create a Class in the `services` directory and inject it via an Attribute in the Controller where you need the Service. Name it `MyService.php`.
+To create a Service you simply create a Class in the `services` directory and inject it via an Attribute in the Controller where you need the Service. Name yours `MyService.php`.
 
 ````php
 // services/MyService.php
@@ -185,16 +160,19 @@ To create a Service you simply create a Class in the `services` directory and in
 
 namespace f7k\Service;
 
-use f7k\Sources\Session;
+use f7k\Sources\{Request, Response, Session};
 
 class MyService {
 
     /**
      * The constructor is optional. Use it, when you require access 
-     * to the Session.
+     * to the Request, Response or Session instances.
      */
-    public function __construct(private Session $session)
-    {}
+    public function __construct(
+        protected Request $request, 
+        protected Response $response, 
+        protected Session $session
+    ) {}
     //...
 
     public function myMethod(string $name): string
@@ -217,7 +195,7 @@ class MyController extends AppController {
     // ...
 }
 ````
-To use the Service assign `$myService->myMethod(<name>)` to the 'message' marker of the template:
+To use the Service assign `$this->myService->myMethod(<name>)` to the 'message' marker of the template:
 ````php
 #[Route(path: '/SayMyName/{name}', method: 'get')]
 public function main(): void
@@ -228,11 +206,36 @@ public function main(): void
         'message' => $this->myService->myMethod($this->data['name'])
     ]);
     $this->template->parse('My.partial.html');
-    $this->template->render($this->request, $this->response);
+    $this->template->render();
 }
 ````
 
 It is also possible to use Services in other Service.
+
+## Enable Google User Authentication
+
+All kind of authentication and authorization is done externally using the Google OAuth service. Therefore it is neccessary that you have a Google account and have the API enabled. Below is a description of how to enable the Authentication API.
+
+1. In the Google Cloud Console go to API credentials:  
+https://console.developers.google.com/apis/credentials?hl=de
+1. Create a new Project
+1. Click on "Configure Consent Screen", choose "External".
+1. Enter a name and provide your email address.
+1. Skip "Scopes" and "Test Users" and finish the configuration.
+1. Go back to Credentials, click on "Create Credentials" and choose "OAuth Client ID".
+1. Select "Web Application" as application type.
+1. Copy the LOCAL_HOST and the PUBLIC_DOMAIN from your `.env` file, paste them into authorised redirect URIs and extend both of them with *"/Authenticate"*.  
+    E. g.: http://localhost:2400/Authenticate
+1. Save it.
+1. Copy and paste the Client ID and Secret from the final screen into the `.env` file.
+
+## Become the Admin. 
+
+In the terminal run:
+````
+$ php encrypt.php <your_gmail_address>
+````
+- Copy the hash and assign it to ACCOUNT_HASH.
 
 # Available Services 
 Next you find some Services that are already available. Feel free to use and/or modify them as you like.
