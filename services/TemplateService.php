@@ -61,4 +61,14 @@ class TemplateService {
         $response->addHeader("Content-Type", "text/html");
         $response->write($this->html);
     }
+
+    public function setTemplateDir(string $dir): void
+    {
+        $this->templateDir = $dir;
+    }
+
+    public function setCacheDir(string $dir): void
+    {
+        $this->cacheDir = $dir;
+    }
 }
