@@ -2,18 +2,19 @@
 
 namespace f7k\Service;
 
-use f7k\Sources\ServiceBase;
+use f7k\Sources\Session;
 use Hybridauth\Provider\Google;
 use Hybridauth\User\Profile;
 
-class AuthenticationService extends ServiceBase {
+/**
+ * This Service uses the Google OAuth API to login and authorize users.
+ */
+class AuthenticationService {
 
     private Google $GoogleOAuthAdapter;
 
-    public function __construct(private array|null $options = [])
+    public function __construct(private Session $session)
     {
-        parent::__construct();
-
         if ($_ENV['MODE'] === 'prod') {
             $callback = $_ENV['PUBLIC_DOMAIN'] . $_ENV['OAUTH_GOOGLE_REDIRECT_URI'];
         } else {
@@ -35,17 +36,17 @@ class AuthenticationService extends ServiceBase {
     {
         // E2E Testing
         if ($_ENV['MODE'] === 'test') {
-            $_SESSION['user'] = [
+            $this->session->set('user', [
                 "name" => $_ENV['TEST_CRED_NAME'],
                 "email" => $_ENV['TEST_CRED_EMAIL'],
-            ];
+            ]);
         } else {
             $this->GoogleOAuthAdapter->authenticate();
             $profile = $this->getUserProfile();
-            $_SESSION['user'] = [
+            $this->session->set('user', [
                 "name" => $profile->displayName,
                 "email" => $profile->email,
-            ];
+            ]);
         }
 
         session_regenerate_id();
@@ -56,14 +57,14 @@ class AuthenticationService extends ServiceBase {
         if ($_ENV['MODE'] !== 'test') {
             $this->GoogleOAuthAdapter->disconnect();
         }
-        unset($_SESSION['user']);
+        $this->session->unset('user');
 
         session_regenerate_id();
     }
 
     public function isLoggedIn(): bool
     {
-        if ($_ENV['MODE'] === 'test' && isset($_SESSION['user'])) {
+        if ($_ENV['MODE'] === 'test' && $this->session->get('user')) {
             return true;
         } else {
             return $this->GoogleOAuthAdapter->isConnected() ? true : false;
@@ -72,12 +73,12 @@ class AuthenticationService extends ServiceBase {
 
     public function isAdmin(): bool
     {
-        return isset($_SESSION['user']) && password_verify($_SESSION['user']['email'], $_ENV['ACCOUNT_HASH']);
+        return $this->session->get('user') && password_verify($this->session->get('user')['email'], $_ENV['ACCOUNT_HASH']);
     }
 
     public function isAuthorized(string $email): bool
     {
-        return (isset($_SESSION['user']) && strtolower($_SESSION['user']['email']) === strtolower($email)) || $this->isAdmin();
+        return ($this->session->get('user') && strtolower($this->session->get('user')['email']) === strtolower($email)) || $this->isAdmin();
     }
 
     public function getUserProfile(): Profile

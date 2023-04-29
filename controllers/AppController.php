@@ -30,7 +30,6 @@ class AppController extends ControllerBase {
         $this->template->assign([
             "e2eTestMode" => $_ENV['MODE'] === 'test',
             "nav" => $this->menu->getItems(),
-            "user" => $this->auth->isLoggedIn() ? $_SESSION['user'] : [],
             "isLoggedIn" => $this->isLoggedIn,
             "isAdmin" => $this->isAdmin,
             "currentPath" => "/" . $this->request->getSegment(0)
