@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use f7k\Service\TemplateService;
 use f7k\Sources\Response;
 use f7k\Sources\Request;
+use f7k\Sources\Session;
 
 !defined('ROOT') && define('ROOT', dirname(__DIR__, 1));
 
@@ -23,7 +24,7 @@ class TemplateServiceTest extends TestCase {
         $this->request = new Request();
         $this->response = new Response();
 
-        $this->template = new TemplateService();
+        $this->template = new TemplateService($this->request, $this->response, new Session);
         $this->template->setTemplateDir(__DIR__ . '/files');
         $this->template->setCacheDir(__DIR__ . '/cache/templates');
     }
