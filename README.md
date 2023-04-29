@@ -75,9 +75,9 @@ http://localhost:2400/SayMyName/<YourName\>
 
 ### Render HTML
 
-Now, if you want to render a beautiful HTML template, you need a Template Engine. The Latte Engine is available as a Service. 
+Now, if you want to render a beautiful HTML template, you need a Template Engine. "Latte" is available as a Service. "Latte" is part of the sweet and way too easy "Nette" Framework (Good for the rest of the world, but not for the nerdy nerds). 
 
-Here is how you use it:
+Here is how you use the Template Service:
 
 Create an HTML file named `My.partial.html` with the following content in the `templates` folder:  
 
