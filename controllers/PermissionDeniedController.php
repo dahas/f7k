@@ -20,6 +20,6 @@ class PermissionDeniedController extends AppController {
             'title' => 'Error 403 - Forbidden'
         ]);
         $this->template->parse('403.partial.html');
-        $this->template->render($this->request, $this->response);
+        $this->template->render();
     }
 }

@@ -16,6 +16,6 @@ class ControllerBase  {
 
         $this->session = new Session();
 
-        $this->triggerServiceInjection($this->session);
+        $this->triggerServiceInjection($this->request, $this->response, $this->session);
     }
 }

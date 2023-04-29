@@ -20,6 +20,6 @@ class NotFoundController extends AppController {
             'title' => 'Error 404 - Page Not Found'
         ]);
         $this->template->parse('404.partial.html');
-        $this->template->render($this->request, $this->response);
+        $this->template->render();
     }
 }
