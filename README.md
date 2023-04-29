@@ -75,7 +75,9 @@ http://localhost:2400/SayMyName/<YourName\>
 
 ### Render HTML
 
-Now, if you want to render a beautiful HTML template, you need a Template Engine. "Latte" is available as a Service. "Latte" is part of the sweet and way too easy "Nette" Framework (Good for the rest of the world, but not for the nerdy nerds). 
+Now, if you want to render a beautiful HTML template, you need a Template Engine. "Latte" is available as a Service. "Latte" is part of the sweet and way too easy "Nette" Framework (Good for the rest of the world, but not for the nerdy nerds).
+
+Learn more about Latte here: https://latte.nette.org/en/guide
 
 Here is how you use the Template Service:
 
@@ -211,6 +213,7 @@ public function main(): void
     $this->template->render();
 }
 ````
+And again: http://localhost:2400/SayMyName/<YourName\>
 
 It is also possible to use Services in other Service.
 
@@ -242,26 +245,9 @@ $ php encrypt.php <your_gmail_address>
 # Available Services 
 Next you find some Services that are already available. Feel free to use and/or modify them as you like.
 
-## ArticlesService
-
-### *Dependencies*: 
-* Services: `AuthenticationService`, `DbalService`, `PurifyService`
-* Templates: `Article.partial.html`
-### *Description*:  
-Create and edit Blog articles.
-
 ## AuthenticationService
 ### *Description*:  
-Use this service to authenticate and authorize users to post comments and/or write Blog articles.
-
-## CommentsService
-### *Dependencies*: 
-* Services: `AuthenticationService`, `DbalService`, `MarkdownService`
-* Controllers: `CommentsController`
-* Entities: `CommentsEntity`, `RepliesEntity`
-* Templates: `Comments.partial.html`
-### *Description*:  
-Add a commentary feature to a page. Users can add comments and reply to them.
+Use this service to authenticate and authorize users for further actions.
 
 ## MarkdownService
 ### *Dependencies*:
@@ -281,6 +267,6 @@ Uses HTMLPurifier to remove malicious code.
 
 ## TemplateService
 ### *Description*:  
-Parses HTML templates. The Template Engine is build upon the Latte library. Learn more about Latte here: https://latte.nette.org/en/guide
+Parses HTML templates. 
 
 
