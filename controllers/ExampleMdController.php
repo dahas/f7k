@@ -2,29 +2,9 @@
 
 namespace f7k\Controller;
 
-use f7k\Service\{TemplateService, MenuService, AuthenticationService};
-use f7k\Sources\attributes\{Inject, Route};
-use f7k\Sources\{Request, Response};
+use f7k\Sources\attributes\Route;
 
 class ExampleMdController extends AppController {
-
-    #[Inject(TemplateService::class)]
-    protected $template;
-
-    #[Inject(MenuService::class)]
-    protected $menu;
-
-    #[Inject(AuthenticationService::class)]
-    protected $auth;
-
-    protected bool $isLoggedIn;
-    protected bool $isAdmin;
-
-    public function __construct(protected Request $request, protected Response $response)
-    {
-        parent::__construct($this->request, $this->response);
-    }
-
 
     #[Route(path: '/Example/Markdown', method: 'get')]
     public function main(): void
