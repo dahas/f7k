@@ -1,0 +1,13 @@
+{layout 'App.layout.html'}
+
+{block content}
+<div class="container-sm mt-3">
+    {$h1|markdown|noescape}  
+    {$h2|markdown|noescape}  
+    {$h3|markdown|noescape} 
+
+    <p>&nbsp;</p>
+
+    {$code|markdown|noescape} 
+</div> 
+{/block}

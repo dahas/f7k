@@ -9,8 +9,13 @@
         "enabled": true,
         "items": [
             {
-                "path": "/ExampleJson",
-                "title": "Json Response",
+                "path": "/Example/Json",
+                "title": "A Json Response",
+                "enabled": true
+            },
+            {
+                "path": "/Example/Markdown",
+                "title": "The Markdown Service",
                 "enabled": true
             },
             {

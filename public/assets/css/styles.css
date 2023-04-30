@@ -17,6 +17,10 @@ body {
   border-top-left-radius: inherit;
 }
 
+pre code {
+  color: #d63384;
+}
+
 blockquote {
   margin: 0;
   margin-bottom: 1rem;

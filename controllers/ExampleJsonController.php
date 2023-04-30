@@ -12,7 +12,7 @@ class ExampleJsonController extends AppController {
         parent::__construct($request, $response);
     }
 
-    #[Route(path: '/ExampleJson', method: 'get')]
+    #[Route(path: '/Example/Json', method: 'get')]
     public function main(): void
     {
         $data = [
@@ -23,7 +23,7 @@ class ExampleJsonController extends AppController {
 
         $json = json_encode([
             "message" => "Success",
-            "url" => "http://localhost:2400/ExampleJson",
+            "url" => "http://localhost:2400/Example/Json",
             "data" => $data,
             "count" => count($data),
         ]);

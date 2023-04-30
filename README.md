@@ -215,7 +215,34 @@ public function main(): void
 ````
 And again: http://localhost:2400/SayMyName/<YourName\>
 
-It is also possible to use Services in other Service.
+It is also possible to use **Services in other Service**. In this case the Constructor is mandatory and the Service must inherit from `ServiceBase`.
+
+````php
+// services/MyService.php
+
+<?php declare(strict_types=1);
+
+namespace f7k\Service;
+
+use f7k\Sources\{ServiceBase, Request, Response, Session};
+
+class MyService extends ServiceBase {
+
+    #[Inject(AnotheryService::class)]
+    protected $anotherService;
+
+    public function __construct(
+        protected Request $request, 
+        protected Response $response, 
+        protected Session $session
+    ) {
+        // Parent Constructor must be triggered!
+        parent::__construct($this->request, $this->response, $this->session);
+    }
+
+    //...
+}
+````
 
 ## Enable Google User Authentication
 

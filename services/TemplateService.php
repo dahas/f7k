@@ -5,9 +5,9 @@ namespace f7k\Service;
 use f7k\Service\MarkdownService;
 use f7k\Sources\attributes\Inject;
 use Latte\Engine;
-use f7k\Sources\{Request, Response, Session};
+use f7k\Sources\{ServiceBase, Request, Response, Session};
 
-class TemplateService {
+class TemplateService extends ServiceBase {
 
     #[Inject(MarkdownService::class)]
     protected $markdown;
@@ -24,6 +24,8 @@ class TemplateService {
         protected Response $response, 
         protected Session $session
     ) {
+        parent::__construct($this->request, $this->response, $this->session);
+
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir, 0775, true);
         }
