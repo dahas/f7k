@@ -6,7 +6,7 @@ use f7k\Service\{TemplateService, MenuService, AuthenticationService};
 use f7k\Sources\attributes\{Inject, Route};
 use f7k\Sources\{Request, Response};
 
-class MarkdownController extends AppController {
+class ExampleMdController extends AppController {
 
     #[Inject(TemplateService::class)]
     protected $template;
