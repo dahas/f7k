@@ -16,9 +16,17 @@
 
 ## Installation
 ````
-$ mkdir <your_project> && cd <your_project>
-$ git clone https://github.com/dahas/f7k.git .
+$ cd /var/www
+$ sudo git clone https://github.com/dahas/f7k.git <your_folder_name>
+$ cd <your_folder_name>
 $ composer install
+````
+
+## Set Permissions
+````
+$ sudo adduser $USER www-data
+$ sudo chown -R $USER:www-data /var/www/<your_folder_name> 
+$ sudo chmod -R 775 /var/www/<your_folder_name>
 ````
 
 # Setting things up
