@@ -42,8 +42,6 @@ Open the `.env` file and adjust some settings:
 
 # Run locally
 
-Configure your Apache or Nginx Webservere to serve from the `public` directory
-
 Launch the PHP build-in web server:
 ````
 $ php -S localhost:2400 -t public
@@ -223,7 +221,7 @@ public function main(): void
 ````
 And again: http://localhost:2400/SayMyName/<YourName\>
 
-It is also possible to use **Services in other Service**. In this case the Constructor is mandatory and the Service must inherit from `ServiceBase`.
+It is also possible to use **Services in other Services**. In this case the Constructor is mandatory and the Service must inherit from Class `ServiceBase`.
 
 ````php
 // services/MyService.php
