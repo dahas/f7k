@@ -3,9 +3,6 @@
 namespace f7k\Sources;
 
 use f7k\Sources\interfaces\AppInterface;
-use f7k\Sources\Request;
-use f7k\Sources\Response;
-use f7k\Sources\Router;
 
 class Application implements AppInterface {
 

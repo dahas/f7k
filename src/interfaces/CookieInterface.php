@@ -2,10 +2,11 @@
 
 namespace f7k\Sources\interfaces;
 
-interface CookieInterface {
+interface CookieInterface
+{
+    public function set(string $key, mixed $value): void;
 
-    public function set(): void;
-    public function read(): array;
-    public function write(array $data): void;
+    public function get(string $key): mixed;
+
     public function destroy(): void;
 }

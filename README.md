@@ -16,9 +16,6 @@
 
 ## Installation
 ````
-$ cd /var/www
-$ sudo git clone https://github.com/dahas/f7k.git <your_folder_name>
-$ cd <your_folder_name>
 $ composer install
 ````
 

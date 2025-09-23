@@ -4,7 +4,13 @@ namespace f7k\Sources;
 
 use f7k\Sources\interfaces\SessionInterface;
 
-class Session implements SessionInterface {
+class Session implements SessionInterface
+{
+
+    public function isset(string $name): bool
+    {
+        return isset($_SESSION[$name]);
+    }
 
     public function get(string $name): mixed
     {
