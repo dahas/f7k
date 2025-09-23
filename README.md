@@ -265,12 +265,11 @@ https://console.developers.google.com/apis/credentials?hl=de
 1. Copy and paste the Client ID and Secret from the final screen into the `.env` file.
 
 ## Become the Admin. 
-
 In the terminal run:
 ````
 $ php encrypt.php <your_gmail_address>
 ````
-- Copy the hash and assign it to ACCOUNT_HASH.
+- Copy the hash and assign it to ACCOUNT_HASH in your `.env` file.
 
 # Available Services 
 Next you find some Services that are already available. Feel free to use and/or modify them as you like.
